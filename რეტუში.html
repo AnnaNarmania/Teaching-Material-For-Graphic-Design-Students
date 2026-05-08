@@ -1,0 +1,2081 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0"
+    />
+    <title>Photoshop · რეტუში</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: #0a0a0a;
+        color: #f0ede8;
+        overflow-x: hidden;
+      }
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c8a96e, #e8c99e);
+        z-index: 100;
+        width: 0;
+        transition: width 0.3s;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        background: rgba(10, 10, 10, 0.88);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-logo {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+      .nav-links a {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.4);
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+        cursor: pointer;
+      }
+      .nav-links a:hover {
+        color: #c8a96e;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .nav-home {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+      }
+      .nav-home:hover {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nav-dropdown-wrap {
+        position: relative;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: transparent;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-wrap.open .nav-dropdown-btn {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-dropdown-btn .chevron {
+        transition: transform 0.25s;
+        display: inline-block;
+      }
+      .nav-dropdown-wrap.open .chevron {
+        transform: rotate(180deg);
+      }
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(14, 14, 14, 0.97);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 8px;
+        padding: 6px;
+        min-width: 225px;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-dropdown-wrap.open .nav-dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.55);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(200, 169, 110, 0.1);
+        color: #f0ede8;
+      }
+      .nav-dropdown-menu a.current {
+        color: #c8a96e;
+        pointer-events: none;
+      }
+      .nav-dropdown-menu a .num {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: rgba(200, 169, 110, 0.5);
+        font-weight: 600;
+        min-width: 20px;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 40px 80px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 0 180px;
+      }
+      .hero::after {
+        content: "Ps";
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: clamp(200px, 30vw, 400px);
+        font-weight: 700;
+        color: rgba(200, 169, 110, 0.04);
+        pointer-events: none;
+        line-height: 1;
+      }
+      .hero-inner {
+        max-width: 900px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-label {
+        font-size: 11px;
+        letter-spacing: 5px;
+        color: rgba(200, 169, 110, 0.7);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      .hero-title {
+        font-size: clamp(44px, 8vw, 96px);
+        font-weight: 700;
+        line-height: 0.95;
+        margin-bottom: 28px;
+      }
+      .hero-title .gold {
+        display: block;
+        color: #c8a96e;
+        font-weight: 300;
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 16px;
+        color: rgba(240, 237, 232, 0.45);
+        max-width: 480px;
+        line-height: 1.75;
+        margin-bottom: 52px;
+      }
+      .hero-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        padding: 8px 22px;
+        border: 1px solid rgba(200, 169, 110, 0.25);
+        border-radius: 40px;
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.8);
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .pill:hover {
+        background: rgba(200, 169, 110, 0.1);
+        border-color: #c8a96e;
+        color: #e8c99e;
+      }
+
+      .bg-a {
+        background: #0a0a0a;
+      }
+      .bg-b {
+        background: #0d0d0d;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .section {
+        padding: 110px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .s-tag {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: rgba(200, 169, 110, 0.5);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .s-title {
+        font-size: clamp(30px, 4vw, 52px);
+        font-weight: 600;
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+      .s-title em {
+        color: #c8a96e;
+        font-style: normal;
+      }
+      .s-desc {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.45);
+        line-height: 1.75;
+        max-width: 580px;
+        margin-bottom: 48px;
+      }
+      .rule {
+        width: 36px;
+        height: 2px;
+        background: #c8a96e;
+        margin: 18px 0 34px;
+      }
+
+      /* TOOL CARDS */
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .tool-card {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        padding: 28px;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .tool-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .tool-card:hover {
+        background: rgba(200, 169, 110, 0.05);
+        border-color: rgba(200, 169, 110, 0.2);
+        transform: translateY(-3px);
+      }
+      .tool-card:hover::before,
+      .tool-card.open::before {
+        opacity: 1;
+      }
+      .tool-card.open {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.28);
+      }
+      .tc-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+      .tc-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .tc-meta {
+      }
+      .tc-name {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .tc-short {
+        font-size: 12px;
+        font-family: monospace;
+        color: #c8a96e;
+        background: rgba(200, 169, 110, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+      .tc-desc {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.65;
+        margin-bottom: 12px;
+      }
+      .tc-detail {
+        display: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 16px;
+        margin-top: 4px;
+      }
+      .tool-card.open .tc-detail {
+        display: block;
+      }
+      .tc-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+        align-items: flex-start;
+      }
+      .tc-row-lbl {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(200, 169, 110, 0.6);
+        min-width: 80px;
+        padding-top: 2px;
+        flex-shrink: 0;
+      }
+      .tc-row-val {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.6;
+      }
+      .tc-use-list {
+        list-style: none;
+        margin-top: 4px;
+      }
+      .tc-use-list li {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        gap: 8px;
+        line-height: 1.5;
+      }
+      .tc-use-list li::before {
+        content: "›";
+        color: #c8a96e;
+        flex-shrink: 0;
+      }
+      .tc-use-list li:last-child {
+        border-bottom: none;
+      }
+      .tc-tip {
+        background: rgba(200, 169, 110, 0.07);
+        border: 1px solid rgba(200, 169, 110, 0.15);
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.8);
+        line-height: 1.6;
+      }
+      .kbd {
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .hint {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.25);
+        margin-top: 14px;
+      }
+
+      /* COMPARE */
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+      .compare-table th {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(200, 169, 110, 0.6);
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .compare-table td {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        line-height: 1.55;
+        vertical-align: top;
+      }
+      .compare-table tr:hover td {
+        background: rgba(200, 169, 110, 0.03);
+      }
+      .compare-table tr:last-child td {
+        border-bottom: none;
+      }
+      .ct-name {
+        color: #f0ede8;
+        font-weight: 500;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+      .badge-clone {
+        background: rgba(96, 165, 250, 0.12);
+        color: #60a5fa;
+      }
+      .badge-pattern {
+        background: rgba(167, 139, 250, 0.12);
+        color: #a78bfa;
+      }
+      .badge-healing {
+        background: rgba(134, 239, 172, 0.12);
+        color: #86efac;
+      }
+      .badge-spot {
+        background: rgba(252, 211, 77, 0.12);
+        color: #fcd34d;
+      }
+      .badge-patch {
+        background: rgba(251, 146, 60, 0.12);
+        color: #fb923c;
+      }
+
+      /* WORKFLOW */
+      .flow-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .flow-step {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        position: relative;
+        padding-bottom: 28px;
+      }
+      .flow-step:last-child {
+        padding-bottom: 0;
+      }
+      .flow-step::before {
+        content: "";
+        position: absolute;
+        left: 19px;
+        top: 40px;
+        bottom: 0;
+        width: 1px;
+        background: rgba(200, 169, 110, 0.15);
+      }
+      .flow-step:last-child::before {
+        display: none;
+      }
+      .flow-num {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid rgba(200, 169, 110, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #c8a96e;
+        flex-shrink: 0;
+        background: rgba(200, 169, 110, 0.06);
+      }
+      .flow-body h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        padding-top: 9px;
+      }
+      .flow-body p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.65;
+      }
+
+      /* ADJ LIST */
+      .adj-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .adj-item {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px 22px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        transition: all 0.25s;
+      }
+      .adj-item:hover {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.2);
+        transform: translateX(4px);
+      }
+      .adj-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .adj-body h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .adj-body p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.48);
+        line-height: 1.6;
+      }
+      .adj-body .vs {
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.5);
+        margin-top: 6px;
+        font-style: italic;
+      }
+
+      /* QUIZ */
+      .quiz-wrap {
+        max-width: 740px;
+        margin: 0 auto;
+      }
+      .q-block {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        margin-bottom: 14px;
+        transition: border-color 0.3s;
+      }
+      .q-block.correct {
+        border-color: rgba(100, 200, 130, 0.45);
+        background: rgba(100, 200, 130, 0.04);
+      }
+      .q-block.wrong {
+        border-color: rgba(220, 80, 80, 0.35);
+        background: rgba(220, 80, 80, 0.03);
+      }
+      .q-num {
+        font-size: 11px;
+        color: rgba(200, 169, 110, 0.6);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .q-text {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.65);
+        transition: all 0.2s;
+        background: transparent;
+        text-align: left;
+      }
+      .opt:hover:not(.locked) {
+        background: rgba(200, 169, 110, 0.07);
+        border-color: rgba(200, 169, 110, 0.28);
+        color: #f0ede8;
+      }
+      .opt.sel-ok {
+        background: rgba(100, 200, 130, 0.09);
+        border-color: rgba(100, 200, 130, 0.45);
+        color: #a0e8b0;
+      }
+      .opt.sel-bad {
+        background: rgba(220, 80, 80, 0.09);
+        border-color: rgba(220, 80, 80, 0.4);
+        color: #f08080;
+      }
+      .opt.reveal {
+        background: rgba(100, 200, 130, 0.05);
+        border-color: rgba(100, 200, 130, 0.28);
+        color: rgba(160, 232, 176, 0.75);
+      }
+      .odot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+      }
+      .opt.sel-ok .odot {
+        background: #4caf78;
+        border-color: #4caf78;
+        color: #fff;
+      }
+      .opt.sel-bad .odot {
+        background: #d94f4f;
+        border-color: #d94f4f;
+      }
+      .q-fb {
+        display: none;
+        margin-top: 12px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .q-fb.show {
+        display: block;
+      }
+      .q-fb.ok {
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .q-fb.bad {
+        background: rgba(220, 80, 80, 0.08);
+        color: #f08080;
+      }
+      .quiz-footer {
+        text-align: center;
+        margin-top: 36px;
+      }
+      .btn-submit {
+        padding: 14px 52px;
+        background: #c8a96e;
+        color: #0a0a0a;
+        border: none;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-submit:hover {
+        background: #e8c99e;
+        transform: scale(1.03);
+      }
+      .btn-submit:disabled {
+        opacity: 0.35;
+        cursor: default;
+        transform: none;
+      }
+      .score-panel {
+        display: none;
+        margin-top: 28px;
+        padding: 48px;
+        background: rgba(200, 169, 110, 0.06);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 18px;
+        text-align: center;
+      }
+      .score-panel.show {
+        display: block;
+      }
+      .score-big {
+        font-size: 72px;
+        font-weight: 700;
+        color: #c8a96e;
+        line-height: 1;
+      }
+      .score-of {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.4);
+        margin-top: 6px;
+      }
+      .score-msg {
+        font-size: 17px;
+        color: #f0ede8;
+        margin-top: 14px;
+        line-height: 1.6;
+      }
+      .btn-retry {
+        margin-top: 20px;
+        padding: 10px 32px;
+        background: transparent;
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.35);
+        border-radius: 40px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-retry:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
+      footer {
+        padding: 60px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+      footer p {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.2);
+        letter-spacing: 1px;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 640px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          margin: 0;
+        }
+        .hero-title {
+          font-size: 48px;
+        }
+        .section {
+          padding: 80px 24px;
+        }
+        nav {
+          padding: 14px 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .tools-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+    ></div>
+
+    <nav>
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="მთავარი.html"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          მთავარი
+        </a>
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="ფერებიდატონები.html"
+              ><span class="num">01</span>ფერები და ტონები</a
+            >
+            <a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a>
+            <a href="გეომეტრიულიფიგურები.html"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            >
+            <a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
+            <a href="ტონისკორექცია.html"
+              ><span class="num">05</span>ტონის კორექცია</a
+            >
+            <a
+              href="რეტუში.html"
+              class="current"
+              ><span class="num">06</span>რეტუში</a
+            >
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Retouch Tools</div>
+      </div>
+      <div class="nav-links">
+        <a onclick="goTo('#s-tools')">ინსტრუმენტები</a>
+        <a onclick="goTo('#s-compare')">შედარება</a>
+        <a onclick="goTo('#s-workflow')">სამუშაო პროცესი</a>
+        <a onclick="goTo('#s-quiz')">ქვიზი</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-label">
+          Adobe Photoshop · რეტუშირების ინსტრუმენტები
+        </div>
+        <h1 class="hero-title">
+          რეტუშის<br />
+          <span class="gold">ინსტრუმენტები</span>
+        </h1>
+        <p class="hero-sub">
+          ამ გაკვეთილში შეისწავლით Clone Stamp, Pattern Stamp, Healing Brush,
+          Spot Healing Brush და Patch Tool-ის მუშაობის პრინციპებს და პრაქტიკულ
+          გამოყენებას.
+        </p>
+        <div class="hero-pills">
+          <div
+            class="pill"
+            onclick="goTo('#s-tools')"
+          >
+            01 · ინსტრუმენტები
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-compare')"
+          >
+            02 · შედარება
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-workflow')"
+          >
+            03 · სამუშაო პროცესი
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-quiz')"
+          >
+            04 · ქვიზი
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <div
+      id="s-tools"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">01 · ინსტრუმენტები</div>
+        <h2 class="s-title">Retouch <em>Tools</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          რეტუშის ინსტრუმენტები გვხვდება Toolbar-ში —
+          <span style="font-family: monospace; color: #c8a96e; font-size: 13px"
+            >J</span
+          >
+          და
+          <span style="font-family: monospace; color: #c8a96e; font-size: 13px"
+            >S</span
+          >
+          კლავიშებით. დააჭირე ბარათს სრული ინფორმაციისთვის.
+        </p>
+        <div class="tools-grid">
+          <!-- Clone Stamp -->
+          <div
+            class="tool-card"
+            style="--accent: #60a5fa"
+            onclick="this.classList.toggle('open')"
+          >
+            <div class="tc-top">
+              <div
+                class="tc-icon"
+                style="background: rgba(96, 165, 250, 0.12)"
+              >
+                🖈
+              </div>
+              <div class="tc-meta">
+                <div class="tc-name">Clone Stamp Tool</div>
+                <span class="tc-short kbd">S</span>
+              </div>
+            </div>
+            <div class="tc-desc">
+              სურათის ერთი ნაწილი ზუსტად კოპირდება სხვა ადგილზე — პიქსელი
+              პიქსელზე.
+            </div>
+            <span class="badge badge-clone">კოპირება</span>
+            <div class="tc-detail">
+              <div class="tc-row">
+                <div class="tc-row-lbl">პრინციპი</div>
+                <div class="tc-row-val">
+                  Alt-ით დააჭირე წყაროს (source) — შემდეგ დახატე სამიზნე
+                  ადგილზე. პროგრამა ზუსტად კოპირებს.
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">შორტქათი</div>
+                <div class="tc-row-val">
+                  <span class="kbd">S</span> — ინსტრუმენტი ·
+                  <span class="kbd">Alt + Click</span> — წყაროს არჩევა
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">გამოყენება</div>
+                <ul class="tc-use-list">
+                  <li>ფოტოდან ობიექტების ამოღება/კოპირება</li>
+                  <li>დაზიანებული ფონის აღდგენა</li>
+                  <li>ტექსტურის გამეორება</li>
+                  <li>ფოტომანიპულაცია</li>
+                </ul>
+              </div>
+              <div class="tc-tip">
+                💡 Sample: <strong>Current &amp; Below</strong> — ახალ Layer-ზე
+                მუშაობისთვის. Aligned ჩართვა/გამორთვა ცვლის წყაროს ქცევას
+                მოძრაობისას.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pattern Stamp -->
+          <div
+            class="tool-card"
+            style="--accent: #a78bfa"
+            onclick="this.classList.toggle('open')"
+          >
+            <div class="tc-top">
+              <div
+                class="tc-icon"
+                style="background: rgba(167, 139, 250, 0.12)"
+              >
+                ⬡
+              </div>
+              <div class="tc-meta">
+                <div class="tc-name">Pattern Stamp Tool</div>
+                <span class="tc-short kbd">S (shift)</span>
+              </div>
+            </div>
+            <div class="tc-desc">
+              წინასწარ განსაზღვრული ან შენ მიერ შექმნილი Pattern (ნიმუში)
+              იხატება სურათზე.
+            </div>
+            <span class="badge badge-pattern">ნიმუში</span>
+            <div class="tc-detail">
+              <div class="tc-row">
+                <div class="tc-row-lbl">პრინციპი</div>
+                <div class="tc-row-val">
+                  Clone Stamp-ის ქვე-ინსტრუმენტი. Options Bar-ში ირჩევ Pattern-ს
+                  და ხატავ სასურველ ადგილზე.
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">შორტქათი</div>
+                <div class="tc-row-val">
+                  <span class="kbd">S</span> →
+                  <span class="kbd">Shift+S</span> — გადართვა Clone/Pattern-ს
+                  შორის
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">Pattern შექმნა</div>
+                <div class="tc-row-val">
+                  მონიშნე ფართობი →
+                  <span class="kbd">Edit → Define Pattern</span> → სახელი → OK
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">გამოყენება</div>
+                <ul class="tc-use-list">
+                  <li>განმეორებადი ტექსტურის დახატვა</li>
+                  <li>ფონის გარჩევა ნიმუშებით</li>
+                  <li>დეკორატიული ეფექტები</li>
+                </ul>
+              </div>
+              <div class="tc-tip">
+                💡 Impressionist option — Pattern-ს ბუნდოვნად/საღებავური სტილით
+                ხატავს.
+              </div>
+            </div>
+          </div>
+
+          <!-- Healing Brush -->
+          <div
+            class="tool-card"
+            style="--accent: #86efac"
+            onclick="this.classList.toggle('open')"
+          >
+            <div class="tc-top">
+              <div
+                class="tc-icon"
+                style="background: rgba(134, 239, 172, 0.12)"
+              >
+                ✦
+              </div>
+              <div class="tc-meta">
+                <div class="tc-name">Healing Brush Tool</div>
+                <span class="tc-short kbd">J</span>
+              </div>
+            </div>
+            <div class="tc-desc">
+              აკოპირებს ტექსტურას, მაგრამ ახდენს ფერისა და სინათლის ავტომატურ
+              ადაპტაციას სამიზნე ადგილზე.
+            </div>
+            <span class="badge badge-healing">ადაპტური</span>
+            <div class="tc-detail">
+              <div class="tc-row">
+                <div class="tc-row-lbl">პრინციპი</div>
+                <div class="tc-row-val">
+                  Clone Stamp-ის მსგავსი, მაგრამ ჭკვიანი — ტექსტურა კოპირდება,
+                  ხოლო ფერი და ტონი სამიზნე ადგილის გარემოსთან ერთდება.
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">შორტქათი</div>
+                <div class="tc-row-val">
+                  <span class="kbd">J</span> ·
+                  <span class="kbd">Alt + Click</span> — წყაროს არჩევა
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">Source</div>
+                <div class="tc-row-val">
+                  <strong>Sampled</strong> — ფოტოდან ·
+                  <strong>Pattern</strong> — ნიმუშიდან
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">გამოყენება</div>
+                <ul class="tc-use-list">
+                  <li>კანის ხაზებისა და ნაოჭების შემცირება</li>
+                  <li>ობიექტების ნაზი წაშლა</li>
+                  <li>კომპლექსური ფონის რეტუში</li>
+                </ul>
+              </div>
+              <div class="tc-tip">
+                💡 Clone Stamp-ისგან განსხვავებით — ფერი არ გადადის პირდაპირ.
+                Photoshop ითვლის გარემოს ფერს და ერთავს.
+              </div>
+            </div>
+          </div>
+
+          <!-- Spot Healing Brush -->
+          <div
+            class="tool-card"
+            style="--accent: #fcd34d"
+            onclick="this.classList.toggle('open')"
+          >
+            <div class="tc-top">
+              <div
+                class="tc-icon"
+                style="background: rgba(252, 211, 77, 0.1)"
+              >
+                ◎
+              </div>
+              <div class="tc-meta">
+                <div class="tc-name">Spot Healing Brush</div>
+                <span class="tc-short kbd">J (shift)</span>
+              </div>
+            </div>
+            <div class="tc-desc">
+              ერთი კლიკით ან მოკლე გავლებით სწრაფად ასწორებს პატარა დეფექტებს —
+              წყაროს არჩევა საჭირო არ არის.
+            </div>
+            <span class="badge badge-spot">ავტო</span>
+            <div class="tc-detail">
+              <div class="tc-row">
+                <div class="tc-row-lbl">პრინციპი</div>
+                <div class="tc-row-val">
+                  Photoshop თავად ირჩევს საუკეთესო წყაროს ბუშტის გარშემო
+                  ფართობიდან. Content-Aware რეჟიმი AI-ს იყენებს.
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">შორტქათი</div>
+                <div class="tc-row-val">
+                  <span class="kbd">J</span> →
+                  <span class="kbd">Shift+J</span> — გადართვა
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">ტიპები</div>
+                <div class="tc-row-val">
+                  <strong>Content-Aware</strong> — ყველაზე ჭკვიანი ·
+                  <strong>Create Texture</strong> — ტექსტურის გამეორება ·
+                  <strong>Proximity Match</strong> — მახლობელი პიქსელებიდან
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">გამოყენება</div>
+                <ul class="tc-use-list">
+                  <li>მძიმეები, ლაქები, პიმპლები კანზე</li>
+                  <li>მტვრის ნაწილაკები ფოტოზე</li>
+                  <li>პატარა ობიექტების სწრაფი წაშლა</li>
+                </ul>
+              </div>
+              <div class="tc-tip">
+                💡 ყველაზე სწრაფი ინსტრუმენტი. Healing Brush-ისგან განსხვავებით
+                — Alt-ის დჭერა არ სჭირდება.
+              </div>
+            </div>
+          </div>
+
+          <!-- Patch Tool -->
+          <div
+            class="tool-card"
+            style="--accent: #fb923c"
+            onclick="this.classList.toggle('open')"
+          >
+            <div class="tc-top">
+              <div
+                class="tc-icon"
+                style="background: rgba(251, 146, 60, 0.1)"
+              >
+                ⬟
+              </div>
+              <div class="tc-meta">
+                <div class="tc-name">Patch Tool</div>
+                <span class="tc-short kbd">J (shift)</span>
+              </div>
+            </div>
+            <div class="tc-desc">
+              გამოყოფ პრობლემურ ფართობს და გადაათრევ სუფთა ადგილზე — ან პირიქით.
+              დიდი ფართობებისთვის იდეალური.
+            </div>
+            <span class="badge badge-patch">ფართობი</span>
+            <div class="tc-detail">
+              <div class="tc-row">
+                <div class="tc-row-lbl">პრინციპი</div>
+                <div class="tc-row-val">
+                  Lasso-სტილის Selection ხელსაწყო. გამოყო დეფექტი → გადაათრიე
+                  სუფთა ფართობზე → გაუშვი. Photoshop ერთავს.
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">შორტქათი</div>
+                <div class="tc-row-val">
+                  <span class="kbd">Shift+J</span> — Healing ჯგუფიდან გადართვა
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">რეჟიმები</div>
+                <div class="tc-row-val">
+                  <strong>Normal</strong> — კლასიკური ·
+                  <strong>Content-Aware</strong> — AI-ით გაუმჯობესებული შერწყმა
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">Source / Dest</div>
+                <div class="tc-row-val">
+                  <strong>Source</strong> — მონიშნავ პრობლემას, თრევ სუფთაზე ·
+                  <strong>Destination</strong> — მონიშნავ სუფთას, თრევ
+                  პრობლემაზე
+                </div>
+              </div>
+              <div class="tc-row">
+                <div class="tc-row-lbl">გამოყენება</div>
+                <ul class="tc-use-list">
+                  <li>დიდი ობიექტების წაშლა ფოტოდან</li>
+                  <li>კანის დიდი ფართობების გასწორება</li>
+                  <li>ფონის ხარვეზების გამოსწორება</li>
+                </ul>
+              </div>
+              <div class="tc-tip">
+                💡 Content-Aware Patch — ყველაზე ეფექტური დიდ ფართობებზე. Spot
+                Healing-ზე კონტროლი მეტია.
+              </div>
+            </div>
+          </div>
+        </div>
+        <p
+          class="hint"
+          style="margin-top: 16px"
+        >
+          ▸ დააჭირე ბარათს დეტალების სანახავად
+        </p>
+      </div>
+    </div>
+
+    <!-- COMPARE -->
+    <div
+      id="s-compare"
+      class="bg-b"
+    >
+      <div class="section">
+        <div class="s-tag">02 · შედარება</div>
+        <h2 class="s-title">რომელი <em>როდის?</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          ხუთი ინსტრუმენტი გარეგნულად მსგავსია — მათ შორის განსხვავება კი
+          ყველაზე მნიშვნელოვანია.
+        </p>
+
+        <div
+          style="
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+          "
+        >
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>ინსტრუმენტი</th>
+                <th>პრინციპი</th>
+                <th>წყარო</th>
+                <th>საუკეთესო გამოყენება</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="ct-name">Clone Stamp</span><br /><span
+                    class="badge badge-clone"
+                    >S</span
+                  >
+                </td>
+                <td>ზუსტი კოპია — ფერი + ტექსტურა პირდაპირ გადადის</td>
+                <td>Alt + Click (სავალდებულო)</td>
+                <td>მკაფიო ტექსტურების კოპირება, ფოტომანიპულაცია</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="ct-name">Pattern Stamp</span><br /><span
+                    class="badge badge-pattern"
+                    >S→Shift</span
+                  >
+                </td>
+                <td>Pattern (ნიმუში) დაიხატება — არა ფოტოდან კოპია</td>
+                <td>Pattern Library / Define Pattern</td>
+                <td>განმეორებადი ნიმუშები, ფონის შევსება</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="ct-name">Healing Brush</span><br /><span
+                    class="badge badge-healing"
+                    >J</span
+                  >
+                </td>
+                <td>ტექსტურა კოპირდება + ფერი ადაპტირდება გარემოსთან</td>
+                <td>Alt + Click (სავალდებულო)</td>
+                <td>კანის ნაოჭები, ხაზები — ბუნებრივი შედეგი</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="ct-name">Spot Healing</span><br /><span
+                    class="badge badge-spot"
+                    >J→Shift</span
+                  >
+                </td>
+                <td>
+                  ავტომატური — Photoshop ირჩევს წყაროს Content-Aware AI-ით
+                </td>
+                <td>არ სჭირდება</td>
+                <td>პატარა ლაქები, მძიმეები — ერთი კლიკი</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="ct-name">Patch Tool</span><br /><span
+                    class="badge badge-patch"
+                    >J→Shift</span
+                  >
+                </td>
+                <td>Selection + Drag — დიდი ფართობის შეცვლა</td>
+                <td>Drag (Source/Destination)</td>
+                <td>დიდი ობიექტების წაშლა, ფართო ფონის გამოსწორება</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col">
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.02);
+              border: 1px solid rgba(255, 255, 255, 0.07);
+              border-radius: 14px;
+              padding: 24px;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(200, 169, 110, 0.55);
+                margin-bottom: 14px;
+              "
+            >
+              Clone Stamp vs Healing Brush
+            </div>
+            <p
+              style="
+                font-size: 13px;
+                color: rgba(240, 237, 232, 0.5);
+                line-height: 1.7;
+              "
+            >
+              <strong style="color: #60a5fa">Clone Stamp</strong> — ზუსტი კოპია.
+              თუ ფონი განსხვავდება, "ნაჭდევი" ჩანს.<br /><br /><strong
+                style="color: #86efac"
+                >Healing Brush</strong
+              >
+              — ტექსტურა კოპირდება, ფერი კი ადაპტირდება. კანის რეტუშში უმჯობესი.
+            </p>
+          </div>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.02);
+              border: 1px solid rgba(255, 255, 255, 0.07);
+              border-radius: 14px;
+              padding: 24px;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(200, 169, 110, 0.55);
+                margin-bottom: 14px;
+              "
+            >
+              Spot Healing vs Patch Tool
+            </div>
+            <p
+              style="
+                font-size: 13px;
+                color: rgba(240, 237, 232, 0.5);
+                line-height: 1.7;
+              "
+            >
+              <strong style="color: #fcd34d">Spot Healing</strong> — სწრაფი,
+              ავტომატური, პატარა ფართობებისთვის.<br /><br /><strong
+                style="color: #fb923c"
+                >Patch Tool</strong
+              >
+              — ნელი მაგრამ კონტროლირებადი. დიდი ობიექტების, ფართო ხარვეზების
+              გამოსწორება.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKFLOW -->
+    <div
+      id="s-workflow"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">03 · სამუშაო პროცესი</div>
+        <h2 class="s-title">პრაქტიკული <em>სამუშაო</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          კანის რეტუშის სტანდარტული მიდგომა — დესტრუქციული ეფექტების გარეშე.
+        </p>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">01</div>
+            <div class="flow-body">
+              <h4>ახალი Layer-ის შექმნა</h4>
+              <p>
+                ყოველთვის ახალ, ცარიელ Layer-ზე მუშაობა ორიგინალს იცავს.
+                <span class="kbd">Ctrl+Shift+N</span> → ახალი Layer.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">02</div>
+            <div class="flow-body">
+              <h4>Spot Healing Brush — სწრაფი ეტაპი</h4>
+              <p>
+                პირველ ეტაპზე Spot Healing-ით (<span class="kbd">J</span>)
+                სწრაფად გაასუფთავე ყველა პატარა ლაქა, მძიმე, მტვერი. Sample:
+                <strong>All Layers</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">03</div>
+            <div class="flow-body">
+              <h4>Healing Brush — ნაოჭები და ხაზები</h4>
+              <p>
+                Healing Brush-ით (<span class="kbd">J</span>,
+                <span class="kbd">Alt+Click</span> წყარო) დაუმუშავე სახის
+                ხაზები. Sample: <strong>Current &amp; Below</strong>. Opacity
+                შეამცირე 70–80%-მდე ბუნებრიობისთვის.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">04</div>
+            <div class="flow-body">
+              <h4>Patch Tool — დიდი ფართობები</h4>
+              <p>
+                Patch Tool-ით (<span class="kbd">Shift+J</span>) გამოყე დიდი
+                ხარვეზი, გადაათრიე სუფთა ფართობზე. Content-Aware რეჟიმი ყველაზე
+                კარგ შედეგს იძლევა.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">05</div>
+            <div class="flow-body">
+              <h4>Clone Stamp — ზუსტი დეტალები</h4>
+              <p>
+                სადაც ადაპტაცია არ გვჭირდება (ბეწვი, ქსოვილი, ჭადრაკი) — Clone
+                Stamp (<span class="kbd">S</span>) ზუსტ კოპიას იძლევა. Aligned:
+                OFF = ყოველ გავლებაში წყარო იმავე ადგილიდან.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">06</div>
+            <div class="flow-body">
+              <h4>Opacity შემცირება + შედეგის შემოწმება</h4>
+              <p>
+                Layer-ის Opacity 70–85% — ოდნავ ორიგინალის ტექსტურა ჩანს.
+                Before/After: Layer-ის თვალის ხატი ჩართე/გამორთე.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div
+      id="s-quiz"
+      class="bg-b"
+    >
+      <div class="section">
+        <div style="text-align: center; margin-bottom: 56px">
+          <div
+            class="s-tag"
+            style="text-align: center"
+          >
+            04 · გამოცდა
+          </div>
+          <h2
+            class="s-title"
+            style="text-align: center"
+          >
+            შეამოწმე <em>ცოდნა</em>
+          </h2>
+          <div
+            class="rule"
+            style="margin: 18px auto 0"
+          ></div>
+        </div>
+        <div class="quiz-wrap">
+          <div
+            class="q-block"
+            id="q0"
+          >
+            <div class="q-num">კითხვა 01</div>
+            <div class="q-text">
+              Clone Stamp Tool-ით მუშაობისას, წყაროს (source) ასარჩევად რა
+              კლავიშს ვიყენებთ?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(0, 0)"
+              >
+                <div class="odot"></div>
+                Ctrl + Click
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 1)"
+              >
+                <div class="odot"></div>
+                Alt + Click
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 2)"
+              >
+                <div class="odot"></div>
+                Shift + Click
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 3)"
+              >
+                <div class="odot"></div>
+                Space + Click
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb0"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q1"
+          >
+            <div class="q-num">კითხვა 02</div>
+            <div class="q-text">
+              Spot Healing Brush-ი Clone Stamp-ისგან განსხვავებით:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(1, 0)"
+              >
+                <div class="odot"></div>
+                მხოლოდ CMYK-ში მუშაობს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 1)"
+              >
+                <div class="odot"></div>
+                წყაროს ხელით არჩევა არ სჭირდება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 2)"
+              >
+                <div class="odot"></div>
+                Pattern-ს იყენებს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 3)"
+              >
+                <div class="odot"></div>
+                მხოლოდ შავ-თეთრ ფოტოებზე მუშაობს
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb1"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q2"
+          >
+            <div class="q-num">კითხვა 03</div>
+            <div class="q-text">
+              Healing Brush-ი Clone Stamp-ისგან ძირითადად რით განსხვავდება?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(2, 0)"
+              >
+                <div class="odot"></div>
+                Healing Brush უფრო ძვირი ეღირება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 1)"
+              >
+                <div class="odot"></div>
+                Healing Brush მხოლოდ Pattern-ს იყენებს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 2)"
+              >
+                <div class="odot"></div>
+                Healing Brush ტექსტურას კოპირებს, მაგრამ ფერს სამიზნე გარემოსთან
+                ადაპტირებს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 3)"
+              >
+                <div class="odot"></div>
+                განსხვავება არ არის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb2"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q3"
+          >
+            <div class="q-num">კითხვა 04</div>
+            <div class="q-text">
+              Pattern Stamp-ისთვის საკუთარი ნიმუშის შესაქმნელად გამოიყენება:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(3, 0)"
+              >
+                <div class="odot"></div>
+                Filter → Pattern
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 1)"
+              >
+                <div class="odot"></div>
+                Edit → Define Pattern
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 2)"
+              >
+                <div class="odot"></div>
+                Layer → New Pattern
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 3)"
+              >
+                <div class="odot"></div>
+                Image → Mode → Pattern
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb3"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q4"
+          >
+            <div class="q-num">კითხვა 05</div>
+            <div class="q-text">Patch Tool-ის Content-Aware რეჟიმი:</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(4, 0)"
+              >
+                <div class="odot"></div>
+                სურათს შავ-თეთრად გარდაქმნის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 1)"
+              >
+                <div class="odot"></div>
+                მხოლოდ ბეჭდვისთვის არის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 2)"
+              >
+                <div class="odot"></div>
+                AI-ს გამოიყენებს უფრო ბუნებრივი შერწყმისთვის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 3)"
+              >
+                <div class="odot"></div>
+                Pattern Library-ს ხსნის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb4"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q5"
+          >
+            <div class="q-num">კითხვა 06</div>
+            <div class="q-text">
+              კანის პატარა ლაქების სწრაფად მოსაშორებლად ყველაზე შესაფერისი
+              ინსტრუმენტი:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(5, 0)"
+              >
+                <div class="odot"></div>
+                Clone Stamp
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 1)"
+              >
+                <div class="odot"></div>
+                Pattern Stamp
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 2)"
+              >
+                <div class="odot"></div>
+                Spot Healing Brush
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 3)"
+              >
+                <div class="odot"></div>
+                Patch Tool
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb5"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q6"
+          >
+            <div class="q-num">კითხვა 07</div>
+            <div class="q-text">
+              Clone Stamp-ის Aligned ოფციის გამორთვისას (OFF):
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(6, 0)"
+              >
+                <div class="odot"></div>
+                ინსტრუმენტი წყვეტს მუშაობას
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 1)"
+              >
+                <div class="odot"></div>
+                ყოველ ახალ გავლებაში წყარო იმავე საწყისი წერტილიდან იწყება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 2)"
+              >
+                <div class="odot"></div>
+                Pattern რეჟიმზე გადადის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 3)"
+              >
+                <div class="odot"></div>
+                Layer ავტომატურად ემატება
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb6"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q7"
+          >
+            <div class="q-num">კითხვა 08</div>
+            <div class="q-text">
+              ფოტოდან დიდი ობიექტის წასაშლელად ყველაზე შესაფერისი ინსტრუმენტი:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(7, 0)"
+              >
+                <div class="odot"></div>
+                Spot Healing Brush
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 1)"
+              >
+                <div class="odot"></div>
+                Pattern Stamp
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 2)"
+              >
+                <div class="odot"></div>
+                Patch Tool
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 3)"
+              >
+                <div class="odot"></div>
+                Clone Stamp
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb7"
+            ></div>
+          </div>
+
+          <div class="quiz-footer">
+            <button
+              class="btn-submit"
+              id="submitBtn"
+              onclick="submitQuiz()"
+            >
+              შედეგის ნახვა
+            </button>
+          </div>
+          <div
+            class="score-panel"
+            id="scorePanel"
+          >
+            <div
+              class="score-big"
+              id="scoreNum"
+            >
+              0/8
+            </div>
+            <div class="score-of">სწორი პასუხი</div>
+            <div
+              class="score-msg"
+              id="scoreMsg"
+            ></div>
+            <button
+              class="btn-retry"
+              onclick="retryQuiz()"
+            >
+              თავიდან ცდა
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Adobe Photoshop · რეტუშის ინსტრუმენტები · სასწავლო მასალა</p>
+    </footer>
+
+    <script>
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
+
+      const ANS = [1, 1, 2, 1, 2, 2, 1, 2];
+      const EXP = [
+        "Alt + Click — წყაროს (source point) ასარჩევად. შემდეგ დახატე სამიზნეზე.",
+        "Spot Healing Brush ავტომატურია — Photoshop Content-Aware AI-ით თავად ირჩევს საუკეთესო წყაროს.",
+        "Healing Brush კოპირებს ტექსტურას, მაგრამ ფერი და ტონი სამიზნე გარემოსთან ერთდება — ამიტომ შედეგი ბუნებრივია.",
+        "Edit → Define Pattern — მონიშნული ფართობი ინახება Pattern Library-ში.",
+        "Content-Aware Patch Tool AI-ს გამოიყენებს, რათა ფართობის შევსება გარემოსთან მაქსიმალურად ბუნებრივად შეხამდეს.",
+        "Spot Healing Brush — ყველაზე სწრაფი, ავტომატური ინსტრუმენტი პატარა ლაქებისა და დეფექტებისთვის.",
+        "Aligned OFF = ყოველ ახალ stroke-ს კლონირება იმავე საწყისი წყაროდან იწყება — განმეორებადი ელემენტებისთვის სასარგებლო.",
+        "Patch Tool — დიდი ფართობის Selection + Drag. Content-Aware რეჟიმი განსაკუთრებით ეფექტურია.",
+      ];
+      const WRONG = [
+        "სწორია: Alt + Click — წყაროს ასარჩევად.",
+        "სწორია: Spot Healing-ს Alt არ სჭირდება — ავტომატურად ირჩევს წყაროს.",
+        "სწორია: Healing Brush ადაპტირებს ფერს გარემოსთან — Clone Stamp კი პირდაპირ კოპირებს.",
+        "სწორია: Edit → Define Pattern — ნიმუშის შესანახად.",
+        "სწორია: Content-Aware = AI-ით გაუმჯობესებული, ბუნებრივი შეხამება.",
+        "სწორია: Spot Healing Brush — ერთი კლიკი, ავტომატური, სწრაფი.",
+        "სწორია: Aligned OFF — ყოველ გავლებაში ერთი და იმავე წყაროდან იწყება.",
+        "სწორია: Patch Tool — დიდი ფართობებისთვის, Selection + Drag.",
+      ];
+      const N = 8;
+      const picked = new Array(N).fill(-1);
+      let submitted = false;
+
+      function pick(q, opt) {
+        if (submitted) return;
+        const b = document.getElementById("q" + q);
+        b.querySelectorAll(".opt").forEach((o) =>
+          o.classList.remove("sel-ok", "sel-bad"),
+        );
+        picked[q] = opt;
+        b.querySelectorAll(".opt")[opt].classList.add(
+          opt === ANS[q] ? "sel-ok" : "sel-bad",
+        );
+        const done = picked.filter((x) => x >= 0).length;
+        document.getElementById("pbar").style.width = (done / N) * 80 + 5 + "%";
+      }
+
+      function submitQuiz() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          const opts = b.querySelectorAll(".opt");
+          const fb = document.getElementById("fb" + q);
+          if (picked[q] === ANS[q]) {
+            score++;
+            b.classList.add("correct");
+            fb.textContent = "✓ " + EXP[q];
+            fb.className = "q-fb show ok";
+          } else {
+            b.classList.add("wrong");
+            opts[ANS[q]].classList.add("reveal");
+            fb.textContent = "✗ " + WRONG[q];
+            fb.className = "q-fb show bad";
+          }
+          opts.forEach((o) => o.classList.add("locked"));
+        }
+        const msgs = [
+          "კიდევ სცადე 💪",
+          "გამოსადეგია კიდევ ერთი გამეორება.",
+          "ცუდი არ არის!",
+          "კარგი შედეგი!",
+          "ძალიან კარგი!",
+          "თითქმის სრული!",
+          "სრულყოფილი! 🎉",
+          "სრული ქულა! 🏆",
+          "სრული ქულა! 🏆",
+        ];
+        document.getElementById("scoreNum").textContent = score + "/" + N;
+        document.getElementById("scoreMsg").textContent = msgs[score];
+        const p = document.getElementById("scorePanel");
+        p.classList.add("show");
+        p.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("pbar").style.width = "100%";
+      }
+
+      function retryQuiz() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        document.getElementById("pbar").style.width = "5%";
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          b.classList.remove("correct", "wrong");
+          b.querySelectorAll(".opt").forEach((o) =>
+            o.classList.remove("sel-ok", "sel-bad", "reveal", "locked"),
+          );
+          const fb = document.getElementById("fb" + q);
+          fb.className = "q-fb";
+          fb.textContent = "";
+        }
+      }
+
+      function goTo(id) {
+        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+      }
+
+      window.addEventListener("scroll", () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        if (!submitted && h > 0)
+          document.getElementById("pbar").style.width =
+            Math.min((window.scrollY / h) * 90 + 2, 90) + "%";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>სახელმძღვანელო — მთავარი</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --gold: #c8a96e;
+        --gold-light: #e8c99e;
+        --bg: #0a0a0a;
+        --surface: #111111;
+        --surface2: #181818;
+        --text: #f0ede8;
+        --text-muted: #888;
+        --border: rgba(200, 169, 110, 0.15);
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+      }
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-image:
+          linear-gradient(rgba(200, 169, 110, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(200, 169, 110, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: gridShift 20s linear infinite;
+      }
+      @keyframes gridShift {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 60px 60px;
+        }
+      }
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.12;
+      }
+      .orb-1 {
+        width: 600px;
+        height: 600px;
+        background: #c8a96e;
+        top: -200px;
+        right: -200px;
+        animation: float1 12s ease-in-out infinite;
+      }
+      .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: #6e8ec8;
+        bottom: -100px;
+        left: -100px;
+        animation: float2 15s ease-in-out infinite;
+      }
+      @keyframes float1 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(-40px, 40px);
+        }
+      }
+      @keyframes float2 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(40px, -30px);
+        }
+      }
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      header {
+        padding: 48px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        animation: fadeDown 0.8s ease both;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo-mark {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid var(--gold);
+        transform: rotate(45deg);
+        position: relative;
+        flex-shrink: 0;
+      }
+      .logo-mark::after {
+        content: "";
+        position: absolute;
+        inset: 6px;
+        background: var(--gold);
+        opacity: 0.4;
+      }
+      .logo-text {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+      .badge {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 6px 14px;
+        border-radius: 100px;
+      }
+      .hero {
+        padding: 100px 0 80px;
+        text-align: center;
+      }
+      .hero-label {
+        display: inline-block;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 28px;
+        animation: fadeUp 0.9s 0.1s ease both;
+      }
+      .hero-title {
+        font-size: clamp(42px, 7vw, 80px);
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        animation: fadeUp 0.9s 0.2s ease both;
+      }
+      .hero-title em {
+        font-style: normal;
+        background: linear-gradient(
+          135deg,
+          var(--gold),
+          var(--gold-light),
+          #fff8ee
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-sub {
+        margin-top: 24px;
+        font-size: 17px;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--text-muted);
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeUp 0.9s 0.3s ease both;
+      }
+      .divider {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        margin: 56px auto 0;
+        animation: fadeUp 0.9s 0.35s ease both;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 60px 0 100px;
+      }
+      @media (max-width: 680px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        header {
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+      .card {
+        position: relative;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 40px 36px 36px;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition:
+          border-color 0.3s,
+          transform 0.3s;
+        animation: fadeUp 0.8s ease both;
+      }
+      .card:nth-child(1) {
+        animation-delay: 0.4s;
+      }
+      .card:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 0.7s;
+      }
+      .card:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .card:nth-child(6) {
+        animation-delay: 0.9s;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at var(--mx, 50%) var(--my, 50%),
+          rgba(200, 169, 110, 0.07) 0%,
+          transparent 65%
+        );
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+      .card:hover {
+        border-color: rgba(200, 169, 110, 0.4);
+        transform: translateY(-4px);
+      }
+      .card-corner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 40px 40px 0;
+        border-color: transparent var(--gold) transparent transparent;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .card:hover .card-corner {
+        opacity: 1;
+      }
+      .card-index {
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        font-weight: 500;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .card-index::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .card-icon {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 24px;
+        opacity: 0.85;
+      }
+      .card-title {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 12px;
+        letter-spacing: -0.01em;
+      }
+      .card-desc {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--text-muted);
+        margin-bottom: 32px;
+      }
+      .card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 500;
+        transition: gap 0.3s;
+      }
+      .card:hover .card-link {
+        gap: 14px;
+      }
+      .card-link svg {
+        flex-shrink: 0;
+      }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--text-muted);
+        animation: fadeUp 1s 0.8s ease both;
+      }
+      footer span {
+        letter-spacing: 0.05em;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeDown {
+        from {
+          opacity: 0;
+          transform: translateY(-16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="wrapper">
+      <header>
+        <div class="logo">
+          <div class="logo-mark"></div>
+          <span class="logo-text">სასწავლო კურსი</span>
+        </div>
+        <span class="badge">6 მოდული</span>
+      </header>
+
+      <section class="hero">
+        <div class="hero-label">დიზაინის საფუძვლები</div>
+        <h1 class="hero-title"><em>ვიზუალური</em><br />სახელმძღვანელო</h1>
+        <p class="hero-sub">
+          აირჩიე სასურველი მოდული და გაეცანი ვიზუალური დიზაინის<br />ძირითად
+          პრინციპებს — ფერებიდან ტიპოგრაფიამდე.
+        </p>
+        <div class="divider"></div>
+      </section>
+
+      <div class="cards">
+        <!-- 01 ფერები და ტონები -->
+        <a
+          class="card"
+          href="ფერებიდატონები.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 01</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <circle
+              cx="18"
+              cy="18"
+              r="13"
+              fill="#c8a96e"
+              opacity="0.9"
+            />
+            <circle
+              cx="34"
+              cy="18"
+              r="13"
+              fill="#6e8ec8"
+              opacity="0.7"
+            />
+            <circle
+              cx="26"
+              cy="31"
+              r="13"
+              fill="#a96ec8"
+              opacity="0.6"
+            />
+          </svg>
+          <div class="card-title">ფერები და ტონები</div>
+          <div class="card-desc">
+            ფერთა თეორია, კონტრასტი, ჰარმონია და განწყობა — ყველაფერი რაც ფერის
+            გამოყენებისთვის სჭირდება.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+
+        <!-- 02 ტიპოგრაფია -->
+        <a
+          class="card"
+          href="ტიპოგრაფია.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 02</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <text
+              x="4"
+              y="38"
+              font-family="serif"
+              font-size="38"
+              font-weight="900"
+              fill="#c8a96e"
+              opacity="0.9"
+            >
+              Aa
+            </text>
+          </svg>
+          <div class="card-title">ტიპოგრაფია</div>
+          <div class="card-desc">
+            შრიფტის არჩევა, იერარქია, ინტერვალი და წაკითხვადობა — ტექსტის
+            დიზაინის ხელოვნება.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+
+        <!-- 03 გეომეტრიული ფიგურები -->
+        <a
+          class="card"
+          href="გეომეტრიულიფიგურები.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 03</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <rect
+              x="4"
+              y="4"
+              width="20"
+              height="20"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+              fill="rgba(200,169,110,0.1)"
+            />
+            <circle
+              cx="37"
+              cy="37"
+              r="11"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+              fill="rgba(200,169,110,0.1)"
+            />
+            <path
+              d="M4 48 L20 26 L36 48Z"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+              fill="rgba(200,169,110,0.1)"
+            />
+          </svg>
+          <div class="card-title">გეომეტრიული ფიგურები</div>
+          <div class="card-desc">
+            ფორმების ენა, სიმბოლიკა, კომპოზიცია და ვიზუალური წონასწორობა
+            გეომეტრიის მეშვეობით.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+
+        <!-- 04 ფენთული -->
+        <a
+          class="card"
+          href="ფენთული.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 04</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <rect
+              x="6"
+              y="16"
+              width="40"
+              height="28"
+              rx="2"
+              fill="rgba(200,169,110,0.12)"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+            />
+            <rect
+              x="6"
+              y="10"
+              width="30"
+              height="20"
+              rx="2"
+              fill="rgba(200,169,110,0.12)"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+            />
+            <rect
+              x="6"
+              y="4"
+              width="20"
+              height="16"
+              rx="2"
+              fill="rgba(200,169,110,0.2)"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+            />
+          </svg>
+          <div class="card-title">ფენთული</div>
+          <div class="card-desc">
+            ფენების სისტემა, გამჭვირვალობა, დაჩრდილვა და სიღრმის ეფექტები —
+            დიზაინის სიღრმე.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+
+        <!-- 05 ტონის კორექცია -->
+        <a
+          class="card"
+          href="ტონისკორექცია.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 05</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <circle
+              cx="26"
+              cy="26"
+              r="20"
+              fill="rgba(200,169,110,0.12)"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+            />
+            <path
+              d="M6 26a20 20 0 0 1 20-20"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <circle
+              cx="26"
+              cy="6"
+              r="2"
+              fill="#c8a96e"
+            />
+          </svg>
+          <div class="card-title">ტონის კორექცია</div>
+          <div class="card-desc">
+            ფოტოების რეტუშირება, ფერის ბალანსი, კონტრასტი და ვიზუალური ეფექტები
+            — გამოსახულების სრულყოფა.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+
+        <!-- 06 რეტუში -->
+        <a
+          class="card"
+          href="რეტუში.html"
+        >
+          <div class="card-corner"></div>
+          <div class="card-index">მოდული 06</div>
+          <svg
+            class="card-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+          >
+            <!-- brush handle -->
+            <line
+              x1="38"
+              y1="6"
+              x2="14"
+              y2="30"
+              stroke="#c8a96e"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <!-- brush tip -->
+            <circle
+              cx="12"
+              cy="32"
+              r="5"
+              fill="rgba(200,169,110,0.2)"
+              stroke="#c8a96e"
+              stroke-width="1.5"
+            />
+            <!-- healing dots -->
+            <circle
+              cx="30"
+              cy="38"
+              r="3"
+              fill="rgba(200,169,110,0.35)"
+              stroke="#c8a96e"
+              stroke-width="1"
+            />
+            <circle
+              cx="38"
+              cy="32"
+              r="2"
+              fill="rgba(200,169,110,0.25)"
+              stroke="#c8a96e"
+              stroke-width="1"
+            />
+            <circle
+              cx="22"
+              cy="44"
+              r="2.5"
+              fill="rgba(200,169,110,0.3)"
+              stroke="#c8a96e"
+              stroke-width="1"
+            />
+            <!-- stamp mark -->
+            <rect
+              x="34"
+              y="38"
+              width="12"
+              height="10"
+              rx="2"
+              fill="rgba(200,169,110,0.12)"
+              stroke="#c8a96e"
+              stroke-width="1.2"
+            />
+            <line
+              x1="37"
+              y1="42"
+              x2="43"
+              y2="42"
+              stroke="#c8a96e"
+              stroke-width="1"
+              stroke-linecap="round"
+            />
+            <line
+              x1="37"
+              y1="45"
+              x2="41"
+              y2="45"
+              stroke="#c8a96e"
+              stroke-width="1"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div class="card-title">რეტუში</div>
+          <div class="card-desc">
+            Clone Stamp, Healing Brush, Spot Healing, Patch Tool — ფოტოს
+            ხარვეზების გამოსწორება და კანის სრულყოფა.
+          </div>
+          <span class="card-link"
+            >გახსნა
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></span>
+        </a>
+      </div>
+
+      <footer>
+        <span>სასწავლო მასალა · ვიზუალური დიზაინი</span>
+        <span>6 მოდული</span>
+      </footer>
+    </div>
+
+    <script>
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty(
+            "--mx",
+            (((e.clientX - r.left) / r.width) * 100).toFixed(1) + "%",
+          );
+          card.style.setProperty(
+            "--my",
+            (((e.clientY - r.top) / r.height) * 100).toFixed(1) + "%",
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

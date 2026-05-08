@@ -1,0 +1,1814 @@
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Noto Sans Georgian", sans-serif;
+    background: #0a0a0a;
+    color: #f0ede8;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #c8a96e, #e8c99e);
+    transition: width 0.4s;
+    z-index: 100;
+  }
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 90;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #c8a96e;
+    text-transform: uppercase;
+  }
+  .nav-steps {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-dot.active {
+    background: #c8a96e;
+    transform: scale(1.4);
+  }
+  .nav-dot.done {
+    background: rgba(200, 169, 110, 0.5);
+  }
+  .slides {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide:nth-child(odd) {
+    background: #0a0a0a;
+  }
+  .slide:nth-child(even) {
+    background: #0f0f0f;
+  }
+  .slide-inner {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HERO */
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #c8a96e;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+  .hero-title {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .hero-title span {
+    display: block;
+  }
+  .hero-title .t1 {
+    color: #f0ede8;
+  }
+  .hero-title .t2 {
+    color: #c8a96e;
+    font-weight: 300;
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(240, 237, 232, 0.5);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .hero-chapters {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .chapter-pill {
+    padding: 8px 20px;
+    border: 1px solid rgba(200, 169, 110, 0.3);
+    border-radius: 40px;
+    font-size: 12px;
+    color: #c8a96e;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .chapter-pill:hover {
+    background: rgba(200, 169, 110, 0.12);
+    border-color: #c8a96e;
+  }
+  .hero-deco {
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 280px;
+    font-weight: 700;
+    color: rgba(200, 169, 110, 0.04);
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -10px;
+  }
+
+  /* SECTION HEADERS */
+  .sec-num {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: rgba(200, 169, 110, 0.6);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .sec-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .sec-title em {
+    color: #c8a96e;
+    font-style: normal;
+  }
+  .sec-desc {
+    font-size: 15px;
+    color: rgba(240, 237, 232, 0.5);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 40px;
+  }
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: #c8a96e;
+    margin: 20px 0 32px;
+  }
+
+  /* TOPIC CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    background: rgba(200, 169, 110, 0.07);
+    border-color: rgba(200, 169, 110, 0.25);
+    transform: translateY(-3px);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #c8a96e, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover::before {
+    opacity: 1;
+  }
+  .card-icon {
+    font-size: 22px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f0ede8;
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 13px;
+    color: rgba(240, 237, 232, 0.5);
+    line-height: 1.6;
+  }
+  .card-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 11px;
+    padding: 3px 10px;
+    background: rgba(200, 169, 110, 0.12);
+    color: #c8a96e;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* WIDE CARD */
+  .wide-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    transition: all 0.3s;
+  }
+  .wide-card:hover {
+    border-color: rgba(200, 169, 110, 0.2);
+  }
+  .wide-card-left {
+  }
+  .wide-card-right {
+  }
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #c8a96e;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .step-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c8a96e;
+  }
+  .wide-card h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #f0ede8;
+  }
+  .wide-card p {
+    font-size: 14px;
+    color: rgba(240, 237, 232, 0.55);
+    line-height: 1.7;
+  }
+  .cmd-list {
+    list-style: none;
+    margin-top: 16px;
+  }
+  .cmd-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(240, 237, 232, 0.6);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  .cmd-list li:last-child {
+    border-bottom: none;
+  }
+  .cmd {
+    font-family: monospace;
+    background: rgba(200, 169, 110, 0.12);
+    color: #c8a96e;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* FULL-BLEED HIGHLIGHT */
+  .highlight-block {
+    background: rgba(200, 169, 110, 0.06);
+    border: 1px solid rgba(200, 169, 110, 0.18);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 20px;
+  }
+  .highlight-block h3 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #e8c99e;
+  }
+  .highlight-block p {
+    font-size: 15px;
+    color: rgba(240, 237, 232, 0.6);
+    line-height: 1.7;
+  }
+
+  /* STYLES PANEL */
+  .styles-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .style-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .style-panel-title {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(200, 169, 110, 0.7);
+    margin-bottom: 16px;
+  }
+  .style-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  .style-row:last-child {
+    border-bottom: none;
+  }
+  .style-label {
+    font-size: 13px;
+    color: rgba(240, 237, 232, 0.6);
+  }
+  .style-val {
+    font-size: 12px;
+    color: #c8a96e;
+    font-family: monospace;
+  }
+
+  /* LAYER STYLES VISUAL */
+  .layer-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .layer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  .layer-item:hover {
+    background: rgba(200, 169, 110, 0.08);
+    border-color: rgba(200, 169, 110, 0.2);
+  }
+  .layer-color {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .layer-name {
+    font-size: 13px;
+    color: rgba(240, 237, 232, 0.7);
+    flex: 1;
+  }
+  .layer-effect {
+    font-size: 11px;
+    color: #c8a96e;
+    letter-spacing: 0.5px;
+  }
+
+  /* FILTER GRID */
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .filter-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .filter-item:hover {
+    background: rgba(200, 169, 110, 0.07);
+    border-color: rgba(200, 169, 110, 0.2);
+  }
+  .filter-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .filter-name {
+    font-size: 12px;
+    color: #c8a96e;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .filter-desc {
+    font-size: 11px;
+    color: rgba(240, 237, 232, 0.4);
+    line-height: 1.5;
+  }
+
+  /* QUIZ */
+  .quiz-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .q-block {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .q-block.correct {
+    border-color: rgba(100, 200, 130, 0.5);
+    background: rgba(100, 200, 130, 0.05);
+  }
+  .q-block.wrong {
+    border-color: rgba(220, 80, 80, 0.4);
+    background: rgba(220, 80, 80, 0.04);
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    line-height: 1.5;
+    color: #f0ede8;
+  }
+  .q-num {
+    font-size: 11px;
+    color: #c8a96e;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-size: 14px;
+    color: rgba(240, 237, 232, 0.7);
+  }
+  .opt:hover:not(.locked) {
+    background: rgba(200, 169, 110, 0.08);
+    border-color: rgba(200, 169, 110, 0.3);
+    color: #f0ede8;
+  }
+  .opt.selected-correct {
+    background: rgba(100, 200, 130, 0.1);
+    border-color: rgba(100, 200, 130, 0.5);
+    color: #a0e8b0;
+  }
+  .opt.selected-wrong {
+    background: rgba(220, 80, 80, 0.1);
+    border-color: rgba(220, 80, 80, 0.4);
+    color: #f08080;
+  }
+  .opt.reveal-correct {
+    background: rgba(100, 200, 130, 0.06);
+    border-color: rgba(100, 200, 130, 0.3);
+    color: rgba(160, 232, 176, 0.8);
+  }
+  .opt-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    transition: all 0.25s;
+  }
+  .opt.selected-correct .opt-dot {
+    background: #4caf78;
+    border-color: #4caf78;
+    content: "✓";
+  }
+  .opt.selected-wrong .opt-dot {
+    background: #d94f4f;
+    border-color: #d94f4f;
+  }
+  .q-feedback {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: none;
+  }
+  .q-feedback.show {
+    display: block;
+  }
+  .q-feedback.ok {
+    background: rgba(100, 200, 130, 0.08);
+    color: #a0e8b0;
+  }
+  .q-feedback.bad {
+    background: rgba(220, 80, 80, 0.08);
+    color: #f08080;
+  }
+  .quiz-submit {
+    margin-top: 32px;
+    text-align: center;
+  }
+  .btn-submit {
+    padding: 14px 48px;
+    background: #c8a96e;
+    color: #0a0a0a;
+    border: none;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: "Noto Sans Georgian", sans-serif;
+  }
+  .btn-submit:hover {
+    background: #e8c99e;
+    transform: scale(1.02);
+  }
+  .btn-submit:disabled {
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
+  }
+  .score-panel {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: rgba(200, 169, 110, 0.07);
+    border: 1px solid rgba(200, 169, 110, 0.2);
+    border-radius: 16px;
+    margin-top: 24px;
+  }
+  .score-panel.show {
+    display: block;
+  }
+  .score-big {
+    font-size: 64px;
+    font-weight: 700;
+    color: #c8a96e;
+    line-height: 1;
+  }
+  .score-label {
+    font-size: 14px;
+    color: rgba(240, 237, 232, 0.5);
+    margin-top: 8px;
+  }
+  .score-msg {
+    font-size: 16px;
+    color: #f0ede8;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .btn-retry {
+    margin-top: 20px;
+    padding: 10px 32px;
+    background: transparent;
+    color: #c8a96e;
+    border: 1px solid rgba(200, 169, 110, 0.4);
+    border-radius: 40px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: "Noto Sans Georgian", sans-serif;
+  }
+  .btn-retry:hover {
+    background: rgba(200, 169, 110, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .wide-card {
+      grid-template-columns: 1fr;
+    }
+    .styles-row {
+      grid-template-columns: 1fr;
+    }
+    .filter-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ── MODULE DROPDOWN NAV ── */
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-home {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.35);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+  .nav-home:hover {
+    color: #c8a96e;
+    border-color: rgba(200, 169, 110, 0.3);
+  }
+  .nav-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .nav-dropdown-wrap {
+    position: relative;
+  }
+  .nav-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.35);
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: transparent;
+    font-family: "Noto Sans Georgian", sans-serif;
+  }
+  .nav-dropdown-btn:hover,
+  .nav-dropdown-wrap.open .nav-dropdown-btn {
+    color: #c8a96e;
+    border-color: rgba(200, 169, 110, 0.3);
+  }
+  .nav-dropdown-btn .chevron {
+    transition: transform 0.25s;
+    display: inline-block;
+  }
+  .nav-dropdown-wrap.open .chevron {
+    transform: rotate(180deg);
+  }
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: rgba(14, 14, 14, 0.97);
+    border: 1px solid rgba(200, 169, 110, 0.18);
+    border-radius: 8px;
+    padding: 6px;
+    min-width: 215px;
+    z-index: 200;
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+  }
+  .nav-dropdown-wrap.open .nav-dropdown-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .nav-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: rgba(240, 237, 232, 0.55);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      color 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .nav-dropdown-menu a:hover {
+    background: rgba(200, 169, 110, 0.1);
+    color: #f0ede8;
+  }
+  .nav-dropdown-menu a.current {
+    color: #c8a96e;
+    pointer-events: none;
+  }
+  .nav-dropdown-menu a .num {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(200, 169, 110, 0.5);
+    font-weight: 600;
+    min-width: 20px;
+  }
+</style>
+<html>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+      style="width: 0%"
+    ></div>
+
+    <nav class="nav">
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="მთავარი.html"
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          >მთავარი</a
+        >
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="ფერებიდატონები.html"
+              ><span class="num">01</span>ფერები და ტონები</a
+            ><a
+              href="ტიპოგრაფია.html"
+              class="current"
+              ><span class="num">02</span>ტიპოგრაფია</a
+            ><a href="გეომეტრიულიფიგურები.html"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            ><a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
+            <a href="ტონისკორექცია.html"
+              ><span class="num">05</span>ტონის კორექცია</a
+            >
+            <a
+              href="რეტუში.html"
+              class="current"
+              ><span class="num">06</span>რეტუში</a
+            >
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Type &amp; Design</div>
+      </div>
+      <div
+        class="nav-steps"
+        id="navdots"
+      ></div>
+    </nav>
+
+    <div
+      class="slides"
+      id="slides"
+    >
+      <!-- SLIDE 0: HERO -->
+      <section
+        class="slide"
+        id="s0"
+      >
+        <div class="slide-inner">
+          <div class="hero-label">Adobe Photoshop · ტექსტთან მუშაობა</div>
+          <div class="hero-title">
+            <span class="t1">ტექსტის</span>
+            <span class="t2">ტრანსფორმაცია</span>
+            <span class="t1">და გაფორმება</span>
+          </div>
+          <p class="hero-sub">
+            ამ გაკვეთილში შეისწავლით ტექსტის ტრანსფორმაციის ინსტრუმენტებს,
+            მხატვრულ სტილებსა და ეფექტებს Photoshop-ში.
+          </p>
+          <div class="hero-chapters">
+            <div class="chapter-pill">01 · ტრანსფორმაცია</div>
+            <div class="chapter-pill">02 · სტილები</div>
+            <div class="chapter-pill">03 · ეფექტები</div>
+            <div class="chapter-pill">04 · ქვიზი</div>
+          </div>
+        </div>
+        <div class="hero-deco">Aa</div>
+      </section>
+
+      <!-- SLIDE 1: TRANSFORMATION OVERVIEW -->
+      <section
+        class="slide"
+        id="s1"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">01 · ტრანსფორმაცია</div>
+          <h2 class="sec-title">ტექსტის <em>ტრანსფორმაცია</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Photoshop გთავაზობს ოთხ ძირითად მეთოდს ტექსტის ფორმისა და სახის
+            შესაცვლელად — კომპოზიციის შექმნიდან სრულ ვექტორულ ობიექტამდე.
+          </p>
+          <div class="cards-grid">
+            <div class="card">
+              <span class="card-icon">⇱</span>
+              <div class="card-title">Free Transform</div>
+              <div class="card-body">
+                ტექსტის ზომის, ბრუნვისა და გადახრის მართვა. Ctrl+T (⌘T) —
+                მარტივი და სწრაფი.
+              </div>
+              <span class="card-tag">Edit menu</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">〜</span>
+              <div class="card-title">Warp Text</div>
+              <div class="card-body">
+                ტექსტის არარეალური ფორმების შექმნა: arc, wave, fisheye და სხვა
+                პრესეტები.
+              </div>
+              <span class="card-tag">Type menu</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">⬡</span>
+              <div class="card-title">Rasterize Type</div>
+              <div class="card-body">
+                ტექსტი გადაიქცევა პიქსელებად. პიქსელ-დონის ფილტრები და ხატვა
+                ხდება შესაძლებელი.
+              </div>
+              <span class="card-tag">Layer menu</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">✦</span>
+              <div class="card-title">Convert to Shape</div>
+              <div class="card-body">
+                ტექსტი ხდება ვექტორული გზები. Pen tool-ით თითოეული ასო სრულად
+                ცვლადია.
+              </div>
+              <span class="card-tag">Type menu</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: FREE TRANSFORM & WARP -->
+      <section
+        class="slide"
+        id="s2"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">01 · ტრანსფორმაცია</div>
+          <h2 class="sec-title"><em>Free Transform</em> & Warp</h2>
+          <div class="divider"></div>
+
+          <div class="wide-card">
+            <div class="wide-card-left">
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Free Transform
+              </div>
+              <h3>Edit › Free Transform</h3>
+              <p>
+                ყველაზე ძირითადი ინსტრუმენტი. ტექსტის ლეიერი შეარჩიეთ, დააჭირეთ
+                Ctrl+T (⌘T) — გამოჩნდება სახელური კვანძები.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">Shift</span>
+                  <span>პროპორციული მასშტაბი</span>
+                </li>
+                <li>
+                  <span class="cmd">Alt/Opt</span>
+                  <span>ცენტრიდან ტრანსფორმაცია</span>
+                </li>
+                <li>
+                  <span class="cmd">Ctrl+drag</span> <span>Skew / distort</span>
+                </li>
+                <li><span class="cmd">Enter</span> <span>დასრულება</span></li>
+              </ul>
+            </div>
+            <div class="wide-card-right">
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Warp Text
+              </div>
+              <h3>Type › Warp Text</h3>
+              <p>
+                ტექსტი უნდა იყოს ვექტორულ (არა rasterized) ლეიერზე. Style
+                ჩამოსაშლელ მენიუში 15+ ფორმა.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">Style</span>
+                  <span>ფორმის ტიპი (Arc, Arch, Bulge...)</span>
+                </li>
+                <li>
+                  <span class="cmd">Bend</span>
+                  <span>გამოხრის ინტენსივობა</span>
+                </li>
+                <li>
+                  <span class="cmd">Horizontal/Vertical</span>
+                  <span>დამახინჯების ღერძი</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: RASTERIZE & CONVERT -->
+      <section
+        class="slide"
+        id="s3"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">01 · ტრანსფორმაცია</div>
+          <h2 class="sec-title">Rasterize & <em>Convert to Shape</em></h2>
+          <div class="divider"></div>
+
+          <div
+            class="highlight-block"
+            style="margin-bottom: 20px"
+          >
+            <h3>Rasterize Type</h3>
+            <p>
+              მენიუ:
+              <strong style="color: #e8c99e">Layer › Rasterize › Type</strong> —
+              ან მარჯვენა კლიკი ლეიერზე. ტექსტი გადაიქცევა bitmap სურათად.
+              შემდეგ შესაძლებელია ფილტრების, ხატვის ბრაშის, Liquify-ს და Clone
+              Stamp-ის გამოყენება. <br /><br /><span
+                style="color: rgba(240, 237, 232, 0.45); font-size: 13px"
+                >⚠ ყურადღება: rasterize-ის შემდეგ ტექსტი ვეღარ იქნება
+                რედაქტირებადი. გააკეთეთ ასლი (Ctrl+J) ტექსტური ლეიერის.</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="highlight-block"
+            style="background: rgba(255, 255, 255, 0.02)"
+          >
+            <h3 style="color: #f0ede8">Convert to Shape</h3>
+            <p>
+              მენიუ:
+              <strong style="color: #e8c99e">Type › Convert to Shape</strong>.
+              ყველა ასო ხდება ვექტორული Path. Direct Selection Tool-ით (A)
+              შეგიძლიათ anchor point-ების ინდივიდუალური გადაადგილება — ასო-ასო.
+              იდეალური custom lettering-ისა და ლოგო-ტიპის შექმნისთვის.<br /><br /><span
+                style="color: rgba(240, 237, 232, 0.45); font-size: 13px"
+                >✦ ტექსტი ასევე ვეღარ ირედაქტირება, მაგრამ Shape-ი ვექტორული
+                რჩება.</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: CHARACTER & PARAGRAPH STYLES -->
+      <section
+        class="slide"
+        id="s4"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">02 · სტილები</div>
+          <h2 class="sec-title">Character & <em>Paragraph Styles</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            სტილების პანელები საშუალებას გაძლევთ შეინახოთ ფორმატირების
+            კომბინაციები და სწრაფად გამოიყენოთ მრავალ ტექსტ-ობიექტზე.
+          </p>
+
+          <div class="styles-row">
+            <div class="style-panel">
+              <div class="style-panel-title">Window · Character Styles</div>
+              <div class="style-row">
+                <span class="style-label">შრიფტი / Font</span
+                ><span class="style-val">typeface</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">ზომა / Size</span
+                ><span class="style-val">pt / px</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Tracking</span
+                ><span class="style-val">letter spacing</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Leading</span
+                ><span class="style-val">line spacing</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Kerning</span
+                ><span class="style-val">pair spacing</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">ფერი / Color</span
+                ><span class="style-val">hex / swatch</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">სტილი</span
+                ><span class="style-val">Bold / Italic</span>
+              </div>
+            </div>
+            <div class="style-panel">
+              <div class="style-panel-title">Window · Paragraph Styles</div>
+              <div class="style-row">
+                <span class="style-label">Alignment</span
+                ><span class="style-val">left / center / right</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Justification</span
+                ><span class="style-val">justify all</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Indent left</span
+                ><span class="style-val">px / pt</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Indent right</span
+                ><span class="style-val">px / pt</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Space before</span
+                ><span class="style-val">paragraph gap</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Space after</span
+                ><span class="style-val">paragraph gap</span>
+              </div>
+              <div class="style-row">
+                <span class="style-label">Hyphenation</span
+                ><span class="style-val">on / off</span>
+              </div>
+            </div>
+          </div>
+          <p
+            style="
+              font-size: 13px;
+              color: rgba(240, 237, 232, 0.4);
+              margin-top: 12px;
+            "
+          >
+            სტილების შექმნა: Character/Paragraph Styles პანელში "+" ღილაკი. ერთი
+            კლიკით გამოიყენება მონიშნულ ტექსტზე.
+          </p>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: LAYER STYLES -->
+      <section
+        class="slide"
+        id="s5"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">03 · ეფექტები</div>
+          <h2 class="sec-title">Layer <em>Styles</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Layer › Layer Style (fx) — ტექსტ-ლეიერზე არარუსტეირიზებულ
+            სახელურებზეც მუშაობს. ეფექტები გახსნადია ნებისმიერ დროს.
+          </p>
+
+          <div class="layer-demo">
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(200, 169, 110, 0.15);
+                  border: 1px solid rgba(200, 169, 110, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Drop Shadow</div>
+              <div class="layer-effect">
+                დაჩრდილვა · Blend, Opacity, Angle, Distance
+              </div>
+            </div>
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(100, 160, 240, 0.15);
+                  border: 1px solid rgba(100, 160, 240, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Inner Shadow</div>
+              <div class="layer-effect">
+                შიდა ჩრდილი · შექმნის ჩაღრმავების ეფექტს
+              </div>
+            </div>
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(240, 200, 80, 0.12);
+                  border: 1px solid rgba(240, 200, 80, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Outer Glow / Inner Glow</div>
+              <div class="layer-effect">
+                გარე და შიდა განათება · ნეონ ეფექტებისთვის
+              </div>
+            </div>
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(100, 220, 140, 0.12);
+                  border: 1px solid rgba(100, 220, 140, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Bevel & Emboss</div>
+              <div class="layer-effect">
+                მოცულობის სიმულაცია · Depth, Size, Soften
+              </div>
+            </div>
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(200, 100, 200, 0.12);
+                  border: 1px solid rgba(200, 100, 200, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Stroke</div>
+              <div class="layer-effect">
+                კიდის შტრიხი · ფერი, სისქე, Position
+              </div>
+            </div>
+            <div class="layer-item">
+              <div
+                class="layer-color"
+                style="
+                  background: rgba(240, 100, 100, 0.12);
+                  border: 1px solid rgba(240, 100, 100, 0.3);
+                "
+              ></div>
+              <div class="layer-name">Gradient Overlay / Color Overlay</div>
+              <div class="layer-effect">
+                გრადიენტი ან ერთ-ფერი გადაფარვა ტექსტზე
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: FILTER MENU -->
+      <section
+        class="slide"
+        id="s6"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">03 · ეფექტები</div>
+          <h2 class="sec-title">Filter <em>Menu</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            ფილტრები ტექსტზე მუშაობს Rasterize-ის შემდეგ, ან Smart Object-ად
+            გადაქცევის გზით (Smart Filters).
+          </p>
+
+          <div class="filter-grid">
+            <div class="filter-item">
+              <div class="filter-icon">💧</div>
+              <div class="filter-name">Blur Gallery</div>
+              <div class="filter-desc">
+                Field Blur, Iris Blur, Tilt-Shift — ფოკუსის ეფექტი
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-icon">🌊</div>
+              <div class="filter-name">Liquify</div>
+              <div class="filter-desc">
+                ტექსტის ასოების „გამდნარი" დეფორმაცია
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-icon">✦</div>
+              <div class="filter-name">Stylize</div>
+              <div class="filter-desc">
+                Wind, Emboss, Glowing Edges — გრაფიკული სტილი
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-icon">⬡</div>
+              <div class="filter-name">Distort</div>
+              <div class="filter-desc">
+                Ripple, Twirl, Wave — ტექსტის გეომეტრიული დამახინჯება
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-icon">◈</div>
+              <div class="filter-name">Render</div>
+              <div class="filter-desc">
+                Lighting Effects — სინათლის სიმულაცია ტექსტის ზედაპირზე
+              </div>
+            </div>
+            <div class="filter-item">
+              <div class="filter-icon">▣</div>
+              <div class="filter-name">Smart Filters</div>
+              <div class="filter-desc">
+                Convert to Smart Object — ფილტრები რჩება რედაქტირებადი
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 24px;
+              padding: 20px;
+              background: rgba(200, 169, 110, 0.06);
+              border-left: 2px solid #c8a96e;
+              border-radius: 0 8px 8px 0;
+            "
+          >
+            <p
+              style="
+                font-size: 14px;
+                color: rgba(240, 237, 232, 0.65);
+                line-height: 1.7;
+              "
+            >
+              <strong style="color: #c8a96e">Smart Object რჩევა:</strong>
+              ტექსტ-ლეიერზე მარჯვენა კლიკი → Convert to Smart Object → ახლა
+              ფილტრების გამოყენება შეიძლება და ისინი ყოველთვის გამოსართავი ან
+              შეცვლადია.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: QUIZ -->
+      <section
+        class="slide"
+        id="s7"
+      >
+        <div class="slide-inner">
+          <div class="quiz-wrap">
+            <div class="quiz-header">
+              <div
+                class="sec-num"
+                style="text-align: center"
+              >
+                04 · გამოცდა
+              </div>
+              <h2
+                class="sec-title"
+                style="text-align: center"
+              >
+                შეამოწმე <em>ცოდნა</em>
+              </h2>
+              <div
+                class="divider"
+                style="margin: 20px auto 0"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q0"
+            >
+              <div class="q-num">კითხვა 01</div>
+              <div class="q-text">
+                რომელი კომბინაცია ააქტიურებს Free Transform ინსტრუმენტს?
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(0, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + E (⌘E)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + T (⌘T)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + W (⌘W)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + D (⌘D)
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb0"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q1"
+            >
+              <div class="q-num">კითხვა 02</div>
+              <div class="q-text">
+                Warp Text პანელში რა განსაზღვრავს ტექსტის მოხრის ინტენსივობას?
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(1, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  Style
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  Orientation
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  Bend
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  Tracking
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb1"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q2"
+            >
+              <div class="q-num">კითხვა 03</div>
+              <div class="q-text">Rasterize Type-ის შემდეგ ტექსტი:</div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(2, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  რჩება სრულად რედაქტირებადი
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  გადაიქცევა ვექტორულ path-ებად
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  გადაიქცევა პიქსელებად და ვეღარ ირედაქტირება
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  ავტომატურად ინახება Smart Object-ად
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb2"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q3"
+            >
+              <div class="q-num">კითხვა 04</div>
+              <div class="q-text">
+                Convert to Shape-ის შემდეგ ასოების ანკერ-წერტილებს შესაცვლელად
+                რომელ ინსტრუმენტს ვიყენებთ?
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(3, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  Move Tool (V)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  Direct Selection Tool (A)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  Lasso Tool (L)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  Crop Tool (C)
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb3"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q4"
+            >
+              <div class="q-num">კითხვა 05</div>
+              <div class="q-text">
+                Layer Style-ის რომელი ეფექტი ქმნის ტექსტის ირგვლივ "ნათების"
+                ეფექტს?
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(4, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  Bevel & Emboss
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  Stroke
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  Outer Glow
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  Drop Shadow
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb4"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q5"
+            >
+              <div class="q-num">კითხვა 06</div>
+              <div class="q-text">
+                Character Styles პანელი სად იმყოფება Photoshop-ში?
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(5, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  Edit › Character Styles
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  Window › Character Styles
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  Type › Character Styles
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  Filter › Character Styles
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb5"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q6"
+            >
+              <div class="q-num">კითხვა 07</div>
+              <div class="q-text">
+                Smart Filters-ის გამოყენებისთვის ტექსტი პირველ რიგში:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(6, 0, 'A')"
+                >
+                  <div class="opt-dot"></div>
+                  უნდა შეიზღუდოს Paragraph Styles-ით
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 1, 'B')"
+                >
+                  <div class="opt-dot"></div>
+                  უნდა გადაიქცეს Smart Object-ად
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 2, 'C')"
+                >
+                  <div class="opt-dot"></div>
+                  უნდა ჩაშვებულ იქნეს Background Layer-ში
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 3, 'D')"
+                >
+                  <div class="opt-dot"></div>
+                  უნდა რასტერიზდეს
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb6"
+              ></div>
+            </div>
+
+            <div class="quiz-submit">
+              <button
+                class="btn-submit"
+                id="submitBtn"
+                onclick="submitQuiz()"
+              >
+                შედეგის ნახვა
+              </button>
+            </div>
+
+            <div
+              class="score-panel"
+              id="scorePanel"
+            >
+              <div
+                class="score-big"
+                id="scoreNum"
+              >
+                0/7
+              </div>
+              <div class="score-label">სწორი პასუხი</div>
+              <div
+                class="score-msg"
+                id="scoreMsg"
+              ></div>
+              <button
+                class="btn-retry"
+                onclick="retryQuiz()"
+              >
+                თავიდან ცდა
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
+
+      const answers = [1, 2, 2, 1, 2, 1, 1];
+      const feedbacks = [
+        ["", "Ctrl+T (⌘T) ააქტიურებს Free Transform-ს. სწორია!", "", ""],
+        ["", "", "Bend პარამეტრი განსაზღვრავს მოხრის სიძლიერეს. სწორია!", ""],
+        [
+          "",
+          "",
+          "Rasterize-ის შემდეგ ტექსტი პიქსელებია — ვეღარ ირედაქტირება. სწორია!",
+          "",
+        ],
+        [
+          "",
+          "Direct Selection Tool (A) — anchor points-ებისთვის. სწორია!",
+          "",
+          "",
+        ],
+        ["", "", "Outer Glow ქმნის გარე ნათებას. სწორია!", ""],
+        ["", "Window › Character Styles — სწორია!", "", ""],
+        [
+          "",
+          "Convert to Smart Object → ფილტრები რჩება რედაქტირებადი. სწორია!",
+          "",
+          "",
+        ],
+      ];
+      const wrongMsg = [
+        "Ctrl+T (⌘T) — Free Transform-ის სწორი გასაღები.",
+        "Bend — მოხრის ინტენსივობა.",
+        "Rasterize = pixels, ვეღარ ირედაქტირება.",
+        "Direct Selection Tool (A) — anchor points.",
+        "Outer Glow — გარე ნათება.",
+        "Window › Character Styles.",
+        "Smart Object-ად გადაქცევა — Smart Filters-ისთვის.",
+      ];
+
+      const picked = new Array(7).fill(-1);
+      let submitted = false;
+
+      function pick(q, opt) {
+        if (submitted) return;
+        const block = document.getElementById("q" + q);
+        const opts = block.querySelectorAll(".opt");
+        opts.forEach((o) =>
+          o.classList.remove("selected-correct", "selected-wrong"),
+        );
+        picked[q] = opt;
+        opts[opt].classList.add(
+          opt === answers[q] ? "selected-correct" : "selected-wrong",
+        );
+        updateProgress();
+      }
+
+      function updateProgress() {
+        const done = picked.filter((x) => x >= 0).length;
+        document.getElementById("pbar").style.width = (done / 7) * 85 + 5 + "%";
+      }
+
+      function submitQuiz() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+
+        for (let q = 0; q < 7; q++) {
+          const block = document.getElementById("q" + q);
+          const opts = block.querySelectorAll(".opt");
+          const fb = document.getElementById("fb" + q);
+
+          if (picked[q] === answers[q]) {
+            score++;
+            block.classList.add("correct");
+            fb.textContent = feedbacks[q][answers[q]];
+            fb.className = "q-feedback show ok";
+          } else {
+            block.classList.add("wrong");
+            // highlight correct answer
+            opts[answers[q]].classList.add("reveal-correct");
+            fb.textContent = "✗ " + wrongMsg[q];
+            fb.className = "q-feedback show bad";
+          }
+          opts.forEach((o) => o.classList.add("locked"));
+        }
+
+        const panel = document.getElementById("scorePanel");
+        const msgs = [
+          "კიდევ სცადე! 💪",
+          "გამოსადეგია კიდევ ერთი გამეორება.",
+          "ცუდი არ არის!",
+          "კარგი შედეგი!",
+          "ძალიან კარგი!",
+          "თითქმის სრული!",
+          "სრული ქულა! 🎉",
+        ];
+        document.getElementById("scoreNum").textContent = score + "/7";
+        document.getElementById("scoreMsg").textContent = msgs[score];
+        panel.classList.add("show");
+        panel.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("pbar").style.width = "100%";
+      }
+
+      function retryQuiz() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        document.getElementById("pbar").style.width = "5%";
+
+        for (let q = 0; q < 7; q++) {
+          const block = document.getElementById("q" + q);
+          block.classList.remove("correct", "wrong");
+          block.querySelectorAll(".opt").forEach((o) => {
+            o.classList.remove(
+              "selected-correct",
+              "selected-wrong",
+              "reveal-correct",
+              "locked",
+            );
+          });
+          const fb = document.getElementById("fb" + q);
+          fb.className = "q-feedback";
+          fb.textContent = "";
+        }
+      }
+    </script>
+  </body>
+</html>

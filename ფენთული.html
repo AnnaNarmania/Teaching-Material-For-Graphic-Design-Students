@@ -1,0 +1,2175 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <title>Pen Tool — Adobe Photoshop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: #0a0a0a;
+        color: #f0ede8;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c8a96e, #e8c99e);
+        transition: width 0.4s;
+        z-index: 100;
+      }
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-logo {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 3px;
+        color: #c8a96e;
+        text-transform: uppercase;
+      }
+      .nav-steps {
+        display: flex;
+        gap: 6px;
+      }
+      .nav-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .nav-dot.active {
+        background: #c8a96e;
+        transform: scale(1.4);
+      }
+      .nav-dot.done {
+        background: rgba(200, 169, 110, 0.5);
+      }
+      .slides {
+        display: flex;
+        flex-direction: column;
+      }
+      .slide {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 40px 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .slide:nth-child(odd) {
+        background: #0a0a0a;
+      }
+      .slide:nth-child(even) {
+        background: #0f0f0f;
+      }
+      .slide-inner {
+        max-width: 1000px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-label {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        opacity: 0.8;
+      }
+      .hero-title {
+        font-size: clamp(44px, 7vw, 84px);
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 24px;
+      }
+      .hero-title span {
+        display: block;
+      }
+      .hero-title .t1 {
+        color: #f0ede8;
+      }
+      .hero-title .t2 {
+        color: #c8a96e;
+        font-weight: 300;
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 16px;
+        color: rgba(240, 237, 232, 0.5);
+        max-width: 520px;
+        line-height: 1.7;
+        margin-bottom: 48px;
+      }
+      .hero-chapters {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .chapter-pill {
+        padding: 8px 20px;
+        border: 1px solid rgba(200, 169, 110, 0.3);
+        border-radius: 40px;
+        font-size: 12px;
+        color: #c8a96e;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 0.5px;
+      }
+      .chapter-pill:hover {
+        background: rgba(200, 169, 110, 0.12);
+        border-color: #c8a96e;
+      }
+      .hero-deco {
+        position: absolute;
+        right: -40px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 260px;
+        font-weight: 700;
+        color: rgba(200, 169, 110, 0.04);
+        pointer-events: none;
+        line-height: 1;
+      }
+      .sec-num {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: rgba(200, 169, 110, 0.6);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .sec-title {
+        font-size: clamp(26px, 4vw, 42px);
+        font-weight: 600;
+        margin-bottom: 10px;
+        line-height: 1.15;
+      }
+      .sec-title em {
+        color: #c8a96e;
+        font-style: normal;
+      }
+      .sec-desc {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.7;
+        max-width: 640px;
+        margin-bottom: 36px;
+      }
+      .divider {
+        width: 40px;
+        height: 2px;
+        background: #c8a96e;
+        margin: 20px 0 32px;
+      }
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .card:hover {
+        background: rgba(200, 169, 110, 0.07);
+        border-color: rgba(200, 169, 110, 0.25);
+        transform: translateY(-3px);
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #c8a96e, transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+      .card-icon {
+        font-size: 22px;
+        margin-bottom: 14px;
+        display: block;
+      }
+      .card-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #f0ede8;
+        margin-bottom: 8px;
+      }
+      .card-body {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.6;
+      }
+      .card-tag {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 11px;
+        padding: 3px 10px;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+      }
+      .wide-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        transition: all 0.3s;
+      }
+      .wide-card:hover {
+        border-color: rgba(200, 169, 110, 0.2);
+      }
+      .step-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #c8a96e;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .step-badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #c8a96e;
+      }
+      .wide-card h3 {
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #f0ede8;
+      }
+      .wide-card p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.7;
+      }
+      .cmd-list {
+        list-style: none;
+        margin-top: 16px;
+      }
+      .cmd-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.6);
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        line-height: 1.5;
+      }
+      .cmd-list li:last-child {
+        border-bottom: none;
+      }
+      .cmd {
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .highlight-block {
+        background: rgba(200, 169, 110, 0.06);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 16px;
+        padding: 36px;
+        margin-bottom: 20px;
+      }
+      .highlight-block h3 {
+        font-size: 21px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #e8c99e;
+      }
+      .highlight-block p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.6);
+        line-height: 1.75;
+      }
+      .warn-note {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.4);
+        margin-top: 12px;
+        display: block;
+      }
+      .anchor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .anchor-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s;
+      }
+      .anchor-card:hover {
+        border-color: rgba(200, 169, 110, 0.25);
+        background: rgba(200, 169, 110, 0.06);
+      }
+      .anchor-symbol {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .anchor-card h4 {
+        font-size: 14px;
+        font-weight: 500;
+        color: #f0ede8;
+        margin-bottom: 6px;
+      }
+      .anchor-card p {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.6;
+      }
+      .type-badge {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 11px;
+        padding: 2px 9px;
+        border-radius: 20px;
+      }
+      .methods-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .method-row {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 22px;
+        transition: all 0.3s;
+      }
+      .method-row:hover {
+        border-color: rgba(200, 169, 110, 0.2);
+      }
+      .method-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(200, 169, 110, 0.15);
+        border: 1px solid rgba(200, 169, 110, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #c8a96e;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .method-content h4 {
+        font-size: 15px;
+        font-weight: 500;
+        color: #f0ede8;
+        margin-bottom: 6px;
+      }
+      .method-content p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.65;
+      }
+      .shortcuts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .sc-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 14px 18px;
+        transition: all 0.3s;
+      }
+      .sc-item:hover {
+        border-color: rgba(200, 169, 110, 0.2);
+        background: rgba(200, 169, 110, 0.05);
+      }
+      .sc-key {
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+        border: 1px solid rgba(200, 169, 110, 0.2);
+      }
+      .sc-label {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.65);
+        line-height: 1.4;
+      }
+      .tip-bar {
+        background: rgba(200, 169, 110, 0.06);
+        border-left: 2px solid #c8a96e;
+        border-radius: 0 8px 8px 0;
+        padding: 16px 20px;
+        margin-top: 20px;
+      }
+      .tip-bar p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.65);
+        line-height: 1.7;
+      }
+      .path-visual {
+        display: flex;
+        gap: 0;
+        margin: 24px 0;
+        align-items: stretch;
+      }
+      .path-mode {
+        flex: 1;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        text-align: center;
+        transition: all 0.3s;
+      }
+      .path-mode:first-child {
+        border-radius: 12px 0 0 12px;
+      }
+      .path-mode:last-child {
+        border-radius: 0 12px 12px 0;
+      }
+      .path-mode:hover {
+        background: rgba(200, 169, 110, 0.07);
+        border-color: rgba(200, 169, 110, 0.25);
+      }
+      .path-mode-icon {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .path-mode-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #c8a96e;
+        margin-bottom: 6px;
+      }
+      .path-mode-desc {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.45);
+        line-height: 1.55;
+      }
+      .quiz-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .quiz-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+      .q-block {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        margin-bottom: 16px;
+        transition: border-color 0.3s;
+      }
+      .q-block.correct {
+        border-color: rgba(100, 200, 130, 0.5);
+        background: rgba(100, 200, 130, 0.05);
+      }
+      .q-block.wrong {
+        border-color: rgba(220, 80, 80, 0.4);
+        background: rgba(220, 80, 80, 0.04);
+      }
+      .q-text {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 18px;
+        line-height: 1.5;
+        color: #f0ede8;
+      }
+      .q-num {
+        font-size: 11px;
+        color: #c8a96e;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.7);
+      }
+      .opt:hover:not(.locked) {
+        background: rgba(200, 169, 110, 0.08);
+        border-color: rgba(200, 169, 110, 0.3);
+        color: #f0ede8;
+      }
+      .opt.selected-correct {
+        background: rgba(100, 200, 130, 0.1);
+        border-color: rgba(100, 200, 130, 0.5);
+        color: #a0e8b0;
+      }
+      .opt.selected-wrong {
+        background: rgba(220, 80, 80, 0.1);
+        border-color: rgba(220, 80, 80, 0.4);
+        color: #f08080;
+      }
+      .opt.reveal-correct {
+        background: rgba(100, 200, 130, 0.06);
+        border-color: rgba(100, 200, 130, 0.3);
+        color: rgba(160, 232, 176, 0.8);
+      }
+      .opt-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        flex-shrink: 0;
+      }
+      .q-feedback {
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.6;
+        padding: 10px 14px;
+        border-radius: 8px;
+        display: none;
+      }
+      .q-feedback.show {
+        display: block;
+      }
+      .q-feedback.ok {
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .q-feedback.bad {
+        background: rgba(220, 80, 80, 0.08);
+        color: #f08080;
+      }
+      .quiz-submit {
+        margin-top: 32px;
+        text-align: center;
+      }
+      .btn-submit {
+        padding: 14px 48px;
+        background: #c8a96e;
+        color: #0a0a0a;
+        border: none;
+        border-radius: 40px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .btn-submit:hover {
+        background: #e8c99e;
+        transform: scale(1.02);
+      }
+      .btn-submit:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+      }
+      .score-panel {
+        display: none;
+        text-align: center;
+        padding: 40px;
+        background: rgba(200, 169, 110, 0.07);
+        border: 1px solid rgba(200, 169, 110, 0.2);
+        border-radius: 16px;
+        margin-top: 24px;
+      }
+      .score-panel.show {
+        display: block;
+      }
+      .score-big {
+        font-size: 64px;
+        font-weight: 700;
+        color: #c8a96e;
+        line-height: 1;
+      }
+      .score-label {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.5);
+        margin-top: 8px;
+      }
+      .score-msg {
+        font-size: 16px;
+        color: #f0ede8;
+        margin-top: 16px;
+        line-height: 1.6;
+      }
+      .btn-retry {
+        margin-top: 20px;
+        padding: 10px 32px;
+        background: transparent;
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.4);
+        border-radius: 40px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .btn-retry:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
+      @media (max-width: 640px) {
+        .wide-card {
+          grid-template-columns: 1fr;
+        }
+        .path-visual {
+          flex-direction: column;
+        }
+        .path-mode:first-child {
+          border-radius: 12px 12px 0 0;
+        }
+        .path-mode:last-child {
+          border-radius: 0 0 12px 12px;
+        }
+      }
+
+      /* ── MODULE DROPDOWN NAV ── */
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .nav-home {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+      }
+      .nav-home:hover {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nav-dropdown-wrap {
+        position: relative;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: transparent;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-wrap.open .nav-dropdown-btn {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-dropdown-btn .chevron {
+        transition: transform 0.25s;
+        display: inline-block;
+      }
+      .nav-dropdown-wrap.open .chevron {
+        transform: rotate(180deg);
+      }
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(14, 14, 14, 0.97);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 8px;
+        padding: 6px;
+        min-width: 215px;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-dropdown-wrap.open .nav-dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.55);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(200, 169, 110, 0.1);
+        color: #f0ede8;
+      }
+      .nav-dropdown-menu a.current {
+        color: #c8a96e;
+        pointer-events: none;
+      }
+      .nav-dropdown-menu a .num {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: rgba(200, 169, 110, 0.5);
+        font-weight: 600;
+        min-width: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+      style="width: 5%"
+    ></div>
+
+    <nav class="nav">
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="მთავარი.html"
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          >მთავარი</a
+        >
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="ფერებიდატონები.html"
+              ><span class="num">01</span>ფერები და ტონები</a
+            ><a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a
+            ><a href="გეომეტრიულიფიგურები.html"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            ><a
+              href="ფენთული.html"
+              class="current"
+              ><span class="num">04</span>ფენთული</a
+            >
+            <a href="ტონისკორექცია.html"><span class="num">05</span>ტონის კორექცია</a>
+            <a href="რეტუში.html"><span class="num">06</span>რეტუში</a>
+
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Pen Tool</div>
+      </div>
+      <div
+        class="nav-steps"
+        id="navdots"
+      ></div>
+    </nav>
+
+    <div
+      class="slides"
+      id="slides"
+    >
+      <!-- SLIDE 0: HERO -->
+      <section
+        class="slide"
+        id="s0"
+      >
+        <div class="slide-inner">
+          <div class="hero-label">Adobe Photoshop · Vector Tools</div>
+          <div class="hero-title">
+            <span class="t1">Pen Tool</span>
+            <span class="t2">& Path</span>
+            <span class="t1">კონტური</span>
+          </div>
+          <p class="hero-sub">
+            რთული ვექტორული ფორმების შექმნა, Path-ების რედაქტირება და კონტურის
+            წერტილოვანი კონტროლი — სრული სახელმძღვანელო.
+          </p>
+          <div class="hero-chapters">
+            <div class="chapter-pill">01 · შესავალი</div>
+            <div class="chapter-pill">02 · Anchor Points</div>
+            <div class="chapter-pill">03 · შექმნის მეთოდები</div>
+            <div class="chapter-pill">04 · რედაქტირება</div>
+            <div class="chapter-pill">05 · Shortcuts</div>
+            <div class="chapter-pill">06 · ქვიზი</div>
+          </div>
+        </div>
+        <div class="hero-deco">✦</div>
+      </section>
+
+      <!-- SLIDE 1: რა არის Pen Tool -->
+      <section
+        class="slide"
+        id="s1"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">01 · შესავალი</div>
+          <h2 class="sec-title">რა არის <em>Pen Tool?</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Pen Tool Photoshop-ის ყველაზე ძლიერი ვექტორული ინსტრუმენტია. იგი
+            ქმნის მათემატიკურ მრუდებს — Bézier curves — რომლებიც ზუსტი,
+            მასშტაბირებადი კონტურებია.
+          </p>
+
+          <div class="path-visual">
+            <div class="path-mode">
+              <div class="path-mode-icon">◻</div>
+              <div class="path-mode-name">Shape Layer</div>
+              <div class="path-mode-desc">
+                შეივსება ფერით ან გრადიენტით. ვექტორული — ზომა იცვლება
+                დანაკარგის გარეშე.
+              </div>
+            </div>
+            <div
+              class="path-mode"
+              style="border-left: none; border-right: none"
+            >
+              <div class="path-mode-icon">⟵⟶</div>
+              <div class="path-mode-name">Path</div>
+              <div class="path-mode-desc">
+                ხაზი ფერის გარეშე. გამოიყენება Selection-ად ან Stroke-ად.
+              </div>
+            </div>
+            <div class="path-mode">
+              <div class="path-mode-icon">▣</div>
+              <div class="path-mode-name">Pixels</div>
+              <div class="path-mode-desc">
+                პიქსელების შევსება. რასტერული — მხოლოდ Background-ზე.
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="cards-grid"
+            style="margin-top: 8px"
+          >
+            <div class="card">
+              <span class="card-icon">✂</span>
+              <div class="card-title">ამოჭრა / Masking</div>
+              <div class="card-body">
+                ზუსტი Selection შექმნა ობიექტის გარშემო — თმა, ტანსაცმელი, ლოგო.
+              </div>
+              <span class="card-tag">Path → Selection</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">◎</span>
+              <div class="card-title">ვექტორული ფორმა</div>
+              <div class="card-body">
+                Shape Layer-ები — მასშტაბირებადი ფორმები ნებისმიერ ზომაში.
+              </div>
+              <span class="card-tag">Shape Layer</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">〜</span>
+              <div class="card-title">Stroke Path</div>
+              <div class="card-body">
+                Path-ის გასწვრივ ბრაშის შტრიხის გავლება — ილუსტრაციისთვის.
+              </div>
+              <span class="card-tag">Paths Panel</span>
+            </div>
+            <div class="card">
+              <span class="card-icon">T</span>
+              <div class="card-title">ტექსტი Path-ზე</div>
+              <div class="card-body">
+                ტექსტის განლაგება მოხრილ ხაზზე ან ფიგურის კონტურზე.
+              </div>
+              <span class="card-tag">Type + Path</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Anchor Points -->
+      <section
+        class="slide"
+        id="s2"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">02 · Anchor Points</div>
+          <h2 class="sec-title">Anchor Points — <em>ტიპები</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Path შედგება Anchor Point-ებისგან. ყოველ წერტილს შეიძლება ჰქონდეს 0,
+            1 ან 2 სახელური (Direction Handles), რომლებიც მრუდს აკონტროლებს.
+          </p>
+
+          <div class="anchor-grid">
+            <div class="anchor-card">
+              <div
+                class="anchor-symbol"
+                style="
+                  background: rgba(200, 169, 110, 0.12);
+                  border: 1px solid rgba(200, 169, 110, 0.3);
+                "
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                >
+                  <rect
+                    x="11"
+                    y="11"
+                    width="6"
+                    height="6"
+                    fill="#c8a96e"
+                  />
+                </svg>
+              </div>
+              <h4>Corner Point</h4>
+              <p>
+                კუთხოვანი წერტილი — მკვეთრი კიდე. Direction Handle არ ამოდის.
+                უბრალოდ კლიკი.
+              </p>
+              <span
+                class="type-badge"
+                style="background: rgba(200, 169, 110, 0.1); color: #c8a96e"
+                >მკვეთრი მრუდი</span
+              >
+            </div>
+            <div class="anchor-card">
+              <div
+                class="anchor-symbol"
+                style="
+                  background: rgba(100, 160, 240, 0.1);
+                  border: 1px solid rgba(100, 160, 240, 0.3);
+                "
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                >
+                  <circle
+                    cx="14"
+                    cy="14"
+                    r="4"
+                    fill="#85B7EB"
+                  />
+                  <line
+                    x1="4"
+                    y1="14"
+                    x2="24"
+                    y2="14"
+                    stroke="#85B7EB"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="4"
+                    cy="14"
+                    r="2"
+                    fill="none"
+                    stroke="#85B7EB"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="24"
+                    cy="14"
+                    r="2"
+                    fill="none"
+                    stroke="#85B7EB"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              </div>
+              <h4>Smooth Point</h4>
+              <p>
+                გლუვი წერტილი — ორი Direction Handle ერთ ხაზზეა. კლიკი +
+                გადათრევა.
+              </p>
+              <span
+                class="type-badge"
+                style="background: rgba(100, 160, 240, 0.1); color: #85b7eb"
+                >გლუვი მრუდი</span
+              >
+            </div>
+            <div class="anchor-card">
+              <div
+                class="anchor-symbol"
+                style="
+                  background: rgba(100, 220, 140, 0.1);
+                  border: 1px solid rgba(100, 220, 140, 0.3);
+                "
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                >
+                  <circle
+                    cx="14"
+                    cy="14"
+                    r="4"
+                    fill="#5DCAA5"
+                  />
+                  <line
+                    x1="6"
+                    y1="8"
+                    x2="14"
+                    y2="14"
+                    stroke="#5DCAA5"
+                    stroke-width="1.5"
+                  />
+                  <line
+                    x1="14"
+                    y1="14"
+                    x2="22"
+                    y2="20"
+                    stroke="#5DCAA5"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="6"
+                    cy="8"
+                    r="2"
+                    fill="none"
+                    stroke="#5DCAA5"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="22"
+                    cy="20"
+                    r="2"
+                    fill="none"
+                    stroke="#5DCAA5"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              </div>
+              <h4>Cusp Point</h4>
+              <p>
+                კომბინირებული — ორი Direction Handle სხვადასხვა მიმართულებით.
+                Alt + კლიკი სახელურზე.
+              </p>
+              <span
+                class="type-badge"
+                style="background: rgba(100, 220, 140, 0.1); color: #5dcaa5"
+                >შერეული</span
+              >
+            </div>
+            <div class="anchor-card">
+              <div
+                class="anchor-symbol"
+                style="
+                  background: rgba(240, 160, 80, 0.1);
+                  border: 1px solid rgba(240, 160, 80, 0.3);
+                "
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                >
+                  <circle
+                    cx="14"
+                    cy="14"
+                    r="4"
+                    fill="#EF9F27"
+                  />
+                  <line
+                    x1="14"
+                    y1="14"
+                    x2="22"
+                    y2="8"
+                    stroke="#EF9F27"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="22"
+                    cy="8"
+                    r="2"
+                    fill="none"
+                    stroke="#EF9F27"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              </div>
+              <h4>ნახევრად-გლუვი</h4>
+              <p>
+                ერთი Direction Handle — ერთი მხარე გლუვია, მეორე სწორი. Convert
+                Point Tool-ით შექმნა.
+              </p>
+              <span
+                class="type-badge"
+                style="background: rgba(240, 160, 80, 0.1); color: #ef9f27"
+                >ასიმეტრული</span
+              >
+            </div>
+          </div>
+
+          <div class="tip-bar">
+            <p>
+              <strong style="color: #c8a96e">Direction Handle:</strong> ყოველ
+              Anchor Point-ს შეიძლება ჰქონდეს 2 სახელური. სახელურის სიგრძე
+              მრუდის <em style="color: #e8c99e">სიმრგვალეს</em> განსაზღვრავს,
+              ხოლო მიმართულება — <em style="color: #e8c99e">კუთხეს</em>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: შექმნის მეთოდები -->
+      <section
+        class="slide"
+        id="s3"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">03 · შექმნის მეთოდები</div>
+          <h2 class="sec-title">Path-ის <em>შექმნა</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Pen Tool-ით Path-ის შექმნა სამი ძირითადი მოქმედებისგან შედგება.
+            ზუსტი ტექნიკა განსაზღვრავს კონტურის ხარისხს.
+          </p>
+
+          <div class="methods-list">
+            <div class="method-row">
+              <div class="method-num">1</div>
+              <div class="method-content">
+                <h4>სწორი ხაზების გავლება — Corner Points</h4>
+                <p>
+                  უბრალოდ
+                  <strong style="color: #e8c99e">დააკლიკეთ</strong> (გადათრევის
+                  გარეშე) სხვადასხვა ადგილას. Photoshop ყოველ ორ წერტილს
+                  პირდაპირი ხაზით შეაერთებს. გეომეტრიული ფორმების — სამკუთხედი,
+                  მრავალკუთხა — სწრაფი შექმნისთვის.
+                </p>
+              </div>
+            </div>
+            <div class="method-row">
+              <div class="method-num">2</div>
+              <div class="method-content">
+                <h4>მრუდი ხაზების გავლება — Smooth Points</h4>
+                <p>
+                  <strong style="color: #e8c99e">კლიკი + გადათრევა</strong> —
+                  Anchor Point გამოჩნდება და Direction Handle-ები გამოვა.
+                  სახელურის სიგრძე მრუდის სიმრგვალეს, მიმართულება — კუთხეს
+                  განსაზღვრავს. S-ფორმის, წრის და ელიფსის შექმნისთვის.
+                </p>
+              </div>
+            </div>
+            <div class="method-row">
+              <div class="method-num">3</div>
+              <div class="method-content">
+                <h4>Path-ის დახურვა</h4>
+                <p>
+                  პირველ (საწყის) Anchor Point-ზე კლიკი — Pen Tool-ის გვერდით
+                  გამოჩნდება
+                  <strong style="color: #e8c99e">პატარა ○</strong> ნიშანი. ეს
+                  ნიშნავს, რომ Path დაიხურება. ღია Path-ის დასასრულებლად —
+                  <strong style="color: #e8c99e">Enter</strong> ან სხვა
+                  ინსტრუმენტზე გადასვლა.
+                </p>
+              </div>
+            </div>
+            <div class="method-row">
+              <div class="method-num">4</div>
+              <div class="method-content">
+                <h4>Corner → Smooth გადასვლა ერთ Path-ში</h4>
+                <p>
+                  მრუდი ხაზის შემდეგ კუთხოვანი გაგრძელება:
+                  <strong style="color: #e8c99e">Alt + კლიკი</strong> ბოლო
+                  Anchor Point-ზე — ერთი Direction Handle "გაქრება" და შემდეგი
+                  სეგმენტი პირდაპირი ხაზი გახდება. ეს ტექნიკა ამოჭრისას ხშირად
+                  გამოიყენება.
+                </p>
+              </div>
+            </div>
+            <div class="method-row">
+              <div class="method-num">5</div>
+              <div class="method-content">
+                <h4>Freeform Pen Tool</h4>
+                <p>
+                  Pen Tool-ის ალტერნატიული ვარიანტი —
+                  <strong style="color: #e8c99e">თავისუფლად ხატვა</strong> თითის
+                  ან მაუსის გადათრევით. Anchor Point-ები ავტომატურად ემატება.
+                  ნაკლებად ზუსტია, მაგრამ სწრაფია ორგანული ფორმებისთვის. Options
+                  Bar-ში Magnetic ჩართვა მკიდეს "ეწებება".
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: რედაქტირება -->
+      <section
+        class="slide"
+        id="s4"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">04 · რედაქტირება</div>
+          <h2 class="sec-title">კონტურის <em>რედაქტირება</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Path-ის შექმნის შემდეგ ნებისმიერ დროს შეიძლება ზუსტი კორექტირება.
+            სწორი ინსტრუმენტის არჩევა — გასაღები.
+          </p>
+
+          <div class="wide-card">
+            <div>
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Direct Selection Tool
+              </div>
+              <h3>A — Anchor Point-ის მართვა</h3>
+              <p>
+                ცალკეული Anchor Point-ების და Direction Handle-ების
+                გადაადგილება. Path ნაწილობრივ ლოკალურად იცვლება.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">კლიკი წერტილზე</span
+                  ><span>ერთი Anchor Point შეირჩევა</span>
+                </li>
+                <li>
+                  <span class="cmd">Shift + კლიკი</span
+                  ><span>რამდენიმე წერტილი ერთად</span>
+                </li>
+                <li>
+                  <span class="cmd">კლიკი + გადათრევა</span
+                  ><span>წერტილის გადაადგილება</span>
+                </li>
+                <li>
+                  <span class="cmd">Handle-ის გადათრევა</span
+                  ><span>მრუდის ფორმის შეცვლა</span>
+                </li>
+                <li>
+                  <span class="cmd">Delete</span
+                  ><span>შერჩეული წერტილის წაშლა</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Path Selection Tool
+              </div>
+              <h3>Shift+A — მთელი Path-ის მართვა</h3>
+              <p>
+                Path-ის მთლიანად გადაადგილება — ყველა წერტილი ერთად მოძრაობს.
+                რამდენიმე Sub-path-ის ერთდროული მართვა.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">კლიკი Path-ზე</span
+                  ><span>მთელი Path შეირჩევა</span>
+                </li>
+                <li>
+                  <span class="cmd">გადათრევა</span
+                  ><span>მთელი Path გადაადგილდება</span>
+                </li>
+                <li>
+                  <span class="cmd">Ctrl+A</span
+                  ><span>ყველა Path შეირჩევა</span>
+                </li>
+                <li>
+                  <span class="cmd">Alt + გადათრევა</span
+                  ><span>Path-ის კოპირება</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="wide-card">
+            <div>
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Add / Delete Anchor Point
+              </div>
+              <h3>+ / − ინსტრუმენტები</h3>
+              <p>
+                Path-ზე კლიკი Add-ით — ახალი წერტილი. არსებულ წერტილზე Delete-ით
+                — ამოღება Path-ის გაწყვეტის გარეშე.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">კლიკი სეგმენტზე</span
+                  ><span>ახალი Anchor Point ემატება</span>
+                </li>
+                <li>
+                  <span class="cmd">კლიკი წერტილზე</span
+                  ><span>Anchor Point იშლება</span>
+                </li>
+                <li>
+                  <span class="cmd">ავტომატური</span
+                  ><span>Pen Tool სეგმენტზე → Add, Point-ზე → Delete</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="step-badge">
+                <div class="step-badge-dot"></div>
+                Convert Point Tool
+              </div>
+              <h3>Corner ↔ Smooth გადაქცევა</h3>
+              <p>
+                Smooth Point-ს კუთხოვანად ან კუთხოვანს გლუვად გადაქცევა. Pen
+                Tool-ის გამოყენებისას Alt ხდება Convert Point.
+              </p>
+              <ul class="cmd-list">
+                <li>
+                  <span class="cmd">კლიკი Smooth-ზე</span
+                  ><span>Corner-ად იქცევა (Handle ქრება)</span>
+                </li>
+                <li>
+                  <span class="cmd">კლიკ+გადათრევა Corner-ზე</span
+                  ><span>Smooth-ად იქცევა</span>
+                </li>
+                <li>
+                  <span class="cmd">Alt + Handle</span
+                  ><span>ერთი Handle დამოუკიდებელი ხდება</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="highlight-block">
+            <h3>Path → Selection გადაქცევა</h3>
+            <p>
+              Path-ის შექმნის შემდეგ:
+              <strong style="color: #e8c99e">Ctrl + Enter (⌘ + Return)</strong>
+              — Path ხდება Selection (მოციმციმე ხაზი). ან Paths Panel-ში: "Load
+              path as selection" ღილაკი. Feather Radius Options-ში განსაზღვრავს
+              კიდის სიმხოლოვეს.
+            </p>
+            <span class="warn-note"
+              >⚠ Path ინახება Paths Panel-ში — Work Path სახელით. შენახვისთვის
+              დააორჯერეთ კლიკი და დაარქვით სახელი, წინააღმდეგ შემთხვევაში ახალი
+              Path გადაწერს.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Shortcuts -->
+      <section
+        class="slide"
+        id="s5"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">05 · Shortcuts</div>
+          <h2 class="sec-title">სწრაფი <em>კლავიშები</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Pen Tool-ის სწრაფი გამოყენება სამ ჯგუფად იყოფა: ინსტრუმენტების
+            გადართვა, Path-ის მართვა და Path-ის გამოყენება.
+          </p>
+
+          <div style="margin-bottom: 28px">
+            <p
+              style="
+                font-size: 12px;
+                letter-spacing: 3px;
+                color: rgba(200, 169, 110, 0.6);
+                text-transform: uppercase;
+                margin-bottom: 16px;
+              "
+            >
+              ინსტრუმენტების გადართვა
+            </p>
+            <div class="shortcuts-grid">
+              <div class="sc-item">
+                <span class="sc-key">P</span
+                ><span class="sc-label"
+                  >Pen Tool — ძირითადი ვექტორული ინსტრუმენტი</span
+                >
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">A</span
+                ><span class="sc-label"
+                  >Direct Selection Tool — Anchor Point-ის მართვა</span
+                >
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Shift + A</span
+                ><span class="sc-label">Path Selection Tool — მთელი Path</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Shift + P</span
+                ><span class="sc-label">Freeform Pen Tool</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 28px">
+            <p
+              style="
+                font-size: 12px;
+                letter-spacing: 3px;
+                color: rgba(200, 169, 110, 0.6);
+                text-transform: uppercase;
+                margin-bottom: 16px;
+              "
+            >
+              Path-ის შექმნისა და რედაქტირებისას
+            </p>
+            <div class="shortcuts-grid">
+              <div class="sc-item">
+                <span class="sc-key">Alt</span
+                ><span class="sc-label"
+                  >Pen Tool → Convert Point Tool (Handle-ზე)</span
+                >
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Ctrl / ⌘</span
+                ><span class="sc-label"
+                  >Pen Tool → Direct Selection Tool (დროებით)</span
+                >
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Space</span
+                ><span class="sc-label">Hand Tool — ტილოს გადაადგილება</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Alt + კლიკი Anchor</span
+                ><span class="sc-label">Smooth → Corner გადაქცევა</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Shift + კლიკი</span
+                ><span class="sc-label">45° კუთხეებით შეზღუდვა</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Enter</span
+                ><span class="sc-label">ღია Path-ის დასრულება</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Esc</span
+                ><span class="sc-label">Path-ის გაუქმება</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Ctrl + Z</span
+                ><span class="sc-label">ბოლო Anchor Point-ის გაუქმება</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p
+              style="
+                font-size: 12px;
+                letter-spacing: 3px;
+                color: rgba(200, 169, 110, 0.6);
+                text-transform: uppercase;
+                margin-bottom: 16px;
+              "
+            >
+              Path-ის გამოყენება
+            </p>
+            <div class="shortcuts-grid">
+              <div class="sc-item">
+                <span class="sc-key">Ctrl + Enter</span
+                ><span class="sc-label">Path → Active Selection</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Ctrl + Shift + Enter</span
+                ><span class="sc-label">Path → Selection-ს დამატება</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Ctrl + Alt + Enter</span
+                ><span class="sc-label">Path → Selection-დან გამოკლება</span>
+              </div>
+              <div class="sc-item">
+                <span class="sc-key">Ctrl + Shift + H</span
+                ><span class="sc-label">Path-ის ჩვენება / დამალვა</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="tip-bar"
+            style="margin-top: 28px"
+          >
+            <p>
+              <strong style="color: #c8a96e">პრაქტიკული რჩევა:</strong> Pen
+              Tool-ის გამოყენებისას
+              <strong style="color: #e8c99e">Ctrl-ს დაჭერა</strong> დროებით
+              გადაგართავს Direct Selection Tool-ზე — ისე, რომ P კლავიში არ
+              მოგიწიოს. ეს ყველაზე ეფექტური სამუშაო მეთოდია.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: QUIZ -->
+      <section
+        class="slide"
+        id="s6"
+      >
+        <div class="slide-inner">
+          <div class="quiz-wrap">
+            <div class="quiz-header">
+              <div
+                class="sec-num"
+                style="text-align: center"
+              >
+                06 · გამოცდა
+              </div>
+              <h2
+                class="sec-title"
+                style="text-align: center"
+              >
+                შეამოწმე <em>ცოდნა</em>
+              </h2>
+              <div
+                class="divider"
+                style="margin: 20px auto 0"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q0"
+            >
+              <div class="q-num">კითხვა 01</div>
+              <div class="q-text">
+                Pen Tool-ის გააქტიურების კლავიში Photoshop-ში:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(0, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  V
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  P
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  B
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(0, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  L
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb0"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q1"
+            >
+              <div class="q-num">კითხვა 02</div>
+              <div class="q-text">
+                Smooth Anchor Point-ის შესაქმნელად საჭიროა:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(1, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  უბრალოდ კლიკი
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  კლიკი + გადათრევა
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Alt + კლიკი
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(1, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  Shift + კლიკი
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb1"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q2"
+            >
+              <div class="q-num">კითხვა 03</div>
+              <div class="q-text">
+                Path → Active Selection-ის გადასაქცევად ვიყენებთ:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(2, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + S
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + D
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + Enter (⌘ + Return)
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(2, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + A
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb2"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q3"
+            >
+              <div class="q-num">კითხვა 04</div>
+              <div class="q-text">
+                Direct Selection Tool-ის კლავიში (ერთი Anchor Point-ის მართვა):
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(3, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  V
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  P
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  A
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(3, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  S
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb3"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q4"
+            >
+              <div class="q-num">კითხვა 05</div>
+              <div class="q-text">
+                Pen Tool-ის გამოყენებისას Ctrl-ის (⌘) დაჭერა დროებით გადართავს:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(4, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  Eraser Tool-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  Direct Selection Tool-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Convert Point Tool-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(4, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  Lasso Tool-ზე
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb4"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q5"
+            >
+              <div class="q-num">კითხვა 06</div>
+              <div class="q-text">
+                Smooth Point-ი Corner Point-ად გადასაქცევად Convert Point
+                Tool-ით:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(5, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  კლიკი + გადათრევა Smooth-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  უბრალოდ კლიკი Smooth-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Delete Smooth-ზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(5, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  Shift + კლიკი
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb5"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q6"
+            >
+              <div class="q-num">კითხვა 07</div>
+              <div class="q-text">
+                Work Path-ის შენახვისთვის Paths Panel-ში:
+              </div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(6, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  Ctrl + S
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  Work Path-ზე ორმაგი კლიკი და სახელის მინიჭება
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Path-ის გადათრევა ნაგვის ხატულაზე
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(6, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  File → Save As
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb6"
+              ></div>
+            </div>
+
+            <div
+              class="q-block"
+              id="q7"
+            >
+              <div class="q-num">კითხვა 08</div>
+              <div class="q-text">Direction Handle-ის სიგრძე განსაზღვრავს:</div>
+              <div class="options">
+                <div
+                  class="opt"
+                  onclick="pick(7, 0)"
+                >
+                  <div class="opt-dot"></div>
+                  Anchor Point-ის ფერს
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(7, 1)"
+                >
+                  <div class="opt-dot"></div>
+                  მრუდის სიმრგვალეს / ინტენსივობას
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(7, 2)"
+                >
+                  <div class="opt-dot"></div>
+                  Path-ის სისქეს
+                </div>
+                <div
+                  class="opt"
+                  onclick="pick(7, 3)"
+                >
+                  <div class="opt-dot"></div>
+                  Anchor Point-ების რაოდენობას
+                </div>
+              </div>
+              <div
+                class="q-feedback"
+                id="fb7"
+              ></div>
+            </div>
+
+            <div class="quiz-submit">
+              <button
+                class="btn-submit"
+                id="submitBtn"
+                onclick="submitQuiz()"
+              >
+                შედეგის ნახვა
+              </button>
+            </div>
+
+            <div
+              class="score-panel"
+              id="scorePanel"
+            >
+              <div
+                class="score-big"
+                id="scoreNum"
+              >
+                0/8
+              </div>
+              <div class="score-label">სწორი პასუხი</div>
+              <div
+                class="score-msg"
+                id="scoreMsg"
+              ></div>
+              <button
+                class="btn-retry"
+                onclick="retryQuiz()"
+              >
+                თავიდან ცდა
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
+
+      const TOTAL = 8;
+      const answers = [1, 1, 2, 2, 1, 1, 1, 1];
+      const feedbacks = [
+        "P — Pen Tool. V = Move Tool, B = Brush, L = Lasso.",
+        "კლიკი + გადათრევა — ორი Direction Handle ამოდის და გლუვი მრუდი იქმნება.",
+        "Ctrl + Enter (⌘ + Return) — Path → Active Selection. სწრაფი და ძირითადი კლავიში.",
+        "A — Direct Selection Tool. Shift+A = Path Selection Tool (მთელი Path).",
+        "Ctrl (⌘) — Pen Tool-ში ყოფნისას დროებით Direct Selection Tool-ად იქცევა.",
+        "უბრალოდ კლიკი Smooth Point-ზე — Direction Handle ქრება და Corner Point ხდება.",
+        "ორმაგი კლიკი Work Path-ზე → Save Path დიალოგი → სახელის მინიჭება.",
+        "Direction Handle-ის სიგრძე = მრუდის სიმრგვალე / ინტენსივობა. მიმართულება = კუთხე.",
+      ];
+      const wrongHint = [
+        "სწორია: P — Pen Tool.",
+        "სწორია: კლიკი + გადათრევა.",
+        "სწორია: Ctrl + Enter (⌘ + Return).",
+        "სწორია: A — Direct Selection Tool.",
+        "სწორია: Direct Selection Tool-ზე.",
+        "სწორია: უბრალოდ კლიკი Smooth-ზე.",
+        "სწორია: ორმაგი კლიკი და სახელის მინიჭება.",
+        "სწორია: მრუდის სიმრგვალეს / ინტენსივობას.",
+      ];
+
+      const picked = new Array(TOTAL).fill(-1);
+      let submitted = false;
+
+      const slides = document.querySelectorAll(".slide");
+      const ndots = document.getElementById("navdots");
+      slides.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "nav-dot" + (i === 0 ? " active" : "");
+        d.onclick = () => slides[i].scrollIntoView({ behavior: "smooth" });
+        ndots.appendChild(d);
+      });
+
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const idx = [...slides].indexOf(e.target);
+              document.querySelectorAll(".nav-dot").forEach((d, i) => {
+                d.className =
+                  "nav-dot" + (i === idx ? " active" : i < idx ? " done" : "");
+              });
+              document.getElementById("pbar").style.width =
+                5 + (idx / (slides.length - 1)) * 80 + "%";
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      slides.forEach((s) => obs.observe(s));
+
+      function pick(q, opt) {
+        if (submitted) return;
+        const block = document.getElementById("q" + q);
+        const opts = block.querySelectorAll(".opt");
+        opts.forEach((o) =>
+          o.classList.remove("selected-correct", "selected-wrong"),
+        );
+        picked[q] = opt;
+        opts[opt].classList.add(
+          opt === answers[q] ? "selected-correct" : "selected-wrong",
+        );
+        const done = picked.filter((x) => x >= 0).length;
+        document.getElementById("pbar").style.width =
+          5 + (done / TOTAL) * 80 + "%";
+      }
+
+      function submitQuiz() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+        for (let q = 0; q < TOTAL; q++) {
+          const block = document.getElementById("q" + q);
+          const opts = block.querySelectorAll(".opt");
+          const fb = document.getElementById("fb" + q);
+          opts.forEach((o) => o.classList.add("locked"));
+          if (picked[q] === answers[q]) {
+            score++;
+            block.classList.add("correct");
+            fb.textContent = "✓ " + feedbacks[q];
+            fb.className = "q-feedback show ok";
+          } else {
+            block.classList.add("wrong");
+            opts[answers[q]].classList.add("reveal-correct");
+            fb.textContent = "✗ " + wrongHint[q] + " — " + feedbacks[q];
+            fb.className = "q-feedback show bad";
+          }
+        }
+        const msgs = [
+          "კიდევ სცადე! 💪",
+          "კარგი დასაწყისია, გაიმეორე მასალა.",
+          "ნახევარზე მეტი — კარგია!",
+          "ძალიან კარგი შედეგი!",
+          "თითქმის სრული!",
+          "შესანიშნავი! 🎉",
+          "სრული ქულა! ბრავო! 🏆",
+          "სრული ქულა! ბრავო! 🏆",
+        ];
+        document.getElementById("scoreNum").textContent = score + "/" + TOTAL;
+        document.getElementById("scoreMsg").textContent = msgs[score];
+        const panel = document.getElementById("scorePanel");
+        panel.classList.add("show");
+        panel.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("pbar").style.width = "100%";
+      }
+
+      function retryQuiz() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        for (let q = 0; q < TOTAL; q++) {
+          const block = document.getElementById("q" + q);
+          block.classList.remove("correct", "wrong");
+          block.querySelectorAll(".opt").forEach((o) => {
+            o.classList.remove(
+              "selected-correct",
+              "selected-wrong",
+              "reveal-correct",
+              "locked",
+            );
+          });
+          const fb = document.getElementById("fb" + q);
+          fb.className = "q-feedback";
+          fb.textContent = "";
+        }
+      }
+    </script>
+  </body>
+</html>

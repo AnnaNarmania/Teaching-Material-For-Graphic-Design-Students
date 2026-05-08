@@ -1,0 +1,1881 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Photoshop · ფერთა მოდელები</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: #0a0a0a;
+        color: #f0ede8;
+        overflow-x: hidden;
+      }
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c8a96e, #e8c99e);
+        z-index: 100;
+        width: 0;
+        transition: width 0.3s;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        background: rgba(10, 10, 10, 0.88);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-logo {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+      .nav-links a {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.4);
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+        cursor: pointer;
+      }
+      .nav-links a:hover {
+        color: #c8a96e;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 40px 80px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 0 180px;
+      }
+      .hero::after {
+        content: "Ps";
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: clamp(200px, 30vw, 400px);
+        font-weight: 700;
+        color: rgba(200, 169, 110, 0.04);
+        pointer-events: none;
+        line-height: 1;
+      }
+      .hero-inner {
+        max-width: 900px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-label {
+        font-size: 11px;
+        letter-spacing: 5px;
+        color: rgba(200, 169, 110, 0.7);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      .hero-title {
+        font-size: clamp(44px, 8vw, 96px);
+        font-weight: 700;
+        line-height: 0.95;
+        margin-bottom: 28px;
+      }
+      .hero-title .gold {
+        display: block;
+        color: #c8a96e;
+        font-weight: 300;
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 16px;
+        color: rgba(240, 237, 232, 0.45);
+        max-width: 480px;
+        line-height: 1.75;
+        margin-bottom: 52px;
+      }
+      .hero-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        padding: 8px 22px;
+        border: 1px solid rgba(200, 169, 110, 0.25);
+        border-radius: 40px;
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.8);
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .pill:hover {
+        background: rgba(200, 169, 110, 0.1);
+        border-color: #c8a96e;
+        color: #e8c99e;
+      }
+
+      /* SECTIONS */
+      .bg-a {
+        background: #0a0a0a;
+      }
+      .bg-b {
+        background: #0d0d0d;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .section {
+        padding: 110px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .s-tag {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: rgba(200, 169, 110, 0.5);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .s-title {
+        font-size: clamp(30px, 4vw, 52px);
+        font-weight: 600;
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+      .s-title em {
+        color: #c8a96e;
+        font-style: normal;
+      }
+      .s-desc {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.45);
+        line-height: 1.75;
+        max-width: 580px;
+        margin-bottom: 48px;
+      }
+      .rule {
+        width: 36px;
+        height: 2px;
+        background: #c8a96e;
+        margin: 18px 0 34px;
+      }
+
+      /* CARDS */
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 14px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 26px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        background: linear-gradient(90deg, #c8a96e, transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .card:hover {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.22);
+        transform: translateY(-3px);
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+      .card.open {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .card.open::before {
+        opacity: 1;
+      }
+      .c-icon {
+        font-size: 20px;
+        margin-bottom: 16px;
+        display: block;
+      }
+      .c-title {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+      .c-body {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.48);
+        line-height: 1.65;
+      }
+      .c-tag {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 11px;
+        padding: 3px 10px;
+        background: rgba(200, 169, 110, 0.1);
+        color: #c8a96e;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+      }
+      .c-detail {
+        display: none;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.7;
+      }
+      .card.open .c-detail {
+        display: block;
+      }
+      .c-path {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 11px;
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.1);
+        color: #c8a96e;
+        padding: 3px 9px;
+        border-radius: 4px;
+      }
+
+      /* TWO-COL */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        transition: border-color 0.25s;
+      }
+      .panel:hover {
+        border-color: rgba(200, 169, 110, 0.18);
+      }
+      .panel-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: rgba(200, 169, 110, 0.65);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .panel-badge-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #c8a96e;
+        flex-shrink: 0;
+      }
+      .panel h3 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #f0ede8;
+      }
+      .panel p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.7;
+      }
+      .cmd-list {
+        list-style: none;
+        margin-top: 16px;
+      }
+      .cmd-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .cmd-list li:last-child {
+        border-bottom: none;
+      }
+      .cmd {
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      /* HIGHLIGHT */
+      .hl {
+        background: rgba(200, 169, 110, 0.05);
+        border: 1px solid rgba(200, 169, 110, 0.16);
+        border-radius: 16px;
+        padding: 36px;
+        margin-bottom: 14px;
+      }
+      .hl h3 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #e8c99e;
+      }
+      .hl p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.75;
+      }
+      .hl-plain {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .hl-plain h3 {
+        color: #f0ede8;
+      }
+
+      /* ADJ LIST */
+      .adj-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .adj-item {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px 22px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        transition: all 0.25s;
+      }
+      .adj-item:hover {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.2);
+        transform: translateX(4px);
+      }
+      .adj-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .adj-body h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .adj-body p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.48);
+        line-height: 1.6;
+      }
+      .adj-body .vs {
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.5);
+        margin-top: 6px;
+        font-style: italic;
+      }
+
+      /* COMPARE TABLE */
+      .cmp-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .ccard {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .ccard h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .ccard li {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        list-style: none;
+        padding-left: 14px;
+        position: relative;
+        line-height: 1.75;
+      }
+      .ccard li::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        color: #c8a96e;
+      }
+
+      /* STYLE PANELS */
+      .panel-head {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(200, 169, 110, 0.55);
+        margin-bottom: 18px;
+      }
+      .style-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .style-row:last-child {
+        border-bottom: none;
+      }
+      .style-lbl {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+      }
+      .style-val {
+        font-size: 12px;
+        color: #c8a96e;
+        font-family: monospace;
+      }
+
+      /* QUIZ */
+      .quiz-wrap {
+        max-width: 740px;
+        margin: 0 auto;
+      }
+      .q-block {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        margin-bottom: 14px;
+        transition: border-color 0.3s;
+      }
+      .q-block.correct {
+        border-color: rgba(100, 200, 130, 0.45);
+        background: rgba(100, 200, 130, 0.04);
+      }
+      .q-block.wrong {
+        border-color: rgba(220, 80, 80, 0.35);
+        background: rgba(220, 80, 80, 0.03);
+      }
+      .q-num {
+        font-size: 11px;
+        color: rgba(200, 169, 110, 0.6);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .q-text {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.65);
+        transition: all 0.2s;
+        background: transparent;
+        text-align: left;
+      }
+      .opt:hover:not(.locked) {
+        background: rgba(200, 169, 110, 0.07);
+        border-color: rgba(200, 169, 110, 0.28);
+        color: #f0ede8;
+      }
+      .opt.sel-ok {
+        background: rgba(100, 200, 130, 0.09);
+        border-color: rgba(100, 200, 130, 0.45);
+        color: #a0e8b0;
+      }
+      .opt.sel-bad {
+        background: rgba(220, 80, 80, 0.09);
+        border-color: rgba(220, 80, 80, 0.4);
+        color: #f08080;
+      }
+      .opt.reveal {
+        background: rgba(100, 200, 130, 0.05);
+        border-color: rgba(100, 200, 130, 0.28);
+        color: rgba(160, 232, 176, 0.75);
+      }
+      .odot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+      }
+      .opt.sel-ok .odot {
+        background: #4caf78;
+        border-color: #4caf78;
+        color: #fff;
+      }
+      .opt.sel-bad .odot {
+        background: #d94f4f;
+        border-color: #d94f4f;
+      }
+      .q-fb {
+        display: none;
+        margin-top: 12px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .q-fb.show {
+        display: block;
+      }
+      .q-fb.ok {
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .q-fb.bad {
+        background: rgba(220, 80, 80, 0.08);
+        color: #f08080;
+      }
+      .quiz-footer {
+        text-align: center;
+        margin-top: 36px;
+      }
+      .btn-submit {
+        padding: 14px 52px;
+        background: #c8a96e;
+        color: #0a0a0a;
+        border: none;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-submit:hover {
+        background: #e8c99e;
+        transform: scale(1.03);
+      }
+      .btn-submit:disabled {
+        opacity: 0.35;
+        cursor: default;
+        transform: none;
+      }
+      .score-panel {
+        display: none;
+        margin-top: 28px;
+        padding: 48px;
+        background: rgba(200, 169, 110, 0.06);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 18px;
+        text-align: center;
+      }
+      .score-panel.show {
+        display: block;
+      }
+      .score-big {
+        font-size: 72px;
+        font-weight: 700;
+        color: #c8a96e;
+        line-height: 1;
+      }
+      .score-of {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.4);
+        margin-top: 6px;
+      }
+      .score-msg {
+        font-size: 17px;
+        color: #f0ede8;
+        margin-top: 14px;
+        line-height: 1.6;
+      }
+      .btn-retry {
+        margin-top: 20px;
+        padding: 10px 32px;
+        background: transparent;
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.35);
+        border-radius: 40px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-retry:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
+      footer {
+        padding: 60px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+      footer p {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.2);
+        letter-spacing: 1px;
+      }
+      @media (max-width: 640px) {
+        .two-col,
+        .cmp-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 48px;
+        }
+        .section {
+          padding: 80px 24px;
+        }
+        nav {
+          padding: 14px 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+      }
+
+      /* ── MODULE DROPDOWN NAV ── */
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .nav-home {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+      }
+      .nav-home:hover {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nav-dropdown-wrap {
+        position: relative;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: transparent;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-wrap.open .nav-dropdown-btn {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-dropdown-btn .chevron {
+        transition: transform 0.25s;
+        display: inline-block;
+      }
+      .nav-dropdown-wrap.open .chevron {
+        transform: rotate(180deg);
+      }
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(14, 14, 14, 0.97);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 8px;
+        padding: 6px;
+        min-width: 215px;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-dropdown-wrap.open .nav-dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.55);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(200, 169, 110, 0.1);
+        color: #f0ede8;
+      }
+      .nav-dropdown-menu a.current {
+        color: #c8a96e;
+        pointer-events: none;
+      }
+      .nav-dropdown-menu a .num {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: rgba(200, 169, 110, 0.5);
+        font-weight: 600;
+        min-width: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+    ></div>
+
+    <nav>
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="მთავარი.html"
+          ><svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          >მთავარი</a
+        >
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a
+              href="ფერებიდატონები.html"
+              class="current"
+              ><span class="num">01</span>ფერები და ტონები</a
+            ><a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a
+            ><a href="გეომეტრიულიფიგურები.html"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            ><a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
+            <a href="ტონისკორექცია.html"
+              ><span class="num">05</span>ტონის კორექცია</a
+            >
+            <a
+              href="რეტუში.html"
+              class="current"
+              ><span class="num">06</span>რეტუში</a
+            >
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Color &amp; Tone</div>
+      </div>
+      <div class="nav-links">
+        <a onclick="goTo('#s-modes')">ფერთა მოდელები</a>
+        <a onclick="goTo('#s-tone')">ტონალური კორექცია</a>
+        <a onclick="goTo('#s-compare')">შედარება</a>
+        <a onclick="goTo('#s-quiz')">ქვიზი</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-label">Adobe Photoshop · ფერთა თეორია</div>
+        <h1 class="hero-title">
+          ფერთა მოდელები<br />
+          <span class="gold">და ტონალური</span>
+          კორექცია
+        </h1>
+        <p class="hero-sub">
+          ამ გაკვეთილში შეისწავლით ფერთა რეჟიმებს, ტონალური კორექციის
+          ინსტრუმენტებს და მათ პრაქტიკულ გამოყენებას Photoshop-ში.
+        </p>
+        <div class="hero-pills">
+          <div
+            class="pill"
+            onclick="goTo('#s-modes')"
+          >
+            01 · ფერთა მოდელები
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-tone')"
+          >
+            02 · ტონალური კორექცია
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-compare')"
+          >
+            03 · შედარება
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-quiz')"
+          >
+            04 · ქვიზი
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODES OVERVIEW -->
+    <div
+      id="s-modes"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">01 · ფერთა მოდელები</div>
+        <h2 class="s-title">Color <em>Modes</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          ფერთა მოდელი განსაზღვრავს როგორ ინახავს და წარმოქმნის პროგრამა ფერს.
+          შეიცვლება:
+          <span style="font-family: monospace; color: #c8a96e; font-size: 13px"
+            >Image → Mode</span
+          >
+        </p>
+        <div class="grid-4">
+          <div
+            class="card"
+            onclick="this.classList.toggle('open')"
+          >
+            <span class="c-icon">◼</span>
+            <div class="c-title">Bitmap</div>
+            <div class="c-body">
+              მხოლოდ შავი და თეთრი — შუალედური ტონები არ არსებობს.
+            </div>
+            <span class="c-tag">Mono</span>
+            <div class="c-detail">
+              პიქსელი ან 0 (შავი) ან 1 (თეთრი). გამოიყენება ლოგოებში, ტექნიკურ
+              ნახაზებში, კალიგრაფიაში. ჯერ Grayscale-ზე გადასვლა საჭიროა.<br /><span
+                class="c-path"
+                >Image → Mode → Bitmap</span
+              >
+            </div>
+          </div>
+          <div
+            class="card"
+            onclick="this.classList.toggle('open')"
+          >
+            <span class="c-icon">▓</span>
+            <div class="c-title">Grayscale</div>
+            <div class="c-body">
+              256 ნაცრისფერი ტონი — სინათლის ინტენსივობა 0-დან 255-მდე.
+            </div>
+            <span class="c-tag">Mono</span>
+            <div class="c-detail">
+              ფოტო ინარჩუნებს სინათლისა და ჩრდილის დეტალებს. გამოიყენება
+              შავ-თეთრ ფოტოგრაფიაში, ბეჭდვაში.<br /><span class="c-path"
+                >Image → Mode → Grayscale</span
+              >
+            </div>
+          </div>
+          <div
+            class="card"
+            onclick="this.classList.toggle('open')"
+          >
+            <span class="c-icon">🔴</span>
+            <div class="c-title">RGB Color</div>
+            <div class="c-body">
+              Red · Green · Blue — სინათლის შერევის პრინციპი. ეკრანის სტანდარტი.
+            </div>
+            <span class="c-tag">Screen</span>
+            <div class="c-detail">
+              R+G=Yellow · R+B=Magenta · G+B=Cyan · სამივე=White. ვებ, სოციალური
+              მედია, მობილური, ტელევიზია. Photoshop-ის ნაგულისხმევი რეჟიმი.<br /><span
+                class="c-path"
+                >Image → Mode → RGB Color</span
+              >
+            </div>
+          </div>
+          <div
+            class="card"
+            onclick="this.classList.toggle('open')"
+          >
+            <span class="c-icon">🖨</span>
+            <div class="c-title">CMYK</div>
+            <div class="c-body">
+              Cyan · Magenta · Yellow · Black — მელნის შერევა. ბეჭდვის
+              სტანდარტი.
+            </div>
+            <span class="c-tag">Print</span>
+            <div class="c-detail">
+              RGB-ზე ფერთა დიაპაზონი მცირეა. RGB→CMYK კონვერტაციისას ფერები
+              ხშირად ფერმკრთალდება. ჟურნალები, პლაკატები, ბროშურები.<br /><span
+                class="c-path"
+                >Image → Mode → CMYK Color</span
+              >
+            </div>
+          </div>
+          <div
+            class="card"
+            onclick="this.classList.toggle('open')"
+          >
+            <span class="c-icon">◎</span>
+            <div class="c-title">Lab Color</div>
+            <div class="c-body">
+              L (სინათლე) · a (მწვანე↔წითელი) · b (ლურჯი↔ყვითელი)
+            </div>
+            <span class="c-tag">Pro</span>
+            <div class="c-detail">
+              მოიცავს ადამიანის თვალისთვის ხილულ თითქმის ყველა ფერს. გამოიყენება
+              პროფესიულ ფერის კორექციასა და რესტავრაციაში.<br /><span
+                class="c-path"
+                >Image → Mode → Lab Color</span
+              >
+            </div>
+          </div>
+        </div>
+        <p
+          style="
+            font-size: 13px;
+            color: rgba(240, 237, 232, 0.3);
+            margin-top: 16px;
+          "
+        >
+          ▸ დააჭირე ბარათს დეტალების სანახავად
+        </p>
+      </div>
+    </div>
+
+    <!-- TONAL CORRECTION -->
+    <div
+      id="s-tone"
+      class="bg-b"
+    >
+      <div class="section">
+        <div class="s-tag">02 · ტონალური კორექცია</div>
+        <h2 class="s-title">Image <em>Adjustments</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          ტონალური კორექცია — სინათლის, კონტრასტისა და ფერის დარეგულირება. გზა:
+          <span style="font-family: monospace; color: #c8a96e; font-size: 13px"
+            >Image → Adjustments</span
+          >
+        </p>
+        <div class="adj-list">
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(200, 169, 110, 0.12)"
+            >
+              ☀️
+            </div>
+            <div class="adj-body">
+              <h4>Brightness / Contrast</h4>
+              <p>
+                Brightness — მთლიანი ნათელობა. Contrast — სინათლისა და ჩრდილის
+                განსხვავება. Contrast-ის გაზრდა ნათელს კიდევ უფრო ანათებს, მუქს
+                კი — ამუქებს.
+              </p>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(100, 160, 240, 0.1)"
+            >
+              📷
+            </div>
+            <div class="adj-body">
+              <h4>Exposure</h4>
+              <p>
+                <strong style="font-weight: 500; color: #e8c99e"
+                  >Exposure</strong
+                >
+                — მთლიანი სინათლე ·
+                <strong style="font-weight: 500; color: #e8c99e">Offset</strong>
+                — ტონების გადანაწილება ·
+                <strong style="font-weight: 500; color: #e8c99e">Gamma</strong>
+                — შუა ტონები. ჰგავს კამერის ექსპოზიციის კონტროლს.
+              </p>
+              <div class="vs">
+                vs Brightness: Brightness მარტივად ცვლის ნათელობას; Exposure
+                კამერის ლოგიკით მუშაობს.
+              </div>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(100, 220, 140, 0.1)"
+            >
+              🎨
+            </div>
+            <div class="adj-body">
+              <h4>Vibrance</h4>
+              <p>
+                ზრდის ფერების ინტენსივობას, მაგრამ უფრო ძლიერად მოქმედებს სუსტ
+                ფერებზე. იცავს კანის ბუნებრივ ტონებს. პორტრეტები, ლანდშაფტები.
+              </p>
+              <div class="vs">
+                vs Saturation: Saturation ყველა ფერს ერთნაირად ცვლის; Vibrance —
+                სელექტიურად.
+              </div>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(240, 100, 240, 0.08)"
+            >
+              🌈
+            </div>
+            <div class="adj-body">
+              <h4>Hue / Saturation</h4>
+              <p>
+                <strong style="font-weight: 500; color: #e8c99e">Hue</strong> —
+                ცვლის ფერის ტიპს ·
+                <strong style="font-weight: 500; color: #e8c99e"
+                  >Saturation</strong
+                >
+                — ფერის ინტენსივობა ·
+                <strong style="font-weight: 500; color: #e8c99e"
+                  >Lightness</strong
+                >
+                — ტონის ნათელობა. შეიძლება კონკრეტულ ფერებზეც გამოიყენო.
+              </p>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(240, 200, 80, 0.08)"
+            >
+              ⚖️
+            </div>
+            <div class="adj-body">
+              <h4>Color Balance</h4>
+              <p>
+                სამი ღერძი: Cyan↔Red · Magenta↔Green · Yellow↔Blue. გამოიყენება
+                თეთრი ბალანსის კორექციისა და თბილი/ცივი ტონის შესაქმნელად.
+              </p>
+              <div class="vs">
+                vs Hue: Hue ცვლის ფერის ტიპს; Color Balance — ფერებს შორის
+                ბალანსს.
+              </div>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(200, 200, 200, 0.06)"
+            >
+              ◑
+            </div>
+            <div class="adj-body">
+              <h4>Black & White</h4>
+              <p>
+                ფერადი ფოტო გადადის შავ-თეთრში, მაგრამ სხვადასხვა ფერის ტონები
+                ცალ-ცალკე კონტროლდება. წითელი შეიძლება მუქი გახდეს, ყვითელი —
+                ნათელი.
+              </p>
+              <div class="vs">
+                vs Grayscale: Grayscale მთლიანად შლის ფერს; B&W ტონალობის
+                კონტროლს გვაძლევს.
+              </div>
+            </div>
+          </div>
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(200, 169, 110, 0.08)"
+            >
+              🎞
+            </div>
+            <div class="adj-body">
+              <h4>Photo Filter</h4>
+              <p>
+                ამატებს ფოტოგრაფიული ლინზის ფილტრის ეფექტს.
+                <strong style="font-weight: 500; color: #e8c99e"
+                  >Warming Filter</strong
+                >
+                — თბილი ტონი ·
+                <strong style="font-weight: 500; color: #e8c99e"
+                  >Cooling Filter</strong
+                >
+                — ცივი ტონი. ატმოსფეროს შეცვლა, კინემატოგრაფიული ეფექტი.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE -->
+    <div
+      id="s-compare"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">03 · შედარება</div>
+        <h2 class="s-title">ყველაზე ხშირი <em>გაუგებრობა</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          ამ წყვილებს შორის განსხვავების გაგება ზოგჯერ ყველაზე რთულია.
+        </p>
+        <div class="cmp-grid">
+          <div class="ccard">
+            <h4 style="color: #60a5fa">Vibrance</h4>
+            <ul>
+              <li>სუსტ ფერებზე მოქმედებს ძლიერად</li>
+              <li>კანის ტონი დაცულია</li>
+              <li>უფრო ბუნებრივი შედეგი</li>
+              <li>პორტრეტებისთვის იდეალური</li>
+            </ul>
+          </div>
+          <div class="ccard">
+            <h4 style="color: #a78bfa">Saturation</h4>
+            <ul>
+              <li>ყველა ფერს ერთნაირად ცვლის</li>
+              <li>კანის ტონი არ არის დაცული</li>
+              <li>ადვილად ხდება ხელოვნური</li>
+              <li>მარტივი ეფექტებისთვის</li>
+            </ul>
+          </div>
+          <div class="ccard">
+            <h4 style="color: #86efac">Exposure</h4>
+            <ul>
+              <li>კამერის ექსპოზიციის სიმულაცია</li>
+              <li>Gamma — შუა ტონების კონტროლი</li>
+              <li>Offset — ტონების გადანაწილება</li>
+              <li>პროფესიული ფოტო-კორექცია</li>
+            </ul>
+          </div>
+          <div class="ccard">
+            <h4 style="color: #fca5a5">Brightness</h4>
+            <ul>
+              <li>მარტივი ნათელობის ცვლილება</li>
+              <li>მთლიან სურათზე ერთნაირად მოქმედებს</li>
+              <li>შუა ტონების კონტროლი არ არის</li>
+              <li>სწრაფი, მარტივი კორექცია</li>
+            </ul>
+          </div>
+          <div class="ccard">
+            <h4 style="color: #fdba74">Black & White</h4>
+            <ul>
+              <li>ფერის ტონებს ინარჩუნებს</li>
+              <li>ყოველ ფერს ცალ-ცალკე მართავ</li>
+              <li>პროფესიული B&W კონვერტაცია</li>
+            </ul>
+          </div>
+          <div class="ccard">
+            <h4 style="color: #94a3b8">Grayscale (Mode)</h4>
+            <ul>
+              <li>ფერის ინფორმაციას მთლიანად შლის</li>
+              <li>კანალები 3-დან 1-ზე მცირდება</li>
+              <li>ტონების კონტროლი შეუძლებელია</li>
+            </ul>
+          </div>
+        </div>
+        <div
+          style="
+            background: rgba(200, 169, 110, 0.05);
+            border: 1px solid rgba(200, 169, 110, 0.15);
+            border-radius: 14px;
+            padding: 28px;
+            margin-top: 4px;
+          "
+        >
+          <div
+            style="
+              font-size: 13px;
+              font-weight: 500;
+              color: #c8a96e;
+              margin-bottom: 16px;
+              letter-spacing: 1px;
+              text-transform: uppercase;
+            "
+          >
+            RGB vs CMYK — სად გამოვიყენოთ?
+          </div>
+          <div
+            class="two-col"
+            style="margin: 0"
+          >
+            <div>
+              <div
+                style="
+                  font-size: 12px;
+                  color: #60a5fa;
+                  margin-bottom: 8px;
+                  font-weight: 500;
+                "
+              >
+                RGB — ეკრანისთვის
+              </div>
+              <div
+                style="
+                  font-size: 13px;
+                  color: rgba(240, 237, 232, 0.5);
+                  line-height: 1.7;
+                "
+              >
+                ვებ · სოციალური მედია · ტელევიზია · მობილური · კომპიუტერი
+              </div>
+            </div>
+            <div>
+              <div
+                style="
+                  font-size: 12px;
+                  color: #a78bfa;
+                  margin-bottom: 8px;
+                  font-weight: 500;
+                "
+              >
+                CMYK — ბეჭდვისთვის
+              </div>
+              <div
+                style="
+                  font-size: 13px;
+                  color: rgba(240, 237, 232, 0.5);
+                  line-height: 1.7;
+                "
+              >
+                ჟურნალები · პლაკატები · ბროშურები · წიგნები · შეფუთვა
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div
+      id="s-quiz"
+      class="bg-b"
+    >
+      <div class="section">
+        <div style="text-align: center; margin-bottom: 56px">
+          <div
+            class="s-tag"
+            style="text-align: center"
+          >
+            04 · გამოცდა
+          </div>
+          <h2
+            class="s-title"
+            style="text-align: center"
+          >
+            შეამოწმე <em>ცოდნა</em>
+          </h2>
+          <div
+            class="rule"
+            style="margin: 18px auto 0"
+          ></div>
+        </div>
+        <div class="quiz-wrap">
+          <div
+            class="q-block"
+            id="q0"
+          >
+            <div class="q-num">კითხვა 01</div>
+            <div class="q-text">
+              რომელი ფერთა მოდელი გამოიყენება ბეჭდვისთვის?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(0, 0)"
+              >
+                <div class="odot"></div>
+                RGB
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 1)"
+              >
+                <div class="odot"></div>
+                CMYK
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 2)"
+              >
+                <div class="odot"></div>
+                Lab
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 3)"
+              >
+                <div class="odot"></div>
+                Grayscale
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb0"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q1"
+          >
+            <div class="q-num">კითხვა 02</div>
+            <div class="q-text">Bitmap რეჟიმში პიქსელი შეიძლება იყოს:</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(1, 0)"
+              >
+                <div class="odot"></div>
+                256 ტონიდან ერთ-ერთი
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 1)"
+              >
+                <div class="odot"></div>
+                მხოლოდ შავი ან თეთრი
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 2)"
+              >
+                <div class="odot"></div>
+                R, G, B კომბინაცია
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 3)"
+              >
+                <div class="odot"></div>
+                L, a, b კომბინაცია
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb1"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q2"
+          >
+            <div class="q-num">კითხვა 03</div>
+            <div class="q-text">RGB-ში წითელი + მწვანე = ?</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(2, 0)"
+              >
+                <div class="odot"></div>
+                Cyan
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 1)"
+              >
+                <div class="odot"></div>
+                Magenta
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 2)"
+              >
+                <div class="odot"></div>
+                Yellow
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 3)"
+              >
+                <div class="odot"></div>
+                White
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb2"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q3"
+          >
+            <div class="q-num">კითხვა 04</div>
+            <div class="q-text">
+              Vibrance-სა და Saturation-ს შორის მთავარი განსხვავება:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(3, 0)"
+              >
+                <div class="odot"></div>
+                Vibrance უფრო სწრაფია
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 1)"
+              >
+                <div class="odot"></div>
+                Vibrance მხოლოდ სუსტ ფერებს ძლიერად აძლიერებს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 2)"
+              >
+                <div class="odot"></div>
+                Saturation მხოლოდ RGB-ში მუშაობს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 3)"
+              >
+                <div class="odot"></div>
+                განსხვავება არ არის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb3"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q4"
+          >
+            <div class="q-num">კითხვა 05</div>
+            <div class="q-text">Lab Color-ის L კომპონენტი მიუთითებს:</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(4, 0)"
+              >
+                <div class="odot"></div>
+                ლურჯ ფერზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 1)"
+              >
+                <div class="odot"></div>
+                სინათლის ინტენსივობაზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 2)"
+              >
+                <div class="odot"></div>
+                ფერთა ბალანსზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 3)"
+              >
+                <div class="odot"></div>
+                ყვითელ ღერძზე
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb4"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q5"
+          >
+            <div class="q-num">კითხვა 06</div>
+            <div class="q-text">
+              Black & White-სა და Grayscale-ს შორის განსხვავება:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(5, 0)"
+              >
+                <div class="odot"></div>
+                B&W მხოლოდ CMYK-ში მუშაობს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 1)"
+              >
+                <div class="odot"></div>
+                B&W ტონების კონტროლს გვაძლევს; Grayscale ყველა ფერს შლის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 2)"
+              >
+                <div class="odot"></div>
+                Grayscale უფრო ნათელია
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 3)"
+              >
+                <div class="odot"></div>
+                განსხვავება ფაილის ზომაა
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb5"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q6"
+          >
+            <div class="q-num">კითხვა 07</div>
+            <div class="q-text">RGB → CMYK კონვერტაციისას რა ხდება?</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(6, 0)"
+              >
+                <div class="odot"></div>
+                ფერები უფრო ნათელი ხდება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 1)"
+              >
+                <div class="odot"></div>
+                ფერები შეიძლება ფერმკრთალდეს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 2)"
+              >
+                <div class="odot"></div>
+                ფაილი წაიშლება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 3)"
+              >
+                <div class="odot"></div>
+                Bitmap-ზე გადადის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb6"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q7"
+          >
+            <div class="q-num">კითხვა 08</div>
+            <div class="q-text">
+              Exposure-ის Gamma პარამეტრი პასუხისმგებელია:
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(7, 0)"
+              >
+                <div class="odot"></div>
+                მთლიანი ნათელობის ცვლაზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 1)"
+              >
+                <div class="odot"></div>
+                შუა ტონების რეგულირებაზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 2)"
+              >
+                <div class="odot"></div>
+                CMYK-ის K კანალზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(7, 3)"
+              >
+                <div class="odot"></div>
+                ფონის წაშლაზე
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb7"
+            ></div>
+          </div>
+
+          <div class="quiz-footer">
+            <button
+              class="btn-submit"
+              id="submitBtn"
+              onclick="submitQuiz()"
+            >
+              შედეგის ნახვა
+            </button>
+          </div>
+          <div
+            class="score-panel"
+            id="scorePanel"
+          >
+            <div
+              class="score-big"
+              id="scoreNum"
+            >
+              0/8
+            </div>
+            <div class="score-of">სწორი პასუხი</div>
+            <div
+              class="score-msg"
+              id="scoreMsg"
+            ></div>
+            <button
+              class="btn-retry"
+              onclick="retryQuiz()"
+            >
+              თავიდან ცდა
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Adobe Photoshop · ფერთა მოდელები და ტონალური კორექცია · სასწავლო მასალა
+      </p>
+    </footer>
+
+    <script>
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
+
+      const ANS = [1, 1, 2, 1, 1, 1, 1, 1];
+      const EXP = [
+        "CMYK (Cyan, Magenta, Yellow, Black) გამოიყენება ბეჭდვაში — მუშაობს მელნის შერევის პრინციპით.",
+        "Bitmap-ში პიქსელი ან 0 (შავი) ან 1 (თეთრი) — მეტი არაფერი.",
+        "Red + Green = Yellow. ეს სინათლის შერევის პრინციპია.",
+        "Vibrance სელექტიურად მოქმედებს — სუსტ ფერებს ძლიერად, კანის ტონს იცავს.",
+        "L = Lightness — სინათლის ინტენსივობა. a = მწვანე↔წითელი, b = ლურჯი↔ყვითელი.",
+        "B&W (Adjustment) გაძლევს კონტროლს ყოველ ფერზე ცალ-ცალკე. Grayscale (Mode) ყველა ფერს მთლიანად შლის.",
+        "CMYK-ის ფერთა დიაპაზონი RGB-ზე მცირეა — ნათელი ფერები ხშირად ფერმკრთალდება.",
+        "Gamma Correction არეგულირებს სურათის შუა ტონებს (Midtones).",
+      ];
+      const WRONG = [
+        "სწორია: CMYK — ბეჭდვისთვის.",
+        "სწორია: Bitmap = 0 (შავი) ან 1 (თეთრი).",
+        "სწორია: Red + Green = Yellow.",
+        "სწორია: Vibrance სუსტ ფერებს უფრო ძლიერად ზრდის.",
+        "სწორია: L = Lightness (სინათლე).",
+        "სწორია: B&W ტონებს ინარჩუნებს; Grayscale ყველაფერს შლის.",
+        "სწორია: CMYK-ის gamut მცირეა — ფერები ფერმკრთალდება.",
+        "სწორია: Gamma — შუა ტონების კონტროლი.",
+      ];
+      const N = 8;
+      const picked = new Array(N).fill(-1);
+      let submitted = false;
+
+      function pick(q, opt) {
+        if (submitted) return;
+        const b = document.getElementById("q" + q);
+        b.querySelectorAll(".opt").forEach((o) =>
+          o.classList.remove("sel-ok", "sel-bad"),
+        );
+        picked[q] = opt;
+        b.querySelectorAll(".opt")[opt].classList.add(
+          opt === ANS[q] ? "sel-ok" : "sel-bad",
+        );
+        const done = picked.filter((x) => x >= 0).length;
+        document.getElementById("pbar").style.width = (done / N) * 80 + 5 + "%";
+      }
+
+      function submitQuiz() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          const opts = b.querySelectorAll(".opt");
+          const fb = document.getElementById("fb" + q);
+          if (picked[q] === ANS[q]) {
+            score++;
+            b.classList.add("correct");
+            fb.textContent = "✓ " + EXP[q];
+            fb.className = "q-fb show ok";
+          } else {
+            b.classList.add("wrong");
+            opts[ANS[q]].classList.add("reveal");
+            fb.textContent = "✗ " + WRONG[q];
+            fb.className = "q-fb show bad";
+          }
+          opts.forEach((o) => o.classList.add("locked"));
+        }
+        const msgs = [
+          "კიდევ სცადე 💪",
+          "გამოსადეგია კიდევ ერთი გამეორება.",
+          "ცუდი არ არის!",
+          "კარგი შედეგი!",
+          "ძალიან კარგი!",
+          "თითქმის სრული!",
+          "სრულყოფილი! 🎉",
+          "სრული ქულა! 🏆",
+          "სრული ქულა! 🏆",
+        ];
+        document.getElementById("scoreNum").textContent = score + "/" + N;
+        document.getElementById("scoreMsg").textContent = msgs[score];
+        const p = document.getElementById("scorePanel");
+        p.classList.add("show");
+        p.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("pbar").style.width = "100%";
+      }
+
+      function retryQuiz() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        document.getElementById("pbar").style.width = "5%";
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          b.classList.remove("correct", "wrong");
+          b.querySelectorAll(".opt").forEach((o) =>
+            o.classList.remove("sel-ok", "sel-bad", "reveal", "locked"),
+          );
+          const fb = document.getElementById("fb" + q);
+          fb.className = "q-fb";
+          fb.textContent = "";
+        }
+      }
+
+      function goTo(id) {
+        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+      }
+
+      window.addEventListener("scroll", () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        if (!submitted && h > 0)
+          document.getElementById("pbar").style.width =
+            Math.min((window.scrollY / h) * 90 + 2, 90) + "%";
+      });
+    </script>
+  </body>
+</html>
