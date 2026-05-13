@@ -1,569 +1,2047 @@
 <!doctype html>
 <html lang="ka">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>გეომეტრიული ფიგურები — Adobe Photoshop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:"Noto Sans Georgian",sans-serif;background:#0a0a0a;color:#f0ede8;min-height:100vh;overflow-x:hidden}
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <title>გეომეტრიული ფიგურები — Adobe Photoshop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: #0a0a0a;
+        color: #f0ede8;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-    .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#c8a96e,#e8c99e);transition:width .4s;z-index:100}
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c8a96e, #e8c99e);
+        transition: width 0.4s;
+        z-index: 100;
+      }
 
-    /* ── NAV ── */
-    .nav{position:fixed;top:0;left:0;right:0;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;z-index:90;background:rgba(10,10,10,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
-    .nav-left{display:flex;align-items:center;gap:14px}
-    .nav-logo{font-size:12px;font-weight:500;letter-spacing:3px;color:#c8a96e;text-transform:uppercase}
+      /* ── NAV ── */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        background: rgba(10, 10, 10, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .nav-logo {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 3px;
+        color: #c8a96e;
+        text-transform: uppercase;
+      }
 
-    /* Home button */
-    .nav-home{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,237,232,.35);text-decoration:none;cursor:pointer;transition:color .2s;white-space:nowrap;border:1px solid rgba(255,255,255,.08);padding:5px 12px;border-radius:100px}
-    .nav-home:hover{color:#c8a96e;border-color:rgba(200,169,110,.3)}
-    .nav-divider{width:1px;height:16px;background:rgba(255,255,255,.1)}
+      /* Home button */
+      .nav-home {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+      }
+      .nav-home:hover {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-    /* Dropdown */
-    .nav-dropdown-wrap{position:relative}
-    .nav-dropdown-btn{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,237,232,.35);cursor:pointer;transition:color .2s;white-space:nowrap;border:1px solid rgba(255,255,255,.08);padding:5px 12px;border-radius:100px;background:transparent;font-family:"Noto Sans Georgian",sans-serif}
-    .nav-dropdown-btn:hover,.nav-dropdown-wrap.open .nav-dropdown-btn{color:#c8a96e;border-color:rgba(200,169,110,.3)}
-    .nav-dropdown-btn .chevron{transition:transform .25s;display:inline-block}
-    .nav-dropdown-wrap.open .chevron{transform:rotate(180deg)}
-    .nav-dropdown-menu{position:absolute;top:calc(100% + 10px);left:0;background:rgba(14,14,14,.97);border:1px solid rgba(200,169,110,.18);border-radius:8px;padding:6px;min-width:215px;z-index:200;backdrop-filter:blur(16px);opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .2s,transform .2s}
-    .nav-dropdown-wrap.open .nav-dropdown-menu{opacity:1;pointer-events:auto;transform:translateY(0)}
-    .nav-dropdown-menu a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;font-size:12px;color:rgba(240,237,232,.55);text-decoration:none;cursor:pointer;transition:background .15s,color .15s;letter-spacing:.02em}
-    .nav-dropdown-menu a:hover{background:rgba(200,169,110,.1);color:#f0ede8}
-    .nav-dropdown-menu a.current{color:#c8a96e;pointer-events:none}
-    .nav-dropdown-menu a .num{font-size:9px;letter-spacing:.1em;color:rgba(200,169,110,.5);font-weight:600;min-width:20px}
+      /* Dropdown */
+      .nav-dropdown-wrap {
+        position: relative;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: transparent;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-wrap.open .nav-dropdown-btn {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-dropdown-btn .chevron {
+        transition: transform 0.25s;
+        display: inline-block;
+      }
+      .nav-dropdown-wrap.open .chevron {
+        transform: rotate(180deg);
+      }
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(14, 14, 14, 0.97);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 8px;
+        padding: 6px;
+        min-width: 215px;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-dropdown-wrap.open .nav-dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.55);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(200, 169, 110, 0.1);
+        color: #f0ede8;
+      }
+      .nav-dropdown-menu a.current {
+        color: #c8a96e;
+        pointer-events: none;
+      }
+      .nav-dropdown-menu a .num {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: rgba(200, 169, 110, 0.5);
+        font-weight: 600;
+        min-width: 20px;
+      }
 
-    /* Dots */
-    .nav-steps{display:flex;gap:6px}
-    .nav-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
-    .nav-dot.active{background:#c8a96e;transform:scale(1.4)}
-    .nav-dot.done{background:rgba(200,169,110,.5)}
+      /* Dots */
+      .nav-steps {
+        display: flex;
+        gap: 6px;
+      }
+      .nav-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .nav-dot.active {
+        background: #c8a96e;
+        transform: scale(1.4);
+      }
+      .nav-dot.done {
+        background: rgba(200, 169, 110, 0.5);
+      }
 
-    /* ── SLIDES ── */
-    .slides{display:flex;flex-direction:column}
-    .slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:90px 40px 70px;position:relative;overflow:hidden}
-    .slide:nth-child(odd){background:#0a0a0a}
-    .slide:nth-child(even){background:#0d0d0d}
-    .slide-inner{max-width:1000px;width:100%;position:relative;z-index:2}
+      /* ── SLIDES ── */
+      .slides {
+        display: flex;
+        flex-direction: column;
+      }
+      .slide {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 90px 40px 70px;
+        position: relative;
+        overflow: hidden;
+      }
+      .slide:nth-child(odd) {
+        background: #0a0a0a;
+      }
+      .slide:nth-child(even) {
+        background: #0d0d0d;
+      }
+      .slide-inner {
+        max-width: 1000px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
 
-    /* ── HERO ── */
-    .hero-label{font-size:11px;letter-spacing:4px;color:#c8a96e;text-transform:uppercase;margin-bottom:20px;opacity:.8}
-    .hero-title{font-size:clamp(46px,7vw,84px);font-weight:700;line-height:1.05;margin-bottom:24px}
-    .hero-title .t1{display:block;color:#f0ede8}
-    .hero-title .t2{display:block;color:#c8a96e;font-weight:300;font-style:italic}
-    .hero-sub{font-size:15px;color:rgba(240,237,232,.45);max-width:480px;line-height:1.75;margin-bottom:44px}
-    .hero-pills{display:flex;gap:12px;flex-wrap:wrap}
-    .pill{padding:7px 18px;border:1px solid rgba(200,169,110,.28);border-radius:40px;font-size:11px;color:#c8a96e;cursor:pointer;transition:all .3s;letter-spacing:.5px}
-    .pill:hover{background:rgba(200,169,110,.1)}
-    .hero-deco{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:240px;color:rgba(200,169,110,.04);font-weight:900;pointer-events:none;user-select:none;line-height:1}
+      /* ── HERO ── */
+      .hero-label {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        opacity: 0.8;
+      }
+      .hero-title {
+        font-size: clamp(46px, 7vw, 84px);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 24px;
+      }
+      .hero-title .t1 {
+        display: block;
+        color: #f0ede8;
+      }
+      .hero-title .t2 {
+        display: block;
+        color: #c8a96e;
+        font-weight: 300;
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.45);
+        max-width: 480px;
+        line-height: 1.75;
+        margin-bottom: 44px;
+      }
+      .hero-pills {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        padding: 7px 18px;
+        border: 1px solid rgba(200, 169, 110, 0.28);
+        border-radius: 40px;
+        font-size: 11px;
+        color: #c8a96e;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 0.5px;
+      }
+      .pill:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
+      .hero-deco {
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 240px;
+        color: rgba(200, 169, 110, 0.04);
+        font-weight: 900;
+        pointer-events: none;
+        user-select: none;
+        line-height: 1;
+      }
 
-    /* ── CONTENT ── */
-    .sec-num{font-size:11px;letter-spacing:4px;color:#c8a96e;text-transform:uppercase;margin-bottom:16px;opacity:.7}
-    .sec-title{font-size:clamp(28px,4vw,48px);font-weight:700;line-height:1.1;margin-bottom:20px}
-    .sec-title em{font-style:normal;color:#c8a96e}
-    .divider{width:48px;height:1px;background:linear-gradient(90deg,#c8a96e,transparent);margin-bottom:28px}
-    .sec-desc{font-size:15px;color:rgba(240,237,232,.55);line-height:1.75;max-width:660px;margin-bottom:32px}
+      /* ── CONTENT ── */
+      .sec-num {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        opacity: 0.7;
+      }
+      .sec-title {
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+      .sec-title em {
+        font-style: normal;
+        color: #c8a96e;
+      }
+      .divider {
+        width: 48px;
+        height: 1px;
+        background: linear-gradient(90deg, #c8a96e, transparent);
+        margin-bottom: 28px;
+      }
+      .sec-desc {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.75;
+        max-width: 660px;
+        margin-bottom: 32px;
+      }
 
-    /* TOOL GRID */
-    .tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
-    .tc{border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:18px 14px;cursor:pointer;transition:all .25s;text-align:center;background:rgba(255,255,255,.02)}
-    .tc:hover,.tc.active{border-color:rgba(200,169,110,.4);background:rgba(200,169,110,.06)}
-    .tc svg{display:block;margin:0 auto 10px}
-    .tc-name{font-size:11px;font-weight:500;color:#f0ede8;margin-bottom:3px}
-    .tc-sub{font-size:10px;color:rgba(240,237,232,.35);letter-spacing:.5px}
-    kbd{display:inline-block;padding:1px 5px;border:1px solid rgba(255,255,255,.2);border-radius:3px;font-size:10px;font-family:monospace;background:rgba(255,255,255,.06)}
-    .tool-info{margin-top:4px;padding:16px 20px;background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.18);border-radius:10px;font-size:13px;color:rgba(240,237,232,.7);line-height:1.7;min-height:60px}
-    .tool-info h3{color:#f0ede8;font-size:14px;margin-bottom:6px}
+      /* TOOL GRID */
+      .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .tc {
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        padding: 18px 14px;
+        cursor: pointer;
+        transition: all 0.25s;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .tc:hover,
+      .tc.active {
+        border-color: rgba(200, 169, 110, 0.4);
+        background: rgba(200, 169, 110, 0.06);
+      }
+      .tc svg {
+        display: block;
+        margin: 0 auto 10px;
+      }
+      .tc-name {
+        font-size: 11px;
+        font-weight: 500;
+        color: #f0ede8;
+        margin-bottom: 3px;
+      }
+      .tc-sub {
+        font-size: 10px;
+        color: rgba(240, 237, 232, 0.35);
+        letter-spacing: 0.5px;
+      }
+      kbd {
+        display: inline-block;
+        padding: 1px 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+        font-size: 10px;
+        font-family: monospace;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .tool-info {
+        margin-top: 4px;
+        padding: 16px 20px;
+        background: rgba(200, 169, 110, 0.06);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 10px;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.7);
+        line-height: 1.7;
+        min-height: 60px;
+      }
+      .tool-info h3 {
+        color: #f0ede8;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
 
-    /* PROPS / TWO-COL */
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-    .prop-card{padding:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px}
-    .prop-card h3{font-size:14px;color:#c8a96e;margin-bottom:8px}
-    .prop-card p{font-size:13px;color:rgba(240,237,232,.6);line-height:1.65}
-    .tip{padding:14px 18px;background:rgba(200,169,110,.06);border-left:2px solid #c8a96e;border-radius:0 8px 8px 0;font-size:13px;color:rgba(240,237,232,.65);line-height:1.65;margin-top:4px}
+      /* PROPS / TWO-COL */
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .prop-card {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+      }
+      .prop-card h3 {
+        font-size: 14px;
+        color: #c8a96e;
+        margin-bottom: 8px;
+      }
+      .prop-card p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.6);
+        line-height: 1.65;
+      }
+      .tip {
+        padding: 14px 18px;
+        background: rgba(200, 169, 110, 0.06);
+        border-left: 2px solid #c8a96e;
+        border-radius: 0 8px 8px 0;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.65);
+        line-height: 1.65;
+        margin-top: 4px;
+      }
 
-    /* STEPS */
-    .steps{display:flex;flex-direction:column;gap:12px}
-    .step{display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;transition:border-color .25s}
-    .step:hover{border-color:rgba(200,169,110,.25)}
-    .sn{width:28px;height:28px;border-radius:50%;background:rgba(200,169,110,.15);border:1px solid rgba(200,169,110,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#c8a96e;flex-shrink:0}
-    .st{font-size:13px;font-weight:600;color:#f0ede8;margin-bottom:4px}
-    .sd{font-size:12px;color:rgba(240,237,232,.5);line-height:1.6}
+      /* STEPS */
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        transition: border-color 0.25s;
+      }
+      .step:hover {
+        border-color: rgba(200, 169, 110, 0.25);
+      }
+      .sn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(200, 169, 110, 0.15);
+        border: 1px solid rgba(200, 169, 110, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #c8a96e;
+        flex-shrink: 0;
+      }
+      .st {
+        font-size: 13px;
+        font-weight: 600;
+        color: #f0ede8;
+        margin-bottom: 4px;
+      }
+      .sd {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.6;
+      }
 
-    /* DEMO */
-    .ibox{padding:18px 22px;background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.18);border-radius:10px;margin-bottom:16px}
-    .ibox h3{font-size:14px;color:#e8c99e;margin-bottom:6px}
-    .ibox p{font-size:13px;color:rgba(240,237,232,.6);line-height:1.65}
-    .demo-wrap{display:flex;flex-direction:column;gap:12px}
-    .demo-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px}
-    .blabel{font-size:10px;letter-spacing:2px;color:rgba(240,237,232,.3);text-transform:uppercase;margin-right:4px}
-    .tb{padding:5px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;font-size:11px;color:rgba(240,237,232,.6);cursor:pointer;transition:all .2s;font-family:"Noto Sans Georgian",sans-serif}
-    .tb:hover,.tb.sel{background:rgba(200,169,110,.15);border-color:rgba(200,169,110,.4);color:#c8a96e}
-    .tbdiv{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
-    .cp{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
-    .cp:hover,.cp.sel{border-color:#fff;transform:scale(1.2)}
-    .canvas-area{position:relative;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:10px;height:280px;overflow:hidden;cursor:crosshair;user-select:none}
-    .canvas-area svg{position:absolute;inset:0;width:100%;height:100%}
-    .chint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(240,237,232,.2);pointer-events:none;letter-spacing:1px}
-    .pb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .pb{padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:8px}
-    .pb-k{font-size:10px;letter-spacing:1.5px;color:rgba(240,237,232,.3);text-transform:uppercase;margin-bottom:4px}
-    .pb-v{font-size:13px;color:#c8a96e;font-weight:500}
+      /* DEMO */
+      .ibox {
+        padding: 18px 22px;
+        background: rgba(200, 169, 110, 0.05);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 10px;
+        margin-bottom: 16px;
+      }
+      .ibox h3 {
+        font-size: 14px;
+        color: #e8c99e;
+        margin-bottom: 6px;
+      }
+      .ibox p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.6);
+        line-height: 1.65;
+      }
+      .demo-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .demo-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+      }
+      .blabel {
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: rgba(240, 237, 232, 0.3);
+        text-transform: uppercase;
+        margin-right: 4px;
+      }
+      .tb {
+        padding: 5px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        font-size: 11px;
+        color: rgba(240, 237, 232, 0.6);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .tb:hover,
+      .tb.sel {
+        background: rgba(200, 169, 110, 0.15);
+        border-color: rgba(200, 169, 110, 0.4);
+        color: #c8a96e;
+      }
+      .tbdiv {
+        width: 1px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0 4px;
+      }
+      .cp {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+      }
+      .cp:hover,
+      .cp.sel {
+        border-color: #fff;
+        transform: scale(1.2);
+      }
+      .canvas-area {
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        height: 280px;
+        overflow: hidden;
+        cursor: crosshair;
+        user-select: none;
+      }
+      .canvas-area svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .chint {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.2);
+        pointer-events: none;
+        letter-spacing: 1px;
+      }
+      .pb-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .pb {
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+      }
+      .pb-k {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        color: rgba(240, 237, 232, 0.3);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .pb-v {
+        font-size: 13px;
+        color: #c8a96e;
+        font-weight: 500;
+      }
 
-    /* POSTER */
-    .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
-    .pc{border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.02)}
-    .pc svg{display:block;width:100%}
-    .pc-info{padding:12px 14px}
-    .pc-info h3{font-size:13px;color:#f0ede8;margin-bottom:4px}
-    .pc-info p{font-size:11px;color:rgba(240,237,232,.4);line-height:1.5}
+      /* POSTER */
+      .pgrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .pc {
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .pc svg {
+        display: block;
+        width: 100%;
+      }
+      .pc-info {
+        padding: 12px 14px;
+      }
+      .pc-info h3 {
+        font-size: 13px;
+        color: #f0ede8;
+        margin-bottom: 4px;
+      }
+      .pc-info p {
+        font-size: 11px;
+        color: rgba(240, 237, 232, 0.4);
+        line-height: 1.5;
+      }
 
-    /* QUIZ */
-    .quiz-wrap{max-width:700px;margin:0 auto}
-    .quiz-header{text-align:center;margin-bottom:32px}
-    .pdots{display:flex;gap:10px;justify-content:center;margin-bottom:28px}
-    .pdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.1);transition:all .3s}
-    .pdot.done{background:rgba(200,169,110,.5);border-color:rgba(200,169,110,.5)}
-    .q-block{margin-bottom:24px;padding:22px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;transition:border-color .3s}
-    .q-block.correct{border-color:rgba(100,200,130,.3);background:rgba(100,200,130,.04)}
-    .q-block.wrong{border-color:rgba(220,80,80,.3);background:rgba(220,80,80,.04)}
-    .q-num{font-size:10px;letter-spacing:3px;color:rgba(200,169,110,.5);text-transform:uppercase;margin-bottom:10px}
-    .q-text{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:16px}
-    .q-opts{display:flex;flex-direction:column;gap:8px}
-    .qopt{display:flex;align-items:center;gap:12px;padding:10px 16px;border:1px solid rgba(255,255,255,.08);border-radius:8px;cursor:pointer;transition:all .2s;font-size:13px;color:rgba(240,237,232,.7)}
-    .qopt:hover{border-color:rgba(200,169,110,.3);color:#f0ede8}
-    .qopt.correct{border-color:rgba(100,200,130,.5);background:rgba(100,200,130,.08);color:#a0e8b0}
-    .qopt.wrong{border-color:rgba(220,80,80,.4);background:rgba(220,80,80,.06);color:#f08080}
-    .qopt.reveal{border-color:rgba(100,200,130,.5);background:rgba(100,200,130,.08);color:#a0e8b0}
-    .qopt.locked{cursor:default}
-    .opt-dot{width:7px;height:7px;border-radius:50%;border:1px solid currentColor;flex-shrink:0;opacity:.5}
-    .qfb{display:none;margin-top:10px;padding:8px 14px;border-radius:6px;font-size:12px;line-height:1.5}
-    .qfb.ok{background:rgba(100,200,130,.08);color:#a0e8b0}
-    .qfb.bad{background:rgba(220,80,80,.08);color:#f08080}
-    .submit-wrap{text-align:center;margin:28px 0 0}
-    .btn-submit{padding:14px 48px;background:#c8a96e;color:#0a0a0a;border:none;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;letter-spacing:1px;text-transform:uppercase;font-family:"Noto Sans Georgian",sans-serif}
-    .btn-submit:hover{background:#e8c99e;transform:scale(1.02)}
-    .btn-submit:disabled{opacity:.4;cursor:default;transform:none}
-    .score-panel{display:none;text-align:center;padding:40px;background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.2);border-radius:16px;margin-top:24px}
-    .score-panel.show{display:block}
-    .score-big{font-size:64px;font-weight:700;color:#c8a96e;line-height:1}
-    .score-label{font-size:14px;color:rgba(240,237,232,.5);margin-top:8px}
-    .score-msg{font-size:16px;color:#f0ede8;margin-top:16px;line-height:1.6}
-    .btn-retry{margin-top:20px;padding:10px 32px;background:transparent;color:#c8a96e;border:1px solid rgba(200,169,110,.4);border-radius:40px;font-size:13px;cursor:pointer;transition:all .3s;font-family:"Noto Sans Georgian",sans-serif}
-    .btn-retry:hover{background:rgba(200,169,110,.1)}
+      /* QUIZ */
+      .quiz-wrap {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .quiz-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .pdots {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 28px;
+      }
+      .pdot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+      }
+      .pdot.done {
+        background: rgba(200, 169, 110, 0.5);
+        border-color: rgba(200, 169, 110, 0.5);
+      }
+      .q-block {
+        margin-bottom: 24px;
+        padding: 22px 24px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        transition: border-color 0.3s;
+      }
+      .q-block.correct {
+        border-color: rgba(100, 200, 130, 0.3);
+        background: rgba(100, 200, 130, 0.04);
+      }
+      .q-block.wrong {
+        border-color: rgba(220, 80, 80, 0.3);
+        background: rgba(220, 80, 80, 0.04);
+      }
+      .q-num {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: rgba(200, 169, 110, 0.5);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .q-text {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.55;
+        margin-bottom: 16px;
+      }
+      .q-opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .qopt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.7);
+      }
+      .qopt:hover {
+        border-color: rgba(200, 169, 110, 0.3);
+        color: #f0ede8;
+      }
+      .qopt.correct {
+        border-color: rgba(100, 200, 130, 0.5);
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .qopt.wrong {
+        border-color: rgba(220, 80, 80, 0.4);
+        background: rgba(220, 80, 80, 0.06);
+        color: #f08080;
+      }
+      .qopt.reveal {
+        border-color: rgba(100, 200, 130, 0.5);
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .qopt.locked {
+        cursor: default;
+      }
+      .opt-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        border: 1px solid currentColor;
+        flex-shrink: 0;
+        opacity: 0.5;
+      }
+      .qfb {
+        display: none;
+        margin-top: 10px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .qfb.ok {
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .qfb.bad {
+        background: rgba(220, 80, 80, 0.08);
+        color: #f08080;
+      }
+      .submit-wrap {
+        text-align: center;
+        margin: 28px 0 0;
+      }
+      .btn-submit {
+        padding: 14px 48px;
+        background: #c8a96e;
+        color: #0a0a0a;
+        border: none;
+        border-radius: 40px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .btn-submit:hover {
+        background: #e8c99e;
+        transform: scale(1.02);
+      }
+      .btn-submit:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+      }
+      .score-panel {
+        display: none;
+        text-align: center;
+        padding: 40px;
+        background: rgba(200, 169, 110, 0.07);
+        border: 1px solid rgba(200, 169, 110, 0.2);
+        border-radius: 16px;
+        margin-top: 24px;
+      }
+      .score-panel.show {
+        display: block;
+      }
+      .score-big {
+        font-size: 64px;
+        font-weight: 700;
+        color: #c8a96e;
+        line-height: 1;
+      }
+      .score-label {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.5);
+        margin-top: 8px;
+      }
+      .score-msg {
+        font-size: 16px;
+        color: #f0ede8;
+        margin-top: 16px;
+        line-height: 1.6;
+      }
+      .btn-retry {
+        margin-top: 20px;
+        padding: 10px 32px;
+        background: transparent;
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.4);
+        border-radius: 40px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .btn-retry:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
 
-    @media(max-width:640px){
-      .tool-grid{grid-template-columns:repeat(2,1fr)}
-      .two{grid-template-columns:1fr}
-      .pgrid{grid-template-columns:1fr}
-      .pb-grid{grid-template-columns:repeat(2,1fr)}
-      .nav{padding:12px 16px}
-      .slide{padding:80px 20px 60px}
-    }
-  </style>
-</head>
-<body>
+      @media (max-width: 640px) {
+        .tool-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .two {
+          grid-template-columns: 1fr;
+        }
+        .pgrid {
+          grid-template-columns: 1fr;
+        }
+        .pb-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .nav {
+          padding: 12px 16px;
+        }
+        .slide {
+          padding: 80px 20px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+      style="width: 5%"
+    ></div>
 
-<div class="progress-bar" id="pbar" style="width:5%"></div>
-
-<nav class="nav">
-  <div class="nav-left">
-    <a class="nav-home" href="მთავარი.html">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      მთავარი
-    </a>
-    <div class="nav-divider"></div>
-    <div class="nav-dropdown-wrap" id="moduleDropdown">
-      <button class="nav-dropdown-btn" onclick="toggleDropdown()">
-        მოდულები <span class="chevron">▾</span>
-      </button>
-      <div class="nav-dropdown-menu">
-        <a href="ფერებიდატონები.html"><span class="num">01</span>ფერები და ტონები</a>
-        <a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a>
-        <a href="გეომეტრიულიფიგურები.html" class="current"><span class="num">03</span>გეომეტრიული ფიგურები</a>
-        <a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
-        <a href="ტონისკორექცია.html"><span class="num">05</span>ტონის კორექცია</a>
-        <a href="რეტუში.html"><span class="num">06</span>რეტუში</a>
+    <nav class="nav">
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="index.html"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          მთავარი
+        </a>
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="ფერებიდატონები.html"
+              ><span class="num">01</span>ფერები და ტონები</a
+            >
+            <a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a>
+            <a
+              href="გეომეტრიულიფიგურები.html"
+              class="current"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            >
+            <a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
+            <a href="ტონისკორექცია.html"
+              ><span class="num">05</span>ტონის კორექცია</a
+            >
+            <a href="რეტუში.html"><span class="num">06</span>რეტუში</a>
+            <a href="რეტუში2.html"><span class="num">07</span>რეტუში 2</a>
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Shape & Design</div>
       </div>
+      <div
+        class="nav-steps"
+        id="navdots"
+      ></div>
+    </nav>
+
+    <div
+      class="slides"
+      id="slides"
+    >
+      <!-- SLIDE 0: HERO -->
+      <section
+        class="slide"
+        id="s0"
+      >
+        <div class="slide-inner">
+          <div class="hero-label">Adobe Photoshop · ვექტორული ობიექტები</div>
+          <div class="hero-title">
+            <span class="t1">გეომეტრიული</span>
+            <span class="t2">ფიგურები</span>
+            <span class="t1">და ფორმები</span>
+          </div>
+          <p class="hero-sub">
+            Photoshop-ის Shape Tool — სრული გზამკვლევი ინსტრუმენტებიდან
+            კომპოზიციამდე.
+          </p>
+          <div class="hero-pills">
+            <div
+              class="pill"
+              onclick="goTo('s1')"
+            >
+              01 · თეორია
+            </div>
+            <div
+              class="pill"
+              onclick="goTo('s2')"
+            >
+              02 · ინტერაქტიური Canvas
+            </div>
+            <div
+              class="pill"
+              onclick="goTo('s3')"
+            >
+              03 · პოსტერი
+            </div>
+            <div
+              class="pill"
+              onclick="goTo('s4')"
+            >
+              04 · ქვიზი
+            </div>
+          </div>
+        </div>
+        <div class="hero-deco">◇</div>
+      </section>
+
+      <!-- SLIDE 1: THEORY -->
+      <section
+        class="slide"
+        id="s1"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">01 · თეორია</div>
+          <h2 class="sec-title">Shape Tool-ების <em>სახეობები</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            Photoshop-ში Shape Tool ქმნის ვექტორულ გეომეტრიულ ფიგურებს —
+            ობიექტებს, რომლებიც გადიდებისას ხარისხს არ კარგავს.
+          </p>
+
+          <div class="tool-grid">
+            <div
+              class="tc active"
+              onclick="selTool(this, 'rect')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <rect
+                  x="2"
+                  y="2"
+                  width="32"
+                  height="24"
+                  rx="2"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.6"
+                />
+              </svg>
+              <div class="tc-name">Rectangle Tool</div>
+              <div class="tc-sub">ოთხკუთხედი · <kbd>U</kbd></div>
+            </div>
+            <div
+              class="tc"
+              onclick="selTool(this, 'ellipse')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <ellipse
+                  cx="18"
+                  cy="14"
+                  rx="15"
+                  ry="11"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.6"
+                />
+              </svg>
+              <div class="tc-name">Ellipse Tool</div>
+              <div class="tc-sub">ელიფსი / წრე · <kbd>U</kbd></div>
+            </div>
+            <div
+              class="tc"
+              onclick="selTool(this, 'triangle')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <polygon
+                  points="18,2 34,26 2,26"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.6"
+                />
+              </svg>
+              <div class="tc-name">Triangle Tool</div>
+              <div class="tc-sub">სამკუთხედი · <kbd>U</kbd></div>
+            </div>
+            <div
+              class="tc"
+              onclick="selTool(this, 'polygon')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <polygon
+                  points="18,2 30,9 30,21 18,28 6,21 6,9"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.6"
+                />
+              </svg>
+              <div class="tc-name">Polygon Tool</div>
+              <div class="tc-sub">მრავალკუთხ. · <kbd>U</kbd></div>
+            </div>
+            <div
+              class="tc"
+              onclick="selTool(this, 'line')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <line
+                  x1="4"
+                  y1="24"
+                  x2="32"
+                  y2="4"
+                  stroke="#c8a96e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <div class="tc-name">Line Tool</div>
+              <div class="tc-sub">სწორი ხაზი · <kbd>U</kbd></div>
+            </div>
+            <div
+              class="tc"
+              onclick="selTool(this, 'custom')"
+            >
+              <svg
+                width="36"
+                height="28"
+                viewBox="0 0 36 28"
+              >
+                <path
+                  d="M18 2 L28 12 L24 26 L12 26 L8 12 Z"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.6"
+                />
+              </svg>
+              <div class="tc-name">Custom Shape</div>
+              <div class="tc-sub">მზა ფორმები · <kbd>U</kbd></div>
+            </div>
+          </div>
+          <div
+            class="tool-info"
+            id="toolInfo"
+          >
+            <h3>Rectangle Tool &nbsp;<kbd>U</kbd></h3>
+            <p>
+              გადათრევით ოთხკუთხედი. <kbd>Shift</kbd> = კვადრატი &nbsp;·&nbsp;
+              <kbd>Alt</kbd> = ცენტრიდან. Properties → W, H, Corner Radius.
+            </p>
+          </div>
+
+          <div style="margin-top: 2rem">
+            <div class="sec-num">Fill &amp; Stroke</div>
+            <div
+              class="two"
+              style="margin-top: 0.5rem"
+            >
+              <div class="prop-card">
+                <h3>Fill — შევსება</h3>
+                <p>
+                  ფიგურის შიდა ფერი. მყარი ფერი, გრადიენტი, პატერნი ან None
+                  (გამჭვირვალე).
+                </p>
+              </div>
+              <div class="prop-card">
+                <h3>Stroke — კონტური</h3>
+                <p>კიდის ხაზი — სისქე, ფერი, სტილი: solid, dashed, dotted.</p>
+              </div>
+            </div>
+            <div class="tip">
+              <p>
+                Options Bar-ში Fill და Stroke ჩნდება Shape Tool-ის არჩევის
+                შემდეგ — ზედა მარცხნივ.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem">
+            <div class="sec-num">ნაბიჯ-ნაბიჯ</div>
+            <div
+              class="steps"
+              style="margin-top: 1rem"
+            >
+              <div class="step">
+                <div class="sn">1</div>
+                <div>
+                  <div class="st">Toolbar</div>
+                  <div class="sd">
+                    მარცხენა პანელში მართკუთხედის ხატზე გეჭიროთ → Shape
+                    Tool-ების სია.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">2</div>
+                <div>
+                  <div class="st">Shape რეჟიმი</div>
+                  <div class="sd">
+                    Options Bar → <kbd>Shape</kbd> — არა Path, არა Pixels. Shape
+                    = ვექტორული ფენა.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">3</div>
+                <div>
+                  <div class="st">დახატვა</div>
+                  <div class="sd">
+                    Canvas-ზე დააწექი და გადაათრიე. ახალი Layer ავტომატურად.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">4</div>
+                <div>
+                  <div class="st">Properties</div>
+                  <div class="sd">
+                    Window → Properties — W, H, Fill, Stroke, Corner Radius.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">5</div>
+                <div>
+                  <div class="st">Move Tool</div>
+                  <div class="sd">
+                    <kbd>V</kbd> → ფიგურა გადაათრიე სასურველ პოზიციაზე.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: DEMO -->
+      <section
+        class="slide"
+        id="s2"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">02 · დემო</div>
+          <h2 class="sec-title">ინტერაქტიული <em>Canvas</em></h2>
+          <div class="divider"></div>
+          <div
+            class="ibox"
+            style="margin-bottom: 1rem"
+          >
+            <h3>სავარჯიშო</h3>
+            <p>
+              აირჩიე ფორმა და ფერი, შემდეგ გადაათრიე Canvas-ზე. Properties
+              ავტომატურად განახლდება — ისევე, როგორც Photoshop-ში.
+            </p>
+          </div>
+          <div class="demo-wrap">
+            <div class="demo-bar">
+              <span class="blabel">ფორმა</span>
+              <button
+                class="tb sel"
+                onclick="setShape('rect', this)"
+              >
+                Rectangle
+              </button>
+              <button
+                class="tb"
+                onclick="setShape('ellipse', this)"
+              >
+                Ellipse
+              </button>
+              <button
+                class="tb"
+                onclick="setShape('triangle', this)"
+              >
+                Triangle
+              </button>
+              <button
+                class="tb"
+                onclick="setShape('line', this)"
+              >
+                Line
+              </button>
+              <div class="tbdiv"></div>
+              <span class="blabel">Fill</span>
+              <div
+                class="cp sel"
+                style="background: #c8a96e"
+                onclick="setClr('#c8a96e', this)"
+              ></div>
+              <div
+                class="cp"
+                style="background: #f0ede8"
+                onclick="setClr('#f0ede8', this)"
+              ></div>
+              <div
+                class="cp"
+                style="background: #6a9e8a"
+                onclick="setClr('#6a9e8a', this)"
+              ></div>
+              <div
+                class="cp"
+                style="background: #9e7a6a"
+                onclick="setClr('#9e7a6a', this)"
+              ></div>
+              <div
+                class="cp"
+                style="background: #7a7a9e"
+                onclick="setClr('#7a7a9e', this)"
+              ></div>
+              <div
+                class="cp"
+                style="background: #9e6a7a"
+                onclick="setClr('#9e6a7a', this)"
+              ></div>
+              <div class="tbdiv"></div>
+              <button
+                class="tb"
+                onclick="clearC()"
+              >
+                გასუფთავება
+              </button>
+            </div>
+            <div
+              class="canvas-area"
+              id="cvs"
+              onmousedown="sd(event)"
+              onmousemove="md(event)"
+              onmouseup="ed(event)"
+            >
+              <svg id="svg"></svg>
+              <div
+                class="chint"
+                id="hint"
+              >
+                გადაათრიე ფიგურის დასახატად
+              </div>
+            </div>
+            <div class="pb-grid">
+              <div class="pb">
+                <div class="pb-k">ტიპი</div>
+                <div
+                  class="pb-v"
+                  id="pv-t"
+                >
+                  —
+                </div>
+              </div>
+              <div class="pb">
+                <div class="pb-k">სიგანე W</div>
+                <div
+                  class="pb-v"
+                  id="pv-w"
+                >
+                  —
+                </div>
+              </div>
+              <div class="pb">
+                <div class="pb-k">სიმაღლე H</div>
+                <div
+                  class="pb-v"
+                  id="pv-h"
+                >
+                  —
+                </div>
+              </div>
+              <div class="pb">
+                <div class="pb-k">X</div>
+                <div
+                  class="pb-v"
+                  id="pv-x"
+                >
+                  —
+                </div>
+              </div>
+              <div class="pb">
+                <div class="pb-k">Y</div>
+                <div
+                  class="pb-v"
+                  id="pv-y"
+                >
+                  —
+                </div>
+              </div>
+              <div class="pb">
+                <div class="pb-k">Fill</div>
+                <div
+                  class="pb-v"
+                  id="pv-f"
+                >
+                  —
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tip"
+            style="margin-top: 0.75rem"
+          >
+            <p>
+              Properties პანელი ზუსტად ისევე მუშაობს, როგორც Photoshop-ში —
+              ნახე, რა პარამეტრები ენიჭება თითოეულ ფიგურას.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: POSTER -->
+      <section
+        class="slide"
+        id="s3"
+      >
+        <div class="slide-inner">
+          <div class="sec-num">03 · პოსტერი</div>
+          <h2 class="sec-title">გეომეტრია <em>პოსტერებში</em></h2>
+          <div class="divider"></div>
+          <p class="sec-desc">
+            მარტივი ფიგურები — პოსტერის ძირითადი სამშენებლო ბლოკები. სამი
+            კომპოზიციური სტრატეგია:
+          </p>
+
+          <div class="pgrid">
+            <div class="pc">
+              <svg
+                viewBox="0 0 200 115"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  width="200"
+                  height="115"
+                  fill="#090909"
+                />
+                <circle
+                  cx="100"
+                  cy="52"
+                  r="36"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width="1.5"
+                  stroke-opacity=".7"
+                />
+                <circle
+                  cx="100"
+                  cy="52"
+                  r="20"
+                  fill="none"
+                  stroke="#c8a96e"
+                  stroke-width=".8"
+                  stroke-opacity=".3"
+                />
+                <circle
+                  cx="100"
+                  cy="52"
+                  r="4"
+                  fill="#c8a96e"
+                />
+                <line
+                  x1="64"
+                  y1="52"
+                  x2="136"
+                  y2="52"
+                  stroke="#c8a96e"
+                  stroke-width=".7"
+                  stroke-opacity=".25"
+                />
+                <line
+                  x1="100"
+                  y1="16"
+                  x2="100"
+                  y2="88"
+                  stroke="#c8a96e"
+                  stroke-width=".7"
+                  stroke-opacity=".25"
+                />
+                <text
+                  x="100"
+                  y="106"
+                  text-anchor="middle"
+                  font-size="7"
+                  fill="rgba(200,169,110,0.4)"
+                  font-family="sans-serif"
+                  letter-spacing="3"
+                  font-weight="600"
+                >
+                  CIRCULAR FOCUS
+                </text>
+              </svg>
+              <div class="pc-info">
+                <h3>წრიული ფოკუსი</h3>
+                <p>კონცენტრული წრეები — ყურადღება ცენტრში</p>
+              </div>
+            </div>
+            <div class="pc">
+              <svg
+                viewBox="0 0 200 115"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  width="200"
+                  height="115"
+                  fill="#f5f2ed"
+                />
+                <rect
+                  x="12"
+                  y="12"
+                  width="68"
+                  height="91"
+                  rx="3"
+                  fill="#111"
+                  fill-opacity=".85"
+                />
+                <rect
+                  x="90"
+                  y="36"
+                  width="98"
+                  height="67"
+                  rx="3"
+                  fill="#111"
+                  fill-opacity=".3"
+                />
+                <rect
+                  x="90"
+                  y="12"
+                  width="98"
+                  height="18"
+                  rx="3"
+                  fill="#c8a96e"
+                  fill-opacity=".9"
+                />
+                <text
+                  x="100"
+                  y="109"
+                  text-anchor="middle"
+                  font-size="7"
+                  fill="rgba(0,0,0,0.25)"
+                  font-family="sans-serif"
+                  letter-spacing="3"
+                  font-weight="600"
+                >
+                  MODULAR GRID
+                </text>
+              </svg>
+              <div class="pc-info">
+                <h3>მოდულური ბადე</h3>
+                <p>ოთხკუთხედები სხვადასხვა ზომით</p>
+              </div>
+            </div>
+            <div class="pc">
+              <svg
+                viewBox="0 0 200 115"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  width="200"
+                  height="115"
+                  fill="#090909"
+                />
+                <polygon
+                  points="100,10 178,104 22,104"
+                  fill="none"
+                  stroke="#f0ede8"
+                  stroke-width="1.5"
+                  stroke-opacity=".5"
+                />
+                <polygon
+                  points="100,28 156,98 44,98"
+                  fill="none"
+                  stroke="#f0ede8"
+                  stroke-width=".9"
+                  stroke-opacity=".2"
+                />
+                <polygon
+                  points="100,48 134,92 66,92"
+                  fill="none"
+                  stroke="#f0ede8"
+                  stroke-width=".6"
+                  stroke-opacity=".12"
+                />
+                <text
+                  x="100"
+                  y="112"
+                  text-anchor="middle"
+                  font-size="7"
+                  fill="rgba(240,237,232,0.2)"
+                  font-family="sans-serif"
+                  letter-spacing="3"
+                  font-weight="600"
+                >
+                  TRIANGLE DEPTH
+                </text>
+              </svg>
+              <div class="pc-info">
+                <h3>სამკუთხა სიღრმე</h3>
+                <p>ჩადგმული სამკუთხედები — სიღრმე და რიტმი</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem">
+            <div class="sec-num">პრაქტიკული დავალება</div>
+            <div
+              class="ibox"
+              style="margin: 0.75rem 0 1rem"
+            >
+              <h3>მინიმალური პოსტერი Photoshop-ში</h3>
+              <p>6 ნაბიჯი — შექმენი შენი პირველი გეომეტრიული პოსტერი.</p>
+            </div>
+            <div class="steps">
+              <div class="step">
+                <div class="sn">1</div>
+                <div>
+                  <div class="st">ახალი დოკუმენტი</div>
+                  <div class="sd">
+                    File → New → A4 · 210×297mm · 72ppi · RGB
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">2</div>
+                <div>
+                  <div class="st">ფონი</div>
+                  <div class="sd">
+                    Rectangle Tool <kbd>U</kbd> → Canvas სრულად. Fill: მუქი,
+                    Stroke: None.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">3</div>
+                <div>
+                  <div class="st">მთავარი წრე</div>
+                  <div class="sd">
+                    Ellipse + <kbd>Shift</kbd> = წრე. Fill: None · Stroke: 4px ·
+                    ცენტრში.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">4</div>
+                <div>
+                  <div class="st">დამატებითი ფიგურები</div>
+                  <div class="sd">
+                    2–3 ფიგურა. Layer Opacity 15–40% — სიღრმისთვის.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">5</div>
+                <div>
+                  <div class="st">ტექსტი</div>
+                  <div class="sd">
+                    Type Tool <kbd>T</kbd> → სათაური. გეომეტრიასთან კომპოზიციური
+                    კავშირი.
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="sn">6</div>
+                <div>
+                  <div class="st">ექსპორტი</div>
+                  <div class="sd">File → Export As → PNG · PSD-ც შეინახე.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: QUIZ -->
+      <section
+        class="slide"
+        id="s4"
+      >
+        <div class="slide-inner">
+          <div class="quiz-wrap">
+            <div class="quiz-header">
+              <div
+                class="sec-num"
+                style="text-align: center"
+              >
+                04 · გამოცდა
+              </div>
+              <h2
+                class="sec-title"
+                style="text-align: center"
+              >
+                შეამოწმე <em>ცოდნა</em>
+              </h2>
+              <div
+                class="divider"
+                style="margin: 18px auto 0"
+              ></div>
+            </div>
+            <div
+              class="pdots"
+              id="pdots"
+            >
+              <div
+                class="pdot"
+                id="d0"
+              ></div>
+              <div
+                class="pdot"
+                id="d1"
+              ></div>
+              <div
+                class="pdot"
+                id="d2"
+              ></div>
+              <div
+                class="pdot"
+                id="d3"
+              ></div>
+            </div>
+            <div id="qc"></div>
+            <div class="submit-wrap">
+              <button
+                class="btn-submit"
+                id="submitBtn"
+                onclick="submitQ()"
+              >
+                შედეგის ნახვა
+              </button>
+            </div>
+            <div
+              class="score-panel"
+              id="scorePanel"
+            >
+              <div
+                class="score-big"
+                id="scoreNum"
+              ></div>
+              <div class="score-label">სწორი პასუხი</div>
+              <div
+                class="score-msg"
+                id="scoreMsg"
+              ></div>
+              <button
+                class="btn-retry"
+                onclick="retryQ()"
+              >
+                თავიდან ცდა
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="nav-divider"></div>
-    <div class="nav-logo">Shape & Design</div>
-  </div>
-  <div class="nav-steps" id="navdots"></div>
-</nav>
+    <!-- /slides -->
 
-<div class="slides" id="slides">
+    <script>
+      /* ── DROPDOWN ── */
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
 
-<!-- SLIDE 0: HERO -->
-<section class="slide" id="s0">
-  <div class="slide-inner">
-    <div class="hero-label">Adobe Photoshop · ვექტორული ობიექტები</div>
-    <div class="hero-title">
-      <span class="t1">გეომეტრიული</span>
-      <span class="t2">ფიგურები</span>
-      <span class="t1">და ფორმები</span>
-    </div>
-    <p class="hero-sub">Photoshop-ის Shape Tool — სრული გზამკვლევი ინსტრუმენტებიდან კომპოზიციამდე.</p>
-    <div class="hero-pills">
-      <div class="pill" onclick="goTo('s1')">01 · თეორია</div>
-      <div class="pill" onclick="goTo('s2')">02 · ინტერაქტიური Canvas</div>
-      <div class="pill" onclick="goTo('s3')">03 · პოსტერი</div>
-      <div class="pill" onclick="goTo('s4')">04 · ქვიზი</div>
-    </div>
-  </div>
-  <div class="hero-deco">◇</div>
-</section>
+      /* ── NAVIGATION DOTS ── */
+      const slides = document.querySelectorAll(".slide");
+      const dotsWrap = document.getElementById("navdots");
+      slides.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "nav-dot" + (i === 0 ? " active" : "");
+        d.onclick = () => slides[i].scrollIntoView({ behavior: "smooth" });
+        dotsWrap.appendChild(d);
+      });
+      function updateDots() {
+        const dots = dotsWrap.querySelectorAll(".nav-dot");
+        let cur = 0;
+        slides.forEach((s, i) => {
+          const r = s.getBoundingClientRect();
+          if (r.top <= window.innerHeight / 2) cur = i;
+        });
+        dots.forEach((d, i) => {
+          d.classList.toggle("active", i === cur);
+          d.classList.toggle("done", i < cur);
+        });
+        const pct = ((cur + 1) / slides.length) * 95;
+        document.getElementById("pbar").style.width = pct + "%";
+      }
+      window.addEventListener("scroll", updateDots, { passive: true });
 
-<!-- SLIDE 1: THEORY -->
-<section class="slide" id="s1">
-  <div class="slide-inner">
-    <div class="sec-num">01 · თეორია</div>
-    <h2 class="sec-title">Shape Tool-ების <em>სახეობები</em></h2>
-    <div class="divider"></div>
-    <p class="sec-desc">Photoshop-ში Shape Tool ქმნის ვექტორულ გეომეტრიულ ფიგურებს — ობიექტებს, რომლებიც გადიდებისას ხარისხს არ კარგავს.</p>
+      function goTo(id) {
+        document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+      }
 
-    <div class="tool-grid">
-      <div class="tc active" onclick="selTool(this,'rect')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><rect x="2" y="2" width="32" height="24" rx="2" fill="none" stroke="#c8a96e" stroke-width="1.6"/></svg>
-        <div class="tc-name">Rectangle Tool</div>
-        <div class="tc-sub">ოთხკუთხედი · <kbd>U</kbd></div>
-      </div>
-      <div class="tc" onclick="selTool(this,'ellipse')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><ellipse cx="18" cy="14" rx="15" ry="11" fill="none" stroke="#c8a96e" stroke-width="1.6"/></svg>
-        <div class="tc-name">Ellipse Tool</div>
-        <div class="tc-sub">ელიფსი / წრე · <kbd>U</kbd></div>
-      </div>
-      <div class="tc" onclick="selTool(this,'triangle')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><polygon points="18,2 34,26 2,26" fill="none" stroke="#c8a96e" stroke-width="1.6"/></svg>
-        <div class="tc-name">Triangle Tool</div>
-        <div class="tc-sub">სამკუთხედი · <kbd>U</kbd></div>
-      </div>
-      <div class="tc" onclick="selTool(this,'polygon')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><polygon points="18,2 30,9 30,21 18,28 6,21 6,9" fill="none" stroke="#c8a96e" stroke-width="1.6"/></svg>
-        <div class="tc-name">Polygon Tool</div>
-        <div class="tc-sub">მრავალკუთხ. · <kbd>U</kbd></div>
-      </div>
-      <div class="tc" onclick="selTool(this,'line')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><line x1="4" y1="24" x2="32" y2="4" stroke="#c8a96e" stroke-width="2" stroke-linecap="round"/></svg>
-        <div class="tc-name">Line Tool</div>
-        <div class="tc-sub">სწორი ხაზი · <kbd>U</kbd></div>
-      </div>
-      <div class="tc" onclick="selTool(this,'custom')">
-        <svg width="36" height="28" viewBox="0 0 36 28"><path d="M18 2 L28 12 L24 26 L12 26 L8 12 Z" fill="none" stroke="#c8a96e" stroke-width="1.6"/></svg>
-        <div class="tc-name">Custom Shape</div>
-        <div class="tc-sub">მზა ფორმები · <kbd>U</kbd></div>
-      </div>
-    </div>
-    <div class="tool-info" id="toolInfo">
-      <h3>Rectangle Tool &nbsp;<kbd>U</kbd></h3>
-      <p>გადათრევით ოთხკუთხედი. <kbd>Shift</kbd> = კვადრატი &nbsp;·&nbsp; <kbd>Alt</kbd> = ცენტრიდან. Properties → W, H, Corner Radius.</p>
-    </div>
+      /* ── TOOL INFO ── */
+      const ti = {
+        rect: {
+          n: "Rectangle Tool",
+          k: "U",
+          d: "გადათრევით ოთხკუთხედი. <kbd>Shift</kbd> = კვადრატი &nbsp;·&nbsp; <kbd>Alt</kbd> = ცენტრიდან. Properties → W, H, Corner Radius.",
+        },
+        ellipse: {
+          n: "Ellipse Tool",
+          k: "U",
+          d: "გადათრევით ელიფსი. <kbd>Shift</kbd> = სრული წრე. Properties-ში Radius ავტომატურად.",
+        },
+        triangle: {
+          n: "Triangle Tool",
+          k: "U",
+          d: "<kbd>Shift</kbd>-ით თანაბარი სამკუთხედი. Corner Radius-ის შეცვლით კუთხეები გამრგვალდება.",
+        },
+        polygon: {
+          n: "Polygon Tool",
+          k: "U",
+          d: "Properties → Sides: 3–100. <kbd>Shift</kbd>-ით სწორი კუთხეები.",
+        },
+        line: {
+          n: "Line Tool",
+          k: "U",
+          d: "<kbd>Shift</kbd>-ით 45° / 90° ხაზი. Stroke სისქე → Options Bar → Weight.",
+        },
+        custom: {
+          n: "Custom Shape Tool",
+          k: "U",
+          d: "Options Bar → Shape → ბიბლიოთეკა. ათასობით მზა ფორმა.",
+        },
+      };
+      function selTool(el, id) {
+        document
+          .querySelectorAll(".tc")
+          .forEach((x) => x.classList.remove("active"));
+        el.classList.add("active");
+        const t = ti[id];
+        document.getElementById("toolInfo").innerHTML =
+          `<h3>${t.n} &nbsp;<kbd>${t.k}</kbd></h3><p style="margin-top:5px">${t.d}</p>`;
+      }
 
-    <div style="margin-top:2rem">
-      <div class="sec-num">Fill &amp; Stroke</div>
-      <div class="two" style="margin-top:.5rem">
-        <div class="prop-card"><h3>Fill — შევსება</h3><p>ფიგურის შიდა ფერი. მყარი ფერი, გრადიენტი, პატერნი ან None (გამჭვირვალე).</p></div>
-        <div class="prop-card"><h3>Stroke — კონტური</h3><p>კიდის ხაზი — სისქე, ფერი, სტილი: solid, dashed, dotted.</p></div>
-      </div>
-      <div class="tip"><p>Options Bar-ში Fill და Stroke ჩნდება Shape Tool-ის არჩევის შემდეგ — ზედა მარცხნივ.</p></div>
-    </div>
+      /* ── CANVAS DEMO ── */
+      let drawing = false,
+        sx = 0,
+        sy = 0,
+        shape = "rect",
+        clr = "#c8a96e",
+        cel = null;
+      function setShape(s, btn) {
+        shape = s;
+        document.querySelectorAll(".tb").forEach((b) => {
+          if (
+            ["rect", "ellipse", "triangle", "line"].some((x) =>
+              b.getAttribute("onclick")?.includes("'" + x + "'"),
+            )
+          )
+            b.classList.remove("sel");
+        });
+        btn.classList.add("sel");
+      }
+      function setClr(c, el) {
+        clr = c;
+        document
+          .querySelectorAll(".cp")
+          .forEach((x) => x.classList.remove("sel"));
+        el.classList.add("sel");
+      }
+      function clearC() {
+        document.getElementById("svg").innerHTML = "";
+        document.getElementById("hint").style.display = "flex";
+        ["pv-t", "pv-w", "pv-h", "pv-x", "pv-y", "pv-f"].forEach(
+          (id) => (document.getElementById(id).textContent = "—"),
+        );
+      }
+      function gp(e) {
+        const r = document.getElementById("cvs").getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      }
+      function sd(e) {
+        drawing = true;
+        const p = gp(e);
+        sx = p.x;
+        sy = p.y;
+        document.getElementById("hint").style.display = "none";
+        const ns = "http://www.w3.org/2000/svg";
+        let el;
+        if (shape === "rect") {
+          el = document.createElementNS(ns, "rect");
+          el.setAttribute("x", sx);
+          el.setAttribute("y", sy);
+          el.setAttribute("width", 0);
+          el.setAttribute("height", 0);
+          el.setAttribute("rx", 2);
+        } else if (shape === "ellipse") {
+          el = document.createElementNS(ns, "ellipse");
+          el.setAttribute("cx", sx);
+          el.setAttribute("cy", sy);
+          el.setAttribute("rx", 0);
+          el.setAttribute("ry", 0);
+        } else if (shape === "triangle") {
+          el = document.createElementNS(ns, "polygon");
+          el.setAttribute("points", `${sx},${sy} ${sx},${sy} ${sx},${sy}`);
+        } else {
+          el = document.createElementNS(ns, "line");
+          el.setAttribute("x1", sx);
+          el.setAttribute("y1", sy);
+          el.setAttribute("x2", sx);
+          el.setAttribute("y2", sy);
+          el.setAttribute("stroke-linecap", "round");
+        }
+        if (shape === "line") {
+          el.setAttribute("stroke", clr);
+          el.setAttribute("stroke-width", "2");
+          el.setAttribute("fill", "none");
+        } else {
+          el.setAttribute("fill", clr);
+          el.setAttribute("fill-opacity", "0.7");
+          el.setAttribute("stroke", clr);
+          el.setAttribute("stroke-width", "1.5");
+        }
+        document.getElementById("svg").appendChild(el);
+        cel = el;
+      }
+      function md(e) {
+        if (!drawing || !cel) return;
+        const p = gp(e),
+          dx = p.x - sx,
+          dy = p.y - sy;
+        if (shape === "rect") {
+          cel.setAttribute("x", Math.min(p.x, sx));
+          cel.setAttribute("y", Math.min(p.y, sy));
+          cel.setAttribute("width", Math.abs(dx));
+          cel.setAttribute("height", Math.abs(dy));
+        } else if (shape === "ellipse") {
+          cel.setAttribute("cx", sx + dx / 2);
+          cel.setAttribute("cy", sy + dy / 2);
+          cel.setAttribute("rx", Math.abs(dx) / 2);
+          cel.setAttribute("ry", Math.abs(dy) / 2);
+        } else if (shape === "triangle") {
+          cel.setAttribute(
+            "points",
+            `${sx + dx / 2},${sy} ${p.x},${p.y} ${sx},${p.y}`,
+          );
+        } else {
+          cel.setAttribute("x2", p.x);
+          cel.setAttribute("y2", p.y);
+        }
+      }
+      function ed(e) {
+        if (!drawing || !cel) return;
+        drawing = false;
+        const p = gp(e),
+          nm = {
+            rect: "Rectangle",
+            ellipse: "Ellipse",
+            triangle: "Triangle",
+            line: "Line",
+          };
+        if (shape === "rect") {
+          const w = Math.abs(p.x - sx),
+            h = Math.abs(p.y - sy);
+          document.getElementById("pv-t").textContent = nm[shape];
+          document.getElementById("pv-w").textContent = Math.round(w) + "px";
+          document.getElementById("pv-h").textContent = Math.round(h) + "px";
+          document.getElementById("pv-x").textContent =
+            Math.round(Math.min(p.x, sx)) + "px";
+          document.getElementById("pv-y").textContent =
+            Math.round(Math.min(p.y, sy)) + "px";
+        } else if (shape === "ellipse") {
+          document.getElementById("pv-t").textContent = nm[shape];
+          document.getElementById("pv-w").textContent =
+            Math.round(Math.abs(p.x - sx)) + "px";
+          document.getElementById("pv-h").textContent =
+            Math.round(Math.abs(p.y - sy)) + "px";
+          document.getElementById("pv-x").textContent =
+            Math.round(Math.min(p.x, sx)) + "px";
+          document.getElementById("pv-y").textContent =
+            Math.round(Math.min(p.y, sy)) + "px";
+        } else {
+          document.getElementById("pv-t").textContent = nm[shape] || "Custom";
+          document.getElementById("pv-w").textContent = "—";
+          document.getElementById("pv-h").textContent = "—";
+          document.getElementById("pv-x").textContent = "—";
+          document.getElementById("pv-y").textContent = "—";
+        }
+        document.getElementById("pv-f").textContent = clr;
+      }
 
-    <div style="margin-top:2rem">
-      <div class="sec-num">ნაბიჯ-ნაბიჯ</div>
-      <div class="steps" style="margin-top:1rem">
-        <div class="step"><div class="sn">1</div><div><div class="st">Toolbar</div><div class="sd">მარცხენა პანელში მართკუთხედის ხატზე გეჭიროთ → Shape Tool-ების სია.</div></div></div>
-        <div class="step"><div class="sn">2</div><div><div class="st">Shape რეჟიმი</div><div class="sd">Options Bar → <kbd>Shape</kbd> — არა Path, არა Pixels. Shape = ვექტორული ფენა.</div></div></div>
-        <div class="step"><div class="sn">3</div><div><div class="st">დახატვა</div><div class="sd">Canvas-ზე დააწექი და გადაათრიე. ახალი Layer ავტომატურად.</div></div></div>
-        <div class="step"><div class="sn">4</div><div><div class="st">Properties</div><div class="sd">Window → Properties — W, H, Fill, Stroke, Corner Radius.</div></div></div>
-        <div class="step"><div class="sn">5</div><div><div class="st">Move Tool</div><div class="sd"><kbd>V</kbd> → ფიგურა გადაათრიე სასურველ პოზიციაზე.</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SLIDE 2: DEMO -->
-<section class="slide" id="s2">
-  <div class="slide-inner">
-    <div class="sec-num">02 · დემო</div>
-    <h2 class="sec-title">ინტერაქტიული <em>Canvas</em></h2>
-    <div class="divider"></div>
-    <div class="ibox" style="margin-bottom:1rem">
-      <h3>სავარჯიშო</h3>
-      <p>აირჩიე ფორმა და ფერი, შემდეგ გადაათრიე Canvas-ზე. Properties ავტომატურად განახლდება — ისევე, როგორც Photoshop-ში.</p>
-    </div>
-    <div class="demo-wrap">
-      <div class="demo-bar">
-        <span class="blabel">ფორმა</span>
-        <button class="tb sel" onclick="setShape('rect',this)">Rectangle</button>
-        <button class="tb" onclick="setShape('ellipse',this)">Ellipse</button>
-        <button class="tb" onclick="setShape('triangle',this)">Triangle</button>
-        <button class="tb" onclick="setShape('line',this)">Line</button>
-        <div class="tbdiv"></div>
-        <span class="blabel">Fill</span>
-        <div class="cp sel" style="background:#c8a96e" onclick="setClr('#c8a96e',this)"></div>
-        <div class="cp" style="background:#f0ede8" onclick="setClr('#f0ede8',this)"></div>
-        <div class="cp" style="background:#6a9e8a" onclick="setClr('#6a9e8a',this)"></div>
-        <div class="cp" style="background:#9e7a6a" onclick="setClr('#9e7a6a',this)"></div>
-        <div class="cp" style="background:#7a7a9e" onclick="setClr('#7a7a9e',this)"></div>
-        <div class="cp" style="background:#9e6a7a" onclick="setClr('#9e6a7a',this)"></div>
-        <div class="tbdiv"></div>
-        <button class="tb" onclick="clearC()">გასუფთავება</button>
-      </div>
-      <div class="canvas-area" id="cvs" onmousedown="sd(event)" onmousemove="md(event)" onmouseup="ed(event)">
-        <svg id="svg"></svg>
-        <div class="chint" id="hint">გადაათრიე ფიგურის დასახატად</div>
-      </div>
-      <div class="pb-grid">
-        <div class="pb"><div class="pb-k">ტიპი</div><div class="pb-v" id="pv-t">—</div></div>
-        <div class="pb"><div class="pb-k">სიგანე W</div><div class="pb-v" id="pv-w">—</div></div>
-        <div class="pb"><div class="pb-k">სიმაღლე H</div><div class="pb-v" id="pv-h">—</div></div>
-        <div class="pb"><div class="pb-k">X</div><div class="pb-v" id="pv-x">—</div></div>
-        <div class="pb"><div class="pb-k">Y</div><div class="pb-v" id="pv-y">—</div></div>
-        <div class="pb"><div class="pb-k">Fill</div><div class="pb-v" id="pv-f">—</div></div>
-      </div>
-    </div>
-    <div class="tip" style="margin-top:.75rem">
-      <p>Properties პანელი ზუსტად ისევე მუშაობს, როგორც Photoshop-ში — ნახე, რა პარამეტრები ენიჭება თითოეულ ფიგურას.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SLIDE 3: POSTER -->
-<section class="slide" id="s3">
-  <div class="slide-inner">
-    <div class="sec-num">03 · პოსტერი</div>
-    <h2 class="sec-title">გეომეტრია <em>პოსტერებში</em></h2>
-    <div class="divider"></div>
-    <p class="sec-desc">მარტივი ფიგურები — პოსტერის ძირითადი სამშენებლო ბლოკები. სამი კომპოზიციური სტრატეგია:</p>
-
-    <div class="pgrid">
-      <div class="pc">
-        <svg viewBox="0 0 200 115" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="115" fill="#090909"/>
-          <circle cx="100" cy="52" r="36" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-opacity=".7"/>
-          <circle cx="100" cy="52" r="20" fill="none" stroke="#c8a96e" stroke-width=".8" stroke-opacity=".3"/>
-          <circle cx="100" cy="52" r="4" fill="#c8a96e"/>
-          <line x1="64" y1="52" x2="136" y2="52" stroke="#c8a96e" stroke-width=".7" stroke-opacity=".25"/>
-          <line x1="100" y1="16" x2="100" y2="88" stroke="#c8a96e" stroke-width=".7" stroke-opacity=".25"/>
-          <text x="100" y="106" text-anchor="middle" font-size="7" fill="rgba(200,169,110,0.4)" font-family="sans-serif" letter-spacing="3" font-weight="600">CIRCULAR FOCUS</text>
-        </svg>
-        <div class="pc-info"><h3>წრიული ფოკუსი</h3><p>კონცენტრული წრეები — ყურადღება ცენტრში</p></div>
-      </div>
-      <div class="pc">
-        <svg viewBox="0 0 200 115" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="115" fill="#f5f2ed"/>
-          <rect x="12" y="12" width="68" height="91" rx="3" fill="#111" fill-opacity=".85"/>
-          <rect x="90" y="36" width="98" height="67" rx="3" fill="#111" fill-opacity=".3"/>
-          <rect x="90" y="12" width="98" height="18" rx="3" fill="#c8a96e" fill-opacity=".9"/>
-          <text x="100" y="109" text-anchor="middle" font-size="7" fill="rgba(0,0,0,0.25)" font-family="sans-serif" letter-spacing="3" font-weight="600">MODULAR GRID</text>
-        </svg>
-        <div class="pc-info"><h3>მოდულური ბადე</h3><p>ოთხკუთხედები სხვადასხვა ზომით</p></div>
-      </div>
-      <div class="pc">
-        <svg viewBox="0 0 200 115" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="115" fill="#090909"/>
-          <polygon points="100,10 178,104 22,104" fill="none" stroke="#f0ede8" stroke-width="1.5" stroke-opacity=".5"/>
-          <polygon points="100,28 156,98 44,98" fill="none" stroke="#f0ede8" stroke-width=".9" stroke-opacity=".2"/>
-          <polygon points="100,48 134,92 66,92" fill="none" stroke="#f0ede8" stroke-width=".6" stroke-opacity=".12"/>
-          <text x="100" y="112" text-anchor="middle" font-size="7" fill="rgba(240,237,232,0.2)" font-family="sans-serif" letter-spacing="3" font-weight="600">TRIANGLE DEPTH</text>
-        </svg>
-        <div class="pc-info"><h3>სამკუთხა სიღრმე</h3><p>ჩადგმული სამკუთხედები — სიღრმე და რიტმი</p></div>
-      </div>
-    </div>
-
-    <div style="margin-top:2rem">
-      <div class="sec-num">პრაქტიკული დავალება</div>
-      <div class="ibox" style="margin:.75rem 0 1rem"><h3>მინიმალური პოსტერი Photoshop-ში</h3><p>6 ნაბიჯი — შექმენი შენი პირველი გეომეტრიული პოსტერი.</p></div>
-      <div class="steps">
-        <div class="step"><div class="sn">1</div><div><div class="st">ახალი დოკუმენტი</div><div class="sd">File → New → A4 · 210×297mm · 72ppi · RGB</div></div></div>
-        <div class="step"><div class="sn">2</div><div><div class="st">ფონი</div><div class="sd">Rectangle Tool <kbd>U</kbd> → Canvas სრულად. Fill: მუქი, Stroke: None.</div></div></div>
-        <div class="step"><div class="sn">3</div><div><div class="st">მთავარი წრე</div><div class="sd">Ellipse + <kbd>Shift</kbd> = წრე. Fill: None · Stroke: 4px · ცენტრში.</div></div></div>
-        <div class="step"><div class="sn">4</div><div><div class="st">დამატებითი ფიგურები</div><div class="sd">2–3 ფიგურა. Layer Opacity 15–40% — სიღრმისთვის.</div></div></div>
-        <div class="step"><div class="sn">5</div><div><div class="st">ტექსტი</div><div class="sd">Type Tool <kbd>T</kbd> → სათაური. გეომეტრიასთან კომპოზიციური კავშირი.</div></div></div>
-        <div class="step"><div class="sn">6</div><div><div class="st">ექსპორტი</div><div class="sd">File → Export As → PNG · PSD-ც შეინახე.</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SLIDE 4: QUIZ -->
-<section class="slide" id="s4">
-  <div class="slide-inner">
-    <div class="quiz-wrap">
-      <div class="quiz-header">
-        <div class="sec-num" style="text-align:center">04 · გამოცდა</div>
-        <h2 class="sec-title" style="text-align:center">შეამოწმე <em>ცოდნა</em></h2>
-        <div class="divider" style="margin:18px auto 0"></div>
-      </div>
-      <div class="pdots" id="pdots">
-        <div class="pdot" id="d0"></div>
-        <div class="pdot" id="d1"></div>
-        <div class="pdot" id="d2"></div>
-        <div class="pdot" id="d3"></div>
-      </div>
-      <div id="qc"></div>
-      <div class="submit-wrap">
-        <button class="btn-submit" id="submitBtn" onclick="submitQ()">შედეგის ნახვა</button>
-      </div>
-      <div class="score-panel" id="scorePanel">
-        <div class="score-big" id="scoreNum"></div>
-        <div class="score-label">სწორი პასუხი</div>
-        <div class="score-msg" id="scoreMsg"></div>
-        <button class="btn-retry" onclick="retryQ()">თავიდან ცდა</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-</div><!-- /slides -->
-
-<script>
-  /* ── DROPDOWN ── */
-  function toggleDropdown(){
-    document.getElementById('moduleDropdown').classList.toggle('open');
-  }
-  document.addEventListener('click',function(e){
-    const d=document.getElementById('moduleDropdown');
-    if(!d.contains(e.target)) d.classList.remove('open');
-  });
-
-  /* ── NAVIGATION DOTS ── */
-  const slides=document.querySelectorAll('.slide');
-  const dotsWrap=document.getElementById('navdots');
-  slides.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='nav-dot'+(i===0?' active':'');
-    d.onclick=()=>slides[i].scrollIntoView({behavior:'smooth'});
-    dotsWrap.appendChild(d);
-  });
-  function updateDots(){
-    const dots=dotsWrap.querySelectorAll('.nav-dot');
-    let cur=0;
-    slides.forEach((s,i)=>{
-      const r=s.getBoundingClientRect();
-      if(r.top<=window.innerHeight/2) cur=i;
-    });
-    dots.forEach((d,i)=>{
-      d.classList.toggle('active',i===cur);
-      d.classList.toggle('done',i<cur);
-    });
-    const pct=((cur+1)/slides.length)*95;
-    document.getElementById('pbar').style.width=pct+'%';
-  }
-  window.addEventListener('scroll',updateDots,{passive:true});
-
-  function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-
-  /* ── TOOL INFO ── */
-  const ti={
-    rect:{n:"Rectangle Tool",k:"U",d:"გადათრევით ოთხკუთხედი. <kbd>Shift</kbd> = კვადრატი &nbsp;·&nbsp; <kbd>Alt</kbd> = ცენტრიდან. Properties → W, H, Corner Radius."},
-    ellipse:{n:"Ellipse Tool",k:"U",d:"გადათრევით ელიფსი. <kbd>Shift</kbd> = სრული წრე. Properties-ში Radius ავტომატურად."},
-    triangle:{n:"Triangle Tool",k:"U",d:"<kbd>Shift</kbd>-ით თანაბარი სამკუთხედი. Corner Radius-ის შეცვლით კუთხეები გამრგვალდება."},
-    polygon:{n:"Polygon Tool",k:"U",d:"Properties → Sides: 3–100. <kbd>Shift</kbd>-ით სწორი კუთხეები."},
-    line:{n:"Line Tool",k:"U",d:"<kbd>Shift</kbd>-ით 45° / 90° ხაზი. Stroke სისქე → Options Bar → Weight."},
-    custom:{n:"Custom Shape Tool",k:"U",d:"Options Bar → Shape → ბიბლიოთეკა. ათასობით მზა ფორმა."}
-  };
-  function selTool(el,id){
-    document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
-    el.classList.add('active');
-    const t=ti[id];
-    document.getElementById('toolInfo').innerHTML=`<h3>${t.n} &nbsp;<kbd>${t.k}</kbd></h3><p style="margin-top:5px">${t.d}</p>`;
-  }
-
-  /* ── CANVAS DEMO ── */
-  let drawing=false,sx=0,sy=0,shape='rect',clr='#c8a96e',cel=null;
-  function setShape(s,btn){
-    shape=s;
-    document.querySelectorAll('.tb').forEach(b=>{
-      if(['rect','ellipse','triangle','line'].some(x=>b.getAttribute('onclick')?.includes("'"+x+"'"))) b.classList.remove('sel');
-    });
-    btn.classList.add('sel');
-  }
-  function setClr(c,el){clr=c;document.querySelectorAll('.cp').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');}
-  function clearC(){document.getElementById('svg').innerHTML='';document.getElementById('hint').style.display='flex';['pv-t','pv-w','pv-h','pv-x','pv-y','pv-f'].forEach(id=>document.getElementById(id).textContent='—');}
-  function gp(e){const r=document.getElementById('cvs').getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
-  function sd(e){
-    drawing=true;const p=gp(e);sx=p.x;sy=p.y;
-    document.getElementById('hint').style.display='none';
-    const ns='http://www.w3.org/2000/svg';let el;
-    if(shape==='rect'){el=document.createElementNS(ns,'rect');el.setAttribute('x',sx);el.setAttribute('y',sy);el.setAttribute('width',0);el.setAttribute('height',0);el.setAttribute('rx',2);}
-    else if(shape==='ellipse'){el=document.createElementNS(ns,'ellipse');el.setAttribute('cx',sx);el.setAttribute('cy',sy);el.setAttribute('rx',0);el.setAttribute('ry',0);}
-    else if(shape==='triangle'){el=document.createElementNS(ns,'polygon');el.setAttribute('points',`${sx},${sy} ${sx},${sy} ${sx},${sy}`);}
-    else{el=document.createElementNS(ns,'line');el.setAttribute('x1',sx);el.setAttribute('y1',sy);el.setAttribute('x2',sx);el.setAttribute('y2',sy);el.setAttribute('stroke-linecap','round');}
-    if(shape==='line'){el.setAttribute('stroke',clr);el.setAttribute('stroke-width','2');el.setAttribute('fill','none');}
-    else{el.setAttribute('fill',clr);el.setAttribute('fill-opacity','0.7');el.setAttribute('stroke',clr);el.setAttribute('stroke-width','1.5');}
-    document.getElementById('svg').appendChild(el);cel=el;
-  }
-  function md(e){
-    if(!drawing||!cel)return;
-    const p=gp(e),dx=p.x-sx,dy=p.y-sy;
-    if(shape==='rect'){cel.setAttribute('x',Math.min(p.x,sx));cel.setAttribute('y',Math.min(p.y,sy));cel.setAttribute('width',Math.abs(dx));cel.setAttribute('height',Math.abs(dy));}
-    else if(shape==='ellipse'){cel.setAttribute('cx',sx+dx/2);cel.setAttribute('cy',sy+dy/2);cel.setAttribute('rx',Math.abs(dx)/2);cel.setAttribute('ry',Math.abs(dy)/2);}
-    else if(shape==='triangle'){cel.setAttribute('points',`${sx+dx/2},${sy} ${p.x},${p.y} ${sx},${p.y}`);}
-    else{cel.setAttribute('x2',p.x);cel.setAttribute('y2',p.y);}
-  }
-  function ed(e){
-    if(!drawing||!cel)return;drawing=false;
-    const p=gp(e),nm={rect:'Rectangle',ellipse:'Ellipse',triangle:'Triangle',line:'Line'};
-    if(shape==='rect'){const w=Math.abs(p.x-sx),h=Math.abs(p.y-sy);document.getElementById('pv-t').textContent=nm[shape];document.getElementById('pv-w').textContent=Math.round(w)+'px';document.getElementById('pv-h').textContent=Math.round(h)+'px';document.getElementById('pv-x').textContent=Math.round(Math.min(p.x,sx))+'px';document.getElementById('pv-y').textContent=Math.round(Math.min(p.y,sy))+'px';}
-    else if(shape==='ellipse'){document.getElementById('pv-t').textContent=nm[shape];document.getElementById('pv-w').textContent=Math.round(Math.abs(p.x-sx))+'px';document.getElementById('pv-h').textContent=Math.round(Math.abs(p.y-sy))+'px';document.getElementById('pv-x').textContent=Math.round(Math.min(p.x,sx))+'px';document.getElementById('pv-y').textContent=Math.round(Math.min(p.y,sy))+'px';}
-    else{document.getElementById('pv-t').textContent=nm[shape]||'Custom';document.getElementById('pv-w').textContent='—';document.getElementById('pv-h').textContent='—';document.getElementById('pv-x').textContent='—';document.getElementById('pv-y').textContent='—';}
-    document.getElementById('pv-f').textContent=clr;
-  }
-
-  /* ── QUIZ ── */
-  const qs=[
-    {q:"Ellipse Tool-ით იდეალური წრის დასახატად რომელი ღილაკი უნდა გეჭიროს?",o:["Ctrl","Alt","Shift","Space"],a:2,ok:"Shift ინარჩუნებს პროპორციას — სიგანე=სიმაღლე, ე.ი. წრე.",w:"სწორი: Shift"},
-    {q:"რომელ რეჟიმში ქმნის Shape Tool ვექტორულ ფენას?",o:["Pixels","Path","Shape","Raster"],a:2,ok:"Shape = ვექტორული ფენა. Pixels = რასტერი, Path = კონტური ფერის გარეშე.",w:"სწორი: Shape"},
-    {q:"Corner Radius პარამეტრი რომელ ინსტრუმენტში გამოიყენება?",o:["Ellipse","Line","Rectangle","Polygon"],a:2,ok:"Rectangle Tool-ს Properties-ში Corner Radius მრგვალ კუთხეებს ქმნის.",w:"სწორი: Rectangle"},
-    {q:"Shape ფენა Pixel ფენისგან განსხვავდება იმით, რომ:",o:["სწრაფად იხატება","გადიდებისას ხარისხი არ ეკარგება","ნაკლებ მეხსიერებას მოიხმარს","ფერი ვერ იცვლება"],a:1,ok:"Shape = ვექტორი. მათემატიკური ფორმულებით — ნებისმიერ ზომაზე ბასრი.",w:"სწორი: გადიდებისას ხარისხი არ ეკარგება"}
-  ];
-  const picked=new Array(4).fill(-1);let submitted=false;
-  function buildQuiz(){
-    document.getElementById('qc').innerHTML=qs.map((q,i)=>`
+      /* ── QUIZ ── */
+      const qs = [
+        {
+          q: "Ellipse Tool-ით იდეალური წრის დასახატად რომელი ღილაკი უნდა გეჭიროს?",
+          o: ["Ctrl", "Alt", "Shift", "Space"],
+          a: 2,
+          ok: "Shift ინარჩუნებს პროპორციას — სიგანე=სიმაღლე, ე.ი. წრე.",
+          w: "სწორი: Shift",
+        },
+        {
+          q: "რომელ რეჟიმში ქმნის Shape Tool ვექტორულ ფენას?",
+          o: ["Pixels", "Path", "Shape", "Raster"],
+          a: 2,
+          ok: "Shape = ვექტორული ფენა. Pixels = რასტერი, Path = კონტური ფერის გარეშე.",
+          w: "სწორი: Shape",
+        },
+        {
+          q: "Corner Radius პარამეტრი რომელ ინსტრუმენტში გამოიყენება?",
+          o: ["Ellipse", "Line", "Rectangle", "Polygon"],
+          a: 2,
+          ok: "Rectangle Tool-ს Properties-ში Corner Radius მრგვალ კუთხეებს ქმნის.",
+          w: "სწორი: Rectangle",
+        },
+        {
+          q: "Shape ფენა Pixel ფენისგან განსხვავდება იმით, რომ:",
+          o: [
+            "სწრაფად იხატება",
+            "გადიდებისას ხარისხი არ ეკარგება",
+            "ნაკლებ მეხსიერებას მოიხმარს",
+            "ფერი ვერ იცვლება",
+          ],
+          a: 1,
+          ok: "Shape = ვექტორი. მათემატიკური ფორმულებით — ნებისმიერ ზომაზე ბასრი.",
+          w: "სწორი: გადიდებისას ხარისხი არ ეკარგება",
+        },
+      ];
+      const picked = new Array(4).fill(-1);
+      let submitted = false;
+      function buildQuiz() {
+        document.getElementById("qc").innerHTML = qs
+          .map(
+            (q, i) => `
       <div class="q-block" id="q${i}">
-        <div class="q-num">კითხვა 0${i+1}</div>
+        <div class="q-num">კითხვა 0${i + 1}</div>
         <div class="q-text">${q.q}</div>
-        <div class="q-opts">${q.o.map((o,j)=>`<div class="qopt" onclick="pick(${i},${j})" id="o${i}_${j}"><div class="opt-dot"></div>${o}</div>`).join('')}</div>
+        <div class="q-opts">${q.o.map((o, j) => `<div class="qopt" onclick="pick(${i},${j})" id="o${i}_${j}"><div class="opt-dot"></div>${o}</div>`).join("")}</div>
         <div class="qfb" id="fb${i}"></div>
-      </div>`).join('');
-  }
-  function pick(q,opt){
-    if(submitted)return;
-    document.querySelectorAll(`#q${q} .qopt`).forEach(o=>o.classList.remove('correct','wrong'));
-    picked[q]=opt;
-    document.querySelectorAll(`#q${q} .qopt`)[opt].classList.add(opt===qs[q].a?'correct':'wrong');
-    for(let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('done',picked[i]>=0);
-    const pct=((picked.filter(x=>x>=0).length)/4)*85+10;
-    document.getElementById('pbar').style.width=pct+'%';
-  }
-  function submitQ(){
-    if(submitted)return;submitted=true;
-    document.getElementById('submitBtn').disabled=true;
-    let score=0;
-    qs.forEach((q,i)=>{
-      const opts=document.querySelectorAll(`#q${i} .qopt`);
-      opts.forEach(o=>o.classList.add('locked'));
-      const fb=document.getElementById('fb'+i);
-      if(picked[i]===q.a){score++;document.getElementById('q'+i).classList.add('correct');fb.className='qfb ok';fb.textContent='✓ '+q.ok;}
-      else{document.getElementById('q'+i).classList.add('wrong');opts[q.a].classList.add('reveal');fb.className='qfb bad';fb.textContent='✗ '+q.w;}
-      fb.style.display='block';
-    });
-    document.getElementById('scoreNum').textContent=score+'/4';
-    document.getElementById('scoreMsg').textContent=['კიდევ ერთხელ გაიმეორე!','კარგი მცდელობა — კიდევ გაიმეორე!','კარგი შედეგი!','შესანიშნავი — ყველაფერი იცი! 🎉'][score];
-    document.getElementById('scorePanel').classList.add('show');
-    document.getElementById('pbar').style.width='100%';
-    document.getElementById('scorePanel').scrollIntoView({behavior:'smooth',block:'center'});
-  }
-  function retryQ(){
-    submitted=false;picked.fill(-1);
-    document.getElementById('submitBtn').disabled=false;
-    document.getElementById('scorePanel').classList.remove('show');
-    document.querySelectorAll('.pdot').forEach(d=>d.classList.remove('done'));
-    buildQuiz();
-  }
-  buildQuiz();
-</script>
-</body>
+      </div>`,
+          )
+          .join("");
+      }
+      function pick(q, opt) {
+        if (submitted) return;
+        document
+          .querySelectorAll(`#q${q} .qopt`)
+          .forEach((o) => o.classList.remove("correct", "wrong"));
+        picked[q] = opt;
+        document
+          .querySelectorAll(`#q${q} .qopt`)
+          [opt].classList.add(opt === qs[q].a ? "correct" : "wrong");
+        for (let i = 0; i < 4; i++)
+          document
+            .getElementById("d" + i)
+            .classList.toggle("done", picked[i] >= 0);
+        const pct = (picked.filter((x) => x >= 0).length / 4) * 85 + 10;
+        document.getElementById("pbar").style.width = pct + "%";
+      }
+      function submitQ() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+        qs.forEach((q, i) => {
+          const opts = document.querySelectorAll(`#q${i} .qopt`);
+          opts.forEach((o) => o.classList.add("locked"));
+          const fb = document.getElementById("fb" + i);
+          if (picked[i] === q.a) {
+            score++;
+            document.getElementById("q" + i).classList.add("correct");
+            fb.className = "qfb ok";
+            fb.textContent = "✓ " + q.ok;
+          } else {
+            document.getElementById("q" + i).classList.add("wrong");
+            opts[q.a].classList.add("reveal");
+            fb.className = "qfb bad";
+            fb.textContent = "✗ " + q.w;
+          }
+          fb.style.display = "block";
+        });
+        document.getElementById("scoreNum").textContent = score + "/4";
+        document.getElementById("scoreMsg").textContent = [
+          "კიდევ ერთხელ გაიმეორე!",
+          "კარგი მცდელობა — კიდევ გაიმეორე!",
+          "კარგი შედეგი!",
+          "შესანიშნავი — ყველაფერი იცი! 🎉",
+        ][score];
+        document.getElementById("scorePanel").classList.add("show");
+        document.getElementById("pbar").style.width = "100%";
+        document
+          .getElementById("scorePanel")
+          .scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      function retryQ() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        document
+          .querySelectorAll(".pdot")
+          .forEach((d) => d.classList.remove("done"));
+        buildQuiz();
+      }
+      buildQuiz();
+    </script>
+  </body>
 </html>
