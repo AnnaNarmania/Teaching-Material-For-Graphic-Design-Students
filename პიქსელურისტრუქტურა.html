@@ -1,0 +1,2571 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Photoshop · პიქსელური სტრუქტურა</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans Georgian", sans-serif;
+        background: #0a0a0a;
+        color: #f0ede8;
+        overflow-x: hidden;
+      }
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c8a96e, #e8c99e);
+        z-index: 100;
+        width: 0;
+        transition: width 0.3s;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 90;
+        background: rgba(10, 10, 10, 0.88);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-logo {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        color: #c8a96e;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+      .nav-links a {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.4);
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+        cursor: pointer;
+      }
+      .nav-links a:hover {
+        color: #c8a96e;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .nav-home {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+      }
+      .nav-home:hover {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nav-dropdown-wrap {
+        position: relative;
+      }
+      .nav-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, 0.35);
+        cursor: pointer;
+        transition: color 0.2s;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: transparent;
+        font-family: "Noto Sans Georgian", sans-serif;
+      }
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-wrap.open .nav-dropdown-btn {
+        color: #c8a96e;
+        border-color: rgba(200, 169, 110, 0.3);
+      }
+      .nav-dropdown-btn .chevron {
+        transition: transform 0.25s;
+        display: inline-block;
+      }
+      .nav-dropdown-wrap.open .chevron {
+        transform: rotate(180deg);
+      }
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(14, 14, 14, 0.97);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 8px;
+        padding: 6px;
+        min-width: 215px;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .nav-dropdown-wrap.open .nav-dropdown-menu {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.55);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .nav-dropdown-menu a:hover {
+        background: rgba(200, 169, 110, 0.1);
+        color: #f0ede8;
+      }
+      .nav-dropdown-menu a.current {
+        color: #c8a96e;
+        pointer-events: none;
+      }
+      .nav-dropdown-menu a .num {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        color: rgba(200, 169, 110, 0.5);
+        font-weight: 600;
+        min-width: 20px;
+      }
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 40px 80px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 0 180px;
+      }
+      .hero::after {
+        content: "Ps";
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: clamp(200px, 30vw, 400px);
+        font-weight: 700;
+        color: rgba(200, 169, 110, 0.04);
+        pointer-events: none;
+        line-height: 1;
+      }
+      .hero-inner {
+        max-width: 900px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-label {
+        font-size: 11px;
+        letter-spacing: 5px;
+        color: rgba(200, 169, 110, 0.7);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      .hero-title {
+        font-size: clamp(44px, 8vw, 96px);
+        font-weight: 700;
+        line-height: 0.95;
+        margin-bottom: 28px;
+      }
+      .hero-title .gold {
+        display: block;
+        color: #c8a96e;
+        font-weight: 300;
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 16px;
+        color: rgba(240, 237, 232, 0.45);
+        max-width: 480px;
+        line-height: 1.75;
+        margin-bottom: 52px;
+      }
+      .hero-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        padding: 8px 22px;
+        border: 1px solid rgba(200, 169, 110, 0.25);
+        border-radius: 40px;
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.8);
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .pill:hover {
+        background: rgba(200, 169, 110, 0.1);
+        border-color: #c8a96e;
+        color: #e8c99e;
+      }
+      .bg-a {
+        background: #0a0a0a;
+      }
+      .bg-b {
+        background: #0d0d0d;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .section {
+        padding: 110px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .s-tag {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: rgba(200, 169, 110, 0.5);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .s-title {
+        font-size: clamp(30px, 4vw, 52px);
+        font-weight: 600;
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+      .s-title em {
+        color: #c8a96e;
+        font-style: normal;
+      }
+      .s-desc {
+        font-size: 15px;
+        color: rgba(240, 237, 232, 0.45);
+        line-height: 1.75;
+        max-width: 580px;
+        margin-bottom: 48px;
+      }
+      .rule {
+        width: 36px;
+        height: 2px;
+        background: #c8a96e;
+        margin: 18px 0 34px;
+      }
+
+      /* TOOL CARDS — big 3 */
+      .tool-trio {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 40px;
+      }
+      .tool-card {
+        border-radius: 18px;
+        padding: 36px 28px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s;
+        cursor: default;
+      }
+      .tool-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+        border-radius: 18px;
+      }
+      .tool-card:hover {
+        transform: translateY(-4px);
+      }
+      .tc-blur {
+        background: rgba(100, 160, 255, 0.04);
+        border-color: rgba(100, 160, 255, 0.15);
+      }
+      .tc-blur:hover {
+        border-color: rgba(100, 160, 255, 0.35);
+        background: rgba(100, 160, 255, 0.07);
+      }
+      .tc-sharp {
+        background: rgba(255, 160, 80, 0.04);
+        border-color: rgba(255, 160, 80, 0.15);
+      }
+      .tc-sharp:hover {
+        border-color: rgba(255, 160, 80, 0.35);
+        background: rgba(255, 160, 80, 0.07);
+      }
+      .tc-smudge {
+        background: rgba(160, 120, 220, 0.04);
+        border-color: rgba(160, 120, 220, 0.15);
+      }
+      .tc-smudge:hover {
+        border-color: rgba(160, 120, 220, 0.35);
+        background: rgba(160, 120, 220, 0.07);
+      }
+      .tc-icon {
+        font-size: 32px;
+        margin-bottom: 20px;
+        display: block;
+      }
+      .tc-name {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .tc-sub {
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        opacity: 0.5;
+      }
+      .tc-desc {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.7;
+      }
+      .tc-accent-blur {
+        color: #6aa0ff;
+      }
+      .tc-accent-sharp {
+        color: #ffa050;
+      }
+      .tc-accent-smudge {
+        color: #a078dc;
+      }
+      .tc-key {
+        display: inline-block;
+        margin-top: 14px;
+        font-family: monospace;
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+      .tc-key-blur {
+        background: rgba(100, 160, 255, 0.12);
+        color: #6aa0ff;
+      }
+      .tc-key-sharp {
+        background: rgba(255, 160, 80, 0.12);
+        color: #ffa050;
+      }
+      .tc-key-smudge {
+        background: rgba(160, 120, 220, 0.12);
+        color: #a078dc;
+      }
+
+      /* PARAMS TABLE */
+      .params-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 40px;
+      }
+      .param-col {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 24px;
+      }
+      .param-col-title {
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .param-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .param-row:last-child {
+        border-bottom: none;
+      }
+      .param-name {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .param-val {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.45);
+        line-height: 1.55;
+      }
+
+      /* PIXEL DEMO — canvas-style SVG boxes */
+      .demo-section {
+        margin: 48px 0 0;
+      }
+      .demo-title {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(200, 169, 110, 0.5);
+        margin-bottom: 20px;
+      }
+      .demo-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .demo-box {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .demo-label {
+        padding: 10px 14px;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: rgba(0, 0, 0, 0.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .demo-canvas {
+        height: 110px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* ADJ LIST */
+      .adj-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .adj-item {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px 22px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        transition: all 0.25s;
+      }
+      .adj-item:hover {
+        background: rgba(200, 169, 110, 0.06);
+        border-color: rgba(200, 169, 110, 0.2);
+        transform: translateX(4px);
+      }
+      .adj-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .adj-body h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .adj-body p {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.48);
+        line-height: 1.65;
+      }
+      .adj-body .vs {
+        font-size: 12px;
+        color: rgba(200, 169, 110, 0.5);
+        margin-top: 6px;
+        font-style: italic;
+      }
+      .c-path {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 11px;
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.1);
+        color: #c8a96e;
+        padding: 3px 9px;
+        border-radius: 4px;
+      }
+      .shortcut {
+        display: inline-block;
+        margin-top: 8px;
+        font-family: monospace;
+        font-size: 11px;
+        background: rgba(200, 169, 110, 0.08);
+        color: #c8a96e;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      /* COMPARE */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        transition: border-color 0.25s;
+      }
+      .panel:hover {
+        border-color: rgba(200, 169, 110, 0.18);
+      }
+      .panel-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: rgba(200, 169, 110, 0.65);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .panel-badge-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #c8a96e;
+        flex-shrink: 0;
+      }
+      .panel h3 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #f0ede8;
+      }
+      .panel p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.5);
+        line-height: 1.7;
+      }
+      .cmd-list {
+        list-style: none;
+        margin-top: 16px;
+      }
+      .cmd-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.55);
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .cmd-list li:last-child {
+        border-bottom: none;
+      }
+      .cmd {
+        font-family: monospace;
+        background: rgba(200, 169, 110, 0.12);
+        color: #c8a96e;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .hl {
+        background: rgba(200, 169, 110, 0.05);
+        border: 1px solid rgba(200, 169, 110, 0.16);
+        border-radius: 16px;
+        padding: 36px;
+        margin-bottom: 14px;
+      }
+      .hl h3 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: #e8c99e;
+      }
+      .hl p {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.55);
+        line-height: 1.75;
+      }
+      .cmp-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .ccard {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .ccard h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .ccard li {
+        font-size: 13px;
+        color: rgba(240, 237, 232, 0.5);
+        list-style: none;
+        padding-left: 14px;
+        position: relative;
+        line-height: 1.75;
+      }
+      .ccard li::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        color: #c8a96e;
+      }
+
+      /* STRENGTH BARS */
+      .strength-table {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 28px;
+      }
+      .str-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+      }
+      .str-label {
+        font-size: 12px;
+        width: 130px;
+        flex-shrink: 0;
+        color: rgba(240, 237, 232, 0.6);
+      }
+      .str-bars {
+        display: flex;
+        gap: 3px;
+        flex: 1;
+      }
+      .str-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.07);
+        flex: 1;
+      }
+      .str-bar.on-blur {
+        background: #6aa0ff;
+      }
+      .str-bar.on-sharp {
+        background: #ffa050;
+      }
+      .str-bar.on-smudge {
+        background: #a078dc;
+      }
+      .str-tags {
+        display: flex;
+        gap: 6px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      .stag {
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+      }
+      .stag-blur {
+        background: rgba(100, 160, 255, 0.1);
+        color: #6aa0ff;
+        border: 1px solid rgba(100, 160, 255, 0.2);
+      }
+      .stag-sharp {
+        background: rgba(255, 160, 80, 0.1);
+        color: #ffa050;
+        border: 1px solid rgba(255, 160, 80, 0.2);
+      }
+      .stag-smudge {
+        background: rgba(160, 120, 220, 0.1);
+        color: #a078dc;
+        border: 1px solid rgba(160, 120, 220, 0.2);
+      }
+
+      /* QUIZ */
+      .quiz-wrap {
+        max-width: 740px;
+        margin: 0 auto;
+      }
+      .q-block {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 28px;
+        margin-bottom: 14px;
+        transition: border-color 0.3s;
+      }
+      .q-block.correct {
+        border-color: rgba(100, 200, 130, 0.45);
+        background: rgba(100, 200, 130, 0.04);
+      }
+      .q-block.wrong {
+        border-color: rgba(220, 80, 80, 0.35);
+        background: rgba(220, 80, 80, 0.03);
+      }
+      .q-num {
+        font-size: 11px;
+        color: rgba(200, 169, 110, 0.6);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .q-text {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.65);
+        transition: all 0.2s;
+        background: transparent;
+        text-align: left;
+        width: 100%;
+      }
+      .opt:hover:not(.locked) {
+        background: rgba(200, 169, 110, 0.07);
+        border-color: rgba(200, 169, 110, 0.28);
+        color: #f0ede8;
+      }
+      .opt.sel-ok {
+        background: rgba(100, 200, 130, 0.09);
+        border-color: rgba(100, 200, 130, 0.45);
+        color: #a0e8b0;
+      }
+      .opt.sel-bad {
+        background: rgba(220, 80, 80, 0.09);
+        border-color: rgba(220, 80, 80, 0.4);
+        color: #f08080;
+      }
+      .opt.reveal {
+        background: rgba(100, 200, 130, 0.05);
+        border-color: rgba(100, 200, 130, 0.28);
+        color: rgba(160, 232, 176, 0.75);
+      }
+      .odot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+      }
+      .opt.sel-ok .odot {
+        background: #4caf78;
+        border-color: #4caf78;
+        color: #fff;
+      }
+      .opt.sel-bad .odot {
+        background: #d94f4f;
+        border-color: #d94f4f;
+      }
+      .q-fb {
+        display: none;
+        margin-top: 12px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .q-fb.show {
+        display: block;
+      }
+      .q-fb.ok {
+        background: rgba(100, 200, 130, 0.08);
+        color: #a0e8b0;
+      }
+      .q-fb.bad {
+        background: rgba(220, 80, 80, 0.08);
+        color: #f08080;
+      }
+      .quiz-footer {
+        text-align: center;
+        margin-top: 36px;
+      }
+      .btn-submit {
+        padding: 14px 52px;
+        background: #c8a96e;
+        color: #0a0a0a;
+        border: none;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-submit:hover {
+        background: #e8c99e;
+        transform: scale(1.03);
+      }
+      .btn-submit:disabled {
+        opacity: 0.35;
+        cursor: default;
+        transform: none;
+      }
+      .score-panel {
+        display: none;
+        margin-top: 28px;
+        padding: 48px;
+        background: rgba(200, 169, 110, 0.06);
+        border: 1px solid rgba(200, 169, 110, 0.18);
+        border-radius: 18px;
+        text-align: center;
+      }
+      .score-panel.show {
+        display: block;
+      }
+      .score-big {
+        font-size: 72px;
+        font-weight: 700;
+        color: #c8a96e;
+        line-height: 1;
+      }
+      .score-of {
+        font-size: 14px;
+        color: rgba(240, 237, 232, 0.4);
+        margin-top: 6px;
+      }
+      .score-msg {
+        font-size: 17px;
+        color: #f0ede8;
+        margin-top: 14px;
+        line-height: 1.6;
+      }
+      .btn-retry {
+        margin-top: 20px;
+        padding: 10px 32px;
+        background: transparent;
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.35);
+        border-radius: 40px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "Noto Sans Georgian", sans-serif;
+        transition: all 0.25s;
+      }
+      .btn-retry:hover {
+        background: rgba(200, 169, 110, 0.1);
+      }
+      footer {
+        padding: 60px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+      footer p {
+        font-size: 12px;
+        color: rgba(240, 237, 232, 0.2);
+        letter-spacing: 1px;
+      }
+      @media (max-width: 960px) {
+        .hero {
+          margin: 0 40px;
+        }
+        .tool-trio,
+        .params-grid,
+        .demo-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .two-col,
+        .cmp-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 48px;
+        }
+        .section {
+          padding: 80px 24px;
+        }
+        nav {
+          padding: 14px 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hero {
+          margin: 0;
+        }
+        .tool-trio,
+        .params-grid,
+        .demo-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress-bar"
+      id="pbar"
+    ></div>
+
+    <nav>
+      <div class="nav-left">
+        <a
+          class="nav-home"
+          href="index.html"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M1 5.5L6 1l5 4.5M2 5v5.5h3V8h2v2.5h3V5"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          მთავარი
+        </a>
+        <div class="nav-divider"></div>
+        <div
+          class="nav-dropdown-wrap"
+          id="moduleDropdown"
+        >
+          <button
+            class="nav-dropdown-btn"
+            onclick="toggleDropdown()"
+          >
+            მოდულები <span class="chevron">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="ფერებიდატონები.html"
+              ><span class="num">01</span>ფერები და ტონები</a
+            >
+            <a href="ტიპოგრაფია.html"><span class="num">02</span>ტიპოგრაფია</a>
+            <a href="გეომეტრიულიფიგურები.html"
+              ><span class="num">03</span>გეომეტრიული ფიგურები</a
+            >
+            <a href="ფენთული.html"><span class="num">04</span>ფენთული</a>
+            <a href="ტონისკორექცია.html"
+              ><span class="num">05</span>ტონის კორექცია</a
+            >
+            <a href="რეტუში.html"><span class="num">06</span>რეტუში</a>
+            <a href="რეტუში2.html"><span class="num">07</span>რეტუში 2</a>
+            <a
+              href="პიქსელურისტრუქტურა.html"
+              class="current"
+              ><span class="num">08</span>პიქსელურ სტრუქტურაზე ზემოქმედება</a
+            >
+          </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-logo">Pixel Structure Tools</div>
+      </div>
+      <div class="nav-links">
+        <a onclick="goTo('#s-tools')">ინსტრუმენტები</a>
+        <a onclick="goTo('#s-params')">პარამეტრები</a>
+        <a onclick="goTo('#s-compare')">შედარება</a>
+        <a onclick="goTo('#s-quiz')">გამოცდა</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-label">Adobe Photoshop · Pixel Structure</div>
+        <h1 class="hero-title">
+          პიქსელურ სტრუქტურაზე<br />
+          <span class="gold">ზემოქმედება</span>
+        </h1>
+        <p class="hero-sub">
+          Blur, Sharpen და Smudge — სამი ფუნჯ-ინსტრუმენტი, რომელიც პიქსელებს
+          შორის ურთიერთობას პირდაპირ, ხელით მართავს.
+        </p>
+        <div class="hero-pills">
+          <div
+            class="pill"
+            onclick="goTo('#s-tools')"
+          >
+            01 · ინსტრუმენტები
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-params')"
+          >
+            02 · პარამეტრები
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-compare')"
+          >
+            03 · შედარება
+          </div>
+          <div
+            class="pill"
+            onclick="goTo('#s-quiz')"
+          >
+            04 · ქვიზი
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SECTION 1: TOOLS ─── -->
+    <div
+      id="s-tools"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">01 · ინსტრუმენტები</div>
+        <h2 class="s-title">Blur · Sharpen · <em>Smudge</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          სამივე ინსტრუმენტი Toolbar-ში ერთ ჯგუფშია (R). ისინი პიქსელების
+          მნიშვნელობებს — ფერს, კონტრასტს, პოზიციას — უშუალოდ ცვლიან.
+        </p>
+
+        <!-- BIG THREE CARDS -->
+        <div class="tool-trio">
+          <div class="tool-card tc-blur">
+            <span class="tc-icon">💧</span>
+            <div class="tc-name tc-accent-blur">Blur Tool</div>
+            <div class="tc-sub">გლუვება · ბუნდოვანება</div>
+            <div class="tc-desc">
+              ახლო პიქსელების ფერებს
+              <strong style="color: #6aa0ff">საშუალო მნიშვნელობამდე</strong>
+              ახლოებს. კიდეები ქრება, გადასვლები რბილდება. ხატვისას — კანი
+              გლუვდება, ფონი ლბება, კიდეები — თავისუფლდება.
+            </div>
+            <span class="tc-key tc-key-blur">R → Blur Tool</span>
+          </div>
+          <div class="tool-card tc-sharp">
+            <span class="tc-icon">💎</span>
+            <div class="tc-name tc-accent-sharp">Sharpen Tool</div>
+            <div class="tc-sub">გამახვილება · კონტრასტი</div>
+            <div class="tc-desc">
+              ახლო პიქსელებს შორის
+              <strong style="color: #ffa050">კონტრასტს ზრდის</strong> — კიდეები
+              მკვეთრი ხდება, ტექსტურა — გამოკვეთილი. ოდნავ გამოიყენება:
+              გადამეტება ნოიზს და არტეფაქტებს ქმნის.
+            </div>
+            <span class="tc-key tc-key-sharp">R → Sharpen Tool</span>
+          </div>
+          <div class="tool-card tc-smudge">
+            <span class="tc-icon">🌀</span>
+            <div class="tc-name tc-accent-smudge">Smudge Tool</div>
+            <div class="tc-sub">გასვრა · მოძრაობა</div>
+            <div class="tc-desc">
+              პიქსელების ფერს <strong style="color: #a078dc">ათრევს</strong> —
+              ისე, როგორც სველ საღებავს თითით გაატარებ. Finger Painting — ფუნჯის
+              ფერით იწყება მოძრაობა. ხელოვნურ, ილუსტრაციულ ეფექტებში.
+            </div>
+            <span class="tc-key tc-key-smudge">R → Smudge Tool</span>
+          </div>
+        </div>
+
+        <!-- DEEP DIVE ITEMS -->
+        <div class="adj-list">
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(100, 160, 255, 0.1)"
+            >
+              💧
+            </div>
+            <div class="adj-body">
+              <h4>Blur Tool — პიქსელების "გარეცხვა"</h4>
+              <p>
+                Blur Tool ფუნჯის ქვეშ მოხვედრილ პიქსელებს
+                <strong style="color: #e8c99e">Gaussian Blur-ის ლოგიკით</strong>
+                ამუშავებს — ახლო პიქსელების ფერების საშუალო გამოაქვს.
+                <br /><br />
+                <strong style="color: #6aa0ff">Strength</strong>: რამდენად
+                ძლიერია ეფექტი ერთ გავლაში (1–100%). დაბალი Strength + მრავალი
+                გავლა = უფრო ნატიფი კონტროლი.<br />
+                <strong style="color: #6aa0ff">Mode</strong>: Normal (ყველა
+                არხი), Darken (მხოლოდ ბნელი), Lighten (მხოლოდ ნათელი).<br />
+                <strong style="color: #6aa0ff">Sample All Layers</strong>: ყველა
+                ხილული ფენიდან ნიმუშის აღება.
+              </p>
+              <div class="vs">
+                პრაქტიკა: კანის ნაოჭები, ფონის ლბება, კიდის სიმახვილის მოხსნა,
+                ჩრდილის გლუვება.
+              </div>
+              <span class="shortcut">R → Blur</span>
+              <span
+                class="c-path"
+                style="margin-left: 8px"
+                >Toolbar → R (გრძელი დაჭ.)</span
+              >
+            </div>
+          </div>
+
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(255, 160, 80, 0.1)"
+            >
+              💎
+            </div>
+            <div class="adj-body">
+              <h4>Sharpen Tool — კიდის "ამოღება"</h4>
+              <p>
+                ახლო პიქსელებს შორის
+                <strong style="color: #e8c99e">სხვაობას ზრდის</strong> — ბნელი
+                უფრო ბნელდება, ნათელი — უფრო ნათელდება. ეს კიდეს მკვეთრ ხდის.
+                <br /><br />
+                <strong style="color: #ffa050">Protect Detail</strong> (Options
+                Bar) — ჩართვისას ნოიზის შემცირება და დეტალების შენარჩუნება.
+                გირჩევ ყოველთვის ჩართო.<br />
+                <strong style="color: #ffa050">Strength</strong>: 20–40% —
+                ოპტიმალური; 80%+ — ნოიზი და "ჰალო ეფექტი" კიდეებზე.<br />
+                <strong style="color: #ffa050">Sample All Layers</strong>: ყველა
+                ფენიდან კითხვა.
+              </p>
+              <div class="vs">
+                ⚠ გადამეტება: Sharpen Tool-ის ბოროტად გამოყენება ქმნის "ჰალო"
+                (თეთრ კიდეს), ნოიზს და პლასტიკურ სახეს.
+              </div>
+              <span class="shortcut">R → Sharpen</span>
+              <span
+                class="c-path"
+                style="margin-left: 8px"
+                >Toolbar → R (გრძელი დაჭ.)</span
+              >
+            </div>
+          </div>
+
+          <div class="adj-item">
+            <div
+              class="adj-icon"
+              style="background: rgba(160, 120, 220, 0.1)"
+            >
+              🌀
+            </div>
+            <div class="adj-body">
+              <h4>Smudge Tool — "სველი საღებავი"</h4>
+              <p>
+                Smudge Tool სიმულაციას უკეთებს
+                <strong style="color: #e8c99e">თითით საღებავის გაყვანას</strong>
+                — მოძრაობის მიმართულებით პიქსელების ფერი "ათრევს". <br /><br />
+                <strong style="color: #a078dc">Strength</strong>: 50% = ზომიერი
+                ათრევა; 100% = ძლიერი, ტალღური.<br />
+                <strong style="color: #a078dc">Finger Painting</strong> (Options
+                Bar): ჩართვისას — ფუნჯის წინა-პლანის ფერით იწყებს სვლას, შემდეგ
+                ახლო ფერებს ათრევს. გამორთვა — ახლო პიქსელებს ათრევს
+                პირდაპირ.<br />
+                <strong style="color: #a078dc">Sample All Layers</strong>: ყველა
+                ფენიდან კითხვა.
+              </p>
+              <div class="vs">
+                პრაქტიკა: ბეწვის, ჯვარედინი კიდეების, ილუსტრაციის ეფექტი. ასევე
+                — კბენები, სინათლის ეფექტი.
+              </div>
+              <span class="shortcut">R → Smudge</span>
+              <span
+                class="c-path"
+                style="margin-left: 8px"
+                >Toolbar → R (გრძელი დაჭ.)</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- PIXEL VISUAL DEMO -->
+        <div class="demo-section">
+          <div class="demo-title">პიქსელებზე ეფექტი — ვიზუალური მაგალითი</div>
+          <div class="demo-row">
+            <!-- BLUR demo -->
+            <div class="demo-box">
+              <div
+                class="demo-label"
+                style="color: #6aa0ff"
+              >
+                💧 Blur — გლუვება
+              </div>
+              <div class="demo-canvas">
+                <svg
+                  width="100%"
+                  height="110"
+                  viewBox="0 0 300 110"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <filter id="blur-heavy">
+                      <feGaussianBlur stdDeviation="6" />
+                    </filter>
+                    <filter id="blur-mid">
+                      <feGaussianBlur stdDeviation="2.5" />
+                    </filter>
+                  </defs>
+                  <!-- background -->
+                  <rect
+                    width="300"
+                    height="110"
+                    fill="#0f0f12"
+                  />
+                  <!-- original sharp edge on left -->
+                  <rect
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="110"
+                    fill="#1a2a4a"
+                  />
+                  <rect
+                    x="100"
+                    y="0"
+                    width="200"
+                    height="110"
+                    fill="#0f1620"
+                  />
+                  <text
+                    x="50"
+                    y="58"
+                    fill="rgba(100,160,255,.35)"
+                    font-size="9"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    ORIGINAL
+                  </text>
+                  <!-- blurred version in middle -->
+                  <g filter="url(#blur-mid)">
+                    <rect
+                      x="100"
+                      y="0"
+                      width="100"
+                      height="110"
+                      fill="#1a2a4a"
+                    />
+                    <rect
+                      x="200"
+                      y="0"
+                      width="100"
+                      height="110"
+                      fill="#0f1620"
+                    />
+                  </g>
+                  <!-- labels -->
+                  <text
+                    x="150"
+                    y="100"
+                    fill="rgba(100,160,255,.5)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    STRENGTH 40%
+                  </text>
+                  <text
+                    x="250"
+                    y="100"
+                    fill="rgba(100,160,255,.7)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    STRENGTH 100%
+                  </text>
+                  <!-- dividers -->
+                  <line
+                    x1="100"
+                    y1="0"
+                    x2="100"
+                    y2="110"
+                    stroke="rgba(100,160,255,.15)"
+                    stroke-width="1"
+                  />
+                  <line
+                    x1="200"
+                    y1="0"
+                    x2="200"
+                    y2="110"
+                    stroke="rgba(100,160,255,.15)"
+                    stroke-width="1"
+                  />
+                  <!-- heavy blur right -->
+                  <g filter="url(#blur-heavy)">
+                    <rect
+                      x="200"
+                      y="0"
+                      width="100"
+                      height="110"
+                      fill="#1a2a4a"
+                    />
+                    <rect
+                      x="250"
+                      y="0"
+                      width="100"
+                      height="110"
+                      fill="#0f1620"
+                    />
+                  </g>
+                  <!-- arrow -->
+                  <path
+                    d="M110 55 Q150 30 190 55"
+                    stroke="rgba(100,160,255,.4)"
+                    stroke-width="1.5"
+                    fill="none"
+                    marker-end="url(#ah-b)"
+                  />
+                  <defs>
+                    <marker
+                      id="ah-b"
+                      markerWidth="6"
+                      markerHeight="6"
+                      refX="3"
+                      refY="3"
+                      orient="auto"
+                    >
+                      <path
+                        d="M0,0 L6,3 L0,6 Z"
+                        fill="rgba(100,160,255,.6)"
+                      />
+                    </marker>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+            <!-- SHARPEN demo -->
+            <div class="demo-box">
+              <div
+                class="demo-label"
+                style="color: #ffa050"
+              >
+                💎 Sharpen — გამახვილება
+              </div>
+              <div class="demo-canvas">
+                <svg
+                  width="100%"
+                  height="110"
+                  viewBox="0 0 300 110"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    width="300"
+                    height="110"
+                    fill="#0f0f12"
+                  />
+                  <!-- soft edge original -->
+                  <defs>
+                    <filter id="soft-orig">
+                      <feGaussianBlur stdDeviation="4" />
+                    </filter>
+                  </defs>
+                  <g filter="url(#soft-orig)">
+                    <rect
+                      x="0"
+                      y="0"
+                      width="130"
+                      height="110"
+                      fill="#3a2010"
+                    />
+                    <rect
+                      x="130"
+                      y="0"
+                      width="170"
+                      height="110"
+                      fill="#0f0f12"
+                    />
+                  </g>
+                  <text
+                    x="50"
+                    y="58"
+                    fill="rgba(255,160,80,.3)"
+                    font-size="9"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    SOFT
+                  </text>
+                  <!-- sharpened -->
+                  <rect
+                    x="150"
+                    y="0"
+                    width="80"
+                    height="110"
+                    fill="#3a2010"
+                  />
+                  <rect
+                    x="230"
+                    y="0"
+                    width="70"
+                    height="110"
+                    fill="#0f0f12"
+                  />
+                  <!-- halo effect lines -->
+                  <rect
+                    x="229"
+                    y="0"
+                    width="3"
+                    height="110"
+                    fill="rgba(255,220,160,.18)"
+                  />
+                  <!-- dividers -->
+                  <line
+                    x1="150"
+                    y1="0"
+                    x2="150"
+                    y2="110"
+                    stroke="rgba(255,160,80,.15)"
+                    stroke-width="1"
+                  />
+                  <text
+                    x="100"
+                    y="100"
+                    fill="rgba(255,160,80,.4)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    ORIGINAL BLUR
+                  </text>
+                  <text
+                    x="225"
+                    y="100"
+                    fill="rgba(255,160,80,.7)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    AFTER SHARPEN
+                  </text>
+                  <path
+                    d="M130 55 Q140 35 155 55"
+                    stroke="rgba(255,160,80,.4)"
+                    stroke-width="1.5"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+            </div>
+            <!-- SMUDGE demo -->
+            <div class="demo-box">
+              <div
+                class="demo-label"
+                style="color: #a078dc"
+              >
+                🌀 Smudge — ათრევა
+              </div>
+              <div class="demo-canvas">
+                <svg
+                  width="100%"
+                  height="110"
+                  viewBox="0 0 300 110"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    width="300"
+                    height="110"
+                    fill="#0f0f12"
+                  />
+                  <!-- color blobs being smudged -->
+                  <ellipse
+                    cx="60"
+                    cy="55"
+                    rx="40"
+                    ry="28"
+                    fill="#5030a0"
+                    opacity=".7"
+                  />
+                  <ellipse
+                    cx="80"
+                    cy="55"
+                    rx="30"
+                    ry="18"
+                    fill="#8050e0"
+                    opacity=".5"
+                  />
+                  <!-- smudge trail -->
+                  <path
+                    d="M90 55 Q130 40 170 55 Q210 70 250 50"
+                    stroke="#a078dc"
+                    stroke-width="12"
+                    fill="none"
+                    opacity=".25"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M90 55 Q130 45 170 55 Q210 65 250 50"
+                    stroke="#c090ff"
+                    stroke-width="5"
+                    fill="none"
+                    opacity=".18"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M90 55 Q140 50 190 55 Q230 58 255 50"
+                    stroke="#e0c0ff"
+                    stroke-width="2"
+                    fill="none"
+                    opacity=".12"
+                    stroke-linecap="round"
+                  />
+                  <!-- arrow direction -->
+                  <path
+                    d="M95 55 L245 50"
+                    stroke="rgba(160,120,220,.3)"
+                    stroke-width="1"
+                    stroke-dasharray="4 3"
+                  />
+                  <text
+                    x="170"
+                    y="98"
+                    fill="rgba(160,120,220,.5)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    მოძრაობის მიმართულება →
+                  </text>
+                  <text
+                    x="55"
+                    y="100"
+                    fill="rgba(160,120,220,.4)"
+                    font-size="8"
+                    text-anchor="middle"
+                    font-family="monospace"
+                  >
+                    წყარო
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 2: PARAMS ─── -->
+    <div
+      id="s-params"
+      class="bg-b"
+    >
+      <div class="section">
+        <div class="s-tag">02 · პარამეტრები</div>
+        <h2 class="s-title">Options Bar · <em>პარამეტრების კონტროლი</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">
+          სამივე ინსტრუმენტს Options Bar-ში ჰქონდა საერთო და უნიკალური
+          პარამეტრები. სწორი პარამეტრი = სწორი შედეგი.
+        </p>
+
+        <!-- PARAMS COLS -->
+        <div class="params-grid">
+          <div class="param-col">
+            <div
+              class="param-col-title"
+              style="color: #6aa0ff; border-color: rgba(100, 160, 255, 0.15)"
+            >
+              💧 Blur Tool
+            </div>
+            <div class="param-row">
+              <div class="param-name">Brush (ფუნჯი)</div>
+              <div class="param-val">
+                ზომა, სიხისტე (Hardness). რბილი ფუნჯი — ბუნებრივი შედეგი.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Mode</div>
+              <div class="param-val">
+                Normal / Darken / Lighten / Luminosity. ჩვეულებ. Normal.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Strength</div>
+              <div class="param-val">
+                1–100%. 20–50% — ნატიფი კონტროლი. 100% — ძლიერი ბლური ერთ
+                გავლაში.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Sample All Layers</div>
+              <div class="param-val">
+                ყველა ხილული ფენიდან პიქსელების კითხვა.
+              </div>
+            </div>
+          </div>
+
+          <div class="param-col">
+            <div
+              class="param-col-title"
+              style="color: #ffa050; border-color: rgba(255, 160, 80, 0.15)"
+            >
+              💎 Sharpen Tool
+            </div>
+            <div class="param-row">
+              <div class="param-name">Brush</div>
+              <div class="param-val">
+                რბილი ფუნჯი — ნატიფი კიდე. მაგარი (Hard) — ძლიერი, ხშირ. ნოიზი.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Mode</div>
+              <div class="param-val">
+                Normal / Darken / Lighten — ანალოგიურად Blur-ის.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Strength</div>
+              <div class="param-val">
+                20–40% — ოპტიმ. 80%+ — ნოიზი, ჰალო-ეფექტი. ნელ-ნელა!
+              </div>
+            </div>
+            <div class="param-row">
+              <div
+                class="param-name"
+                style="color: #ffa050"
+              >
+                Protect Detail ★
+              </div>
+              <div class="param-val">
+                უნიკალური პარამეტრი. ჩართვა: ნოიზის შემცირება, დეტალი — ინახება.
+              </div>
+            </div>
+          </div>
+
+          <div class="param-col">
+            <div
+              class="param-col-title"
+              style="color: #a078dc; border-color: rgba(160, 120, 220, 0.15)"
+            >
+              🌀 Smudge Tool
+            </div>
+            <div class="param-row">
+              <div class="param-name">Brush</div>
+              <div class="param-val">
+                ფუნჯის ფორმა — ათრევის ფორმას განსაზღვრავს. ბრტყელი = ფართო
+                კვალი.
+              </div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Mode</div>
+              <div class="param-val">Normal / Darken / Lighten / და სხვ.</div>
+            </div>
+            <div class="param-row">
+              <div class="param-name">Strength</div>
+              <div class="param-val">
+                50% = ზომიერი. 100% = სრული ათრევა. 10–20% = ნატიფი ბლენდი.
+              </div>
+            </div>
+            <div class="param-row">
+              <div
+                class="param-name"
+                style="color: #a078dc"
+              >
+                Finger Painting ★
+              </div>
+              <div class="param-val">
+                უნიკ. Foreground ფერით იწყებს მოძრაობას, შემდეგ — ახლო პიქ.
+                ათრევს.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STRENGTH VISUAL TABLE -->
+        <div
+          style="
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(200, 169, 110, 0.5);
+            margin-bottom: 16px;
+          "
+        >
+          Strength — რეკომენდებული მნიშვნელობები
+        </div>
+        <div class="strength-table">
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #6aa0ff"
+            >
+              Blur · კანი
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(100, 160, 255, 0.7);
+                min-width: 40px;
+              "
+              >20–30%</span
+            >
+          </div>
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #6aa0ff"
+            >
+              Blur · ფონი
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar on-blur"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(100, 160, 255, 0.7);
+                min-width: 40px;
+              "
+              >40–60%</span
+            >
+          </div>
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #ffa050"
+            >
+              Sharpen · ოპტიმ.
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(255, 160, 80, 0.7);
+                min-width: 40px;
+              "
+              >20–40%</span
+            >
+          </div>
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #ffa050"
+            >
+              Sharpen · ⚠ ნოიზი
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+              <div class="str-bar on-sharp"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(255, 100, 50, 0.8);
+                min-width: 40px;
+              "
+              >80–100%</span
+            >
+          </div>
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #a078dc"
+            >
+              Smudge · ნატიფი
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(160, 120, 220, 0.7);
+                min-width: 40px;
+              "
+              >10–20%</span
+            >
+          </div>
+          <div class="str-row">
+            <div
+              class="str-label"
+              style="color: #a078dc"
+            >
+              Smudge · ილუსტ.
+            </div>
+            <div class="str-bars">
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar on-smudge"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+              <div class="str-bar"></div>
+            </div>
+            <span
+              style="
+                font-size: 12px;
+                color: rgba(160, 120, 220, 0.7);
+                min-width: 40px;
+              "
+              >50–70%</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="str-tags"
+          style="margin-top: 20px"
+        >
+          <span class="stag stag-blur">💧 Blur = საშუალო</span>
+          <span class="stag stag-sharp">💎 Sharpen = კონტრასტი</span>
+          <span class="stag stag-smudge">🌀 Smudge = ათრევა</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 3: COMPARE ─── -->
+    <div
+      id="s-compare"
+      class="bg-a"
+    >
+      <div class="section">
+        <div class="s-tag">03 · შედარება</div>
+        <h2 class="s-title">ინსტრუმენტების <em>კლასიფიკაცია</em></h2>
+        <div class="rule"></div>
+        <p class="s-desc">სად, როდის, რომელი?</p>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-badge">
+              <div class="panel-badge-dot"></div>
+              Blur Tool · გამოყენება
+            </div>
+            <h3>როდის ვიყენებ?</h3>
+            <p>ზედაპირის გლუვება, ფონის ლბება, კიდის მოხსნა.</p>
+            <ul class="cmd-list">
+              <li><span class="cmd">კანი</span> ნაოჭი, ლაქა, ტექსტ. გლ.</li>
+              <li><span class="cmd">ფონი</span> სიღრმის ეფექტი (Bokeh)</li>
+              <li><span class="cmd">კიდე</span> მკვეთრი კონტ. მოხსნა</li>
+              <li><span class="cmd">ჩრდილი</span> Drop Shadow-ს გლ.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <div class="panel-badge">
+              <div class="panel-badge-dot"></div>
+              Sharpen Tool · გამოყენება
+            </div>
+            <h3>როდის ვიყენებ?</h3>
+            <p>ტექსტ. გამოკვეთა, კიდის მახვილება — ზომიერად.</p>
+            <ul class="cmd-list">
+              <li><span class="cmd">თვალი</span> ირისსა და წამწამი</li>
+              <li><span class="cmd">ბეწვი</span> ცხოველის ბეწვის ტექსტ.</li>
+              <li><span class="cmd">ქვა</span> მინერალის, ქვის სტრუქტ.</li>
+              <li><span class="cmd">⚠ ფრთხილად</span> კანზე არასოდეს!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-badge">
+              <div class="panel-badge-dot"></div>
+              Smudge Tool · გამოყენება
+            </div>
+            <h3>როდის ვიყენებ?</h3>
+            <p>ათრევა, ფერის გადადინება, ილუსტრაციული ეფექტი.</p>
+            <ul class="cmd-list">
+              <li><span class="cmd">ბეწვი</span> ბეწვის სტრანდები</li>
+              <li><span class="cmd">ილუსტ.</span> ციფრული ფერწერა</li>
+              <li><span class="cmd">კიდე</span> ფერის "გაყვანა"</li>
+              <li><span class="cmd">ეფ.</span> ქარი, სისწრაფე, დინება</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <div class="panel-badge">
+              <div class="panel-badge-dot"></div>
+              Filter vs Tool
+            </div>
+            <h3>Filter Blur vs Blur Tool</h3>
+            <p>ორი განსხვავებული მიდგომა — ერთი და იმავე ეფექტისთვის.</p>
+            <ul class="cmd-list">
+              <li><span class="cmd">Filter Blur</span> მთელ ფენაზე, ზუსტი</li>
+              <li><span class="cmd">Blur Tool</span> ხელით, ლოკალური</li>
+              <li>
+                <span class="cmd">Filter Sharp.</span> Smart Sharpen — უკეთ.
+              </li>
+              <li><span class="cmd">Sharp. Tool</span> სელექტიური, ზომიერი</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 32px">
+          <div
+            style="
+              font-size: 11px;
+              letter-spacing: 3px;
+              text-transform: uppercase;
+              color: rgba(200, 169, 110, 0.5);
+              margin-bottom: 20px;
+            "
+          >
+            სრული შედარება
+          </div>
+          <div class="cmp-grid">
+            <div class="ccard">
+              <h4 style="color: #c8a96e">⚡ პიქსელებზე ზემოქმედება</h4>
+              <ul>
+                <li>Blur — საშუალო → ფერები ახლოვდება</li>
+                <li>Sharpen — სხვაობა → ფერები შორდება</li>
+                <li>Smudge — ათრევა → ფერი მოძრაობს</li>
+              </ul>
+            </div>
+            <div class="ccard">
+              <h4 style="color: #c8a96e">🎯 Protect Detail — Sharpen-ის</h4>
+              <ul>
+                <li>ჩართ.: ნოიზი მცირდება</li>
+                <li>გამ.: სწრაფი, ნოიზიანი</li>
+                <li>ყოვ. ჩართული = გირჩევ!</li>
+              </ul>
+            </div>
+          </div>
+          <div class="cmp-grid">
+            <div class="ccard">
+              <h4 style="color: #c8a96e">🌀 Finger Painting — Smudge-ის</h4>
+              <ul>
+                <li>ჩართ.: FG ფერით იწყება</li>
+                <li>გამ.: ახლო პიქ. ათრევა</li>
+                <li>ფერების "შერევის" ეფექტი</li>
+              </ul>
+            </div>
+            <div class="ccard">
+              <h4 style="color: #c8a96e">🖌 ოსტატის წესი</h4>
+              <ul>
+                <li>Blur — ნელა, დაბ. Strength</li>
+                <li>Sharpen — ზომ. + Protect</li>
+                <li>Smudge — მოკ. სვლები</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- HIGHLIGHT BOX -->
+        <div
+          class="hl"
+          style="margin-top: 32px"
+        >
+          <h3>🔑 სამი ინსტრუმენტი — ერთი ჯგუფი (R)</h3>
+          <p>
+            Blur, Sharpen და Smudge ერთ კლავიშზე —
+            <strong style="color: #e8c99e">R</strong> — სხდება. Shift+R —
+            გადართვა. ფუნჯის ზომა:
+            <strong style="color: #e8c99e">[ / ]</strong> კლავიშებით. Hardness:
+            Shift+[ / Shift+]. Opacity/Strength: ციფრული კლავიშები (1=10%,
+            5=50%). <br /><br />
+            ყველა სამი —
+            <strong style="color: #e8c99e">დესტრუქციული</strong> (Original ფენა
+            იცვლება). გამოიყენე
+            <strong style="color: #e8c99e">Duplicate Layer (Ctrl+J)</strong> —
+            ყოველთვის ასლზე.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION 4: QUIZ ─── -->
+    <div
+      id="s-quiz"
+      class="bg-b"
+    >
+      <div
+        class="section"
+        style="max-width: 800px; margin: 0 auto"
+      >
+        <div style="text-align: center; margin-bottom: 56px">
+          <div class="s-tag">04 · გამოცდა</div>
+          <h2 class="s-title">შეამოწმე <em>ცოდნა</em></h2>
+          <div
+            class="rule"
+            style="margin: 18px auto 0"
+          ></div>
+        </div>
+
+        <div class="quiz-wrap">
+          <div
+            class="q-block"
+            id="q0"
+          >
+            <div class="q-num">კითხვა 01</div>
+            <div class="q-text">Blur Tool-ი პიქსელებზე რას აკეთებს?</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(0, 0)"
+              >
+                <div class="odot"></div>
+                პიქსელებს შორის კონტრასტს ზრდის
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 1)"
+              >
+                <div class="odot"></div>
+                ახლო პიქსელების ფერებს საშუალო მნიშვნელობამდე ახლოებს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 2)"
+              >
+                <div class="odot"></div>
+                პიქსელს ათრევს მოძრაობის მიმართ.
+              </div>
+              <div
+                class="opt"
+                onclick="pick(0, 3)"
+              >
+                <div class="odot"></div>
+                ფერს ჩანაცვლებს
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb0"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q1"
+          >
+            <div class="q-num">კითხვა 02</div>
+            <div class="q-text">
+              Sharpen Tool-ის გადამეტება (100%+) რას იწვევს?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(1, 0)"
+              >
+                <div class="odot"></div>
+                სურათი უფრო ბუნებრივი ხდება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 1)"
+              >
+                <div class="odot"></div>
+                ნოიზს და "ჰალო" ეფექტს კიდეებზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 2)"
+              >
+                <div class="odot"></div>
+                ფერი იცვლება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(1, 3)"
+              >
+                <div class="odot"></div>
+                სურათი ბლური ხდება
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb1"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q2"
+          >
+            <div class="q-num">კითხვა 03</div>
+            <div class="q-text">Smudge Tool-ში Finger Painting ჩართვისას:</div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(2, 0)"
+              >
+                <div class="odot"></div>
+                სურათი იბლურება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 1)"
+              >
+                <div class="odot"></div>
+                ინსტრუმენტი გამოირთვება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 2)"
+              >
+                <div class="odot"></div>
+                Foreground ფერით იწყება მოძრაობა, შემდ. ახლო პიქ. ათრევს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(2, 3)"
+              >
+                <div class="odot"></div>
+                მხოლოდ ფონის ფერს ცვლის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb2"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q3"
+          >
+            <div class="q-num">კითხვა 04</div>
+            <div class="q-text">
+              Sharpen Tool-ში Protect Detail პარამეტრი რისთვის არის?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(3, 0)"
+              >
+                <div class="odot"></div>
+                ფუნჯის ზომის დაცვა
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 1)"
+              >
+                <div class="odot"></div>
+                ნოიზის შემცირება და დეტალის შენარჩუნება
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 2)"
+              >
+                <div class="odot"></div>
+                ფენის დაბლოკვა
+              </div>
+              <div
+                class="opt"
+                onclick="pick(3, 3)"
+              >
+                <div class="odot"></div>
+                Strength-ის ავტო-შემცირება
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb3"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q4"
+          >
+            <div class="q-num">კითხვა 05</div>
+            <div class="q-text">
+              სამივე ინსტრუმენტი (Blur, Sharpen, Smudge) რომელ კლავიშზეა?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(4, 0)"
+              >
+                <div class="odot"></div>
+                B
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 1)"
+              >
+                <div class="odot"></div>
+                R
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 2)"
+              >
+                <div class="odot"></div>
+                S
+              </div>
+              <div
+                class="opt"
+                onclick="pick(4, 3)"
+              >
+                <div class="odot"></div>
+                J
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb4"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q5"
+          >
+            <div class="q-num">კითხვა 06</div>
+            <div class="q-text">
+              Blur Tool — Filter → Blur-ისგან განსხვავება?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(5, 0)"
+              >
+                <div class="odot"></div>
+                Blur Tool უფრო ძლიერია
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 1)"
+              >
+                <div class="odot"></div>
+                Blur Tool ლოკალური, ხელით; Filter — მთელ ფენაზე
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 2)"
+              >
+                <div class="odot"></div>
+                Filter Blur მხოლოდ ფოტოზე მუშაობს
+              </div>
+              <div
+                class="opt"
+                onclick="pick(5, 3)"
+              >
+                <div class="odot"></div>
+                განსხვავება არ არის
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb5"
+            ></div>
+          </div>
+
+          <div
+            class="q-block"
+            id="q6"
+          >
+            <div class="q-num">კითხვა 07</div>
+            <div class="q-text">
+              რომელ ინსტრუმენტს გამოიყენებ ცხოველის ბეწვის სტრანდების
+              შესაქმნელად?
+            </div>
+            <div class="opts">
+              <div
+                class="opt"
+                onclick="pick(6, 0)"
+              >
+                <div class="odot"></div>
+                Blur Tool
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 1)"
+              >
+                <div class="odot"></div>
+                Smudge Tool
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 2)"
+              >
+                <div class="odot"></div>
+                Red Eye Tool
+              </div>
+              <div
+                class="opt"
+                onclick="pick(6, 3)"
+              >
+                <div class="odot"></div>
+                Clone Stamp
+              </div>
+            </div>
+            <div
+              class="q-fb"
+              id="fb6"
+            ></div>
+          </div>
+
+          <div class="quiz-footer">
+            <button
+              class="btn-submit"
+              id="submitBtn"
+              onclick="submitQuiz()"
+            >
+              შედეგის ნახვა
+            </button>
+          </div>
+
+          <div
+            class="score-panel"
+            id="scorePanel"
+          >
+            <div
+              class="score-big"
+              id="scoreNum"
+            >
+              0/7
+            </div>
+            <div class="score-of">სწორი პასუხი</div>
+            <div
+              class="score-msg"
+              id="scoreMsg"
+            ></div>
+            <button
+              class="btn-retry"
+              onclick="retryQuiz()"
+            >
+              კიდევ სცადე
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Adobe Photoshop · Blur Tool · Sharpen Tool · Smudge Tool · პიქსელური
+        სტრუქტურა · სასწავლო მასალა
+      </p>
+    </footer>
+
+    <script>
+      function toggleDropdown() {
+        document.getElementById("moduleDropdown").classList.toggle("open");
+      }
+      document.addEventListener("click", function (e) {
+        const d = document.getElementById("moduleDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+      });
+
+      const ANS = [1, 1, 2, 1, 1, 1, 1];
+      const EXP = [
+        "Blur Tool ახლო პიქსელების ფერების საშუალოს გამოაქვს — ეს კიდეებს ლბობს და სურათს გლუვს ხდის.",
+        "Sharpen Tool-ის გადამეტება (80–100%) ქმნის ნოიზს და 'ჰალო ეფექტს' — თეთრ კიდეს — ახლო პიქსელებთან.",
+        "Finger Painting ჩართ.: ინსტრ. Foreground ფერით იწყებს სვლას, შემდ. ახლო პიქსელებს ათრევს — ფერების შერევა.",
+        "Protect Detail ამცირებს ნოიზს და ინახავს დეტალებს Sharpen-ის გამოყენებისას — გირჩ. ყოვ. ჩართული იყოს.",
+        "Blur Tool, Sharpen Tool და Smudge Tool — სამივე R კლავიშზეა. Shift+R — ჯგუფში გადართვა.",
+        "Blur Tool — ხელით, ლოკალური კონტროლი. Filter → Blur — მთელ ფენაზე ერთდროულად, ზუსტი პარამეტრებით.",
+        "Smudge Tool ბეწვის სტრანდებისთვის იდეალურია — ფერი მოძრ. მიმარ. 'ათრევს', ბეწვის ილუზია იქმნება.",
+      ];
+      const WRONG = [
+        "სწორია: Blur = საშუალო. Sharpen = კონტრასტი. Smudge = ათრევა.",
+        "სწორია: გადამეტება = ნოიზი + ჰალო-ეფექტი. ოპტიმ.: 20–40% + Protect Detail.",
+        "სწორია: Finger Painting = FG ფერით დაწყება + ახლო პიქ. ათრევა.",
+        "სწორია: Protect Detail = ნოიზ-შემც. + დეტალის შენარჩ. Sharpen-ში.",
+        "სწორია: R = Blur/Sharpen/Smudge ჯგუფი. Shift+R — გადართვა.",
+        "სწორია: Tool = ლოკალური, ხელით. Filter = მთელ ფენაზე, ზუსტი.",
+        "სწორია: Smudge Tool ბეწვის/ბუმბულის/ილ. ეფექტებისთვის — ფ. ათრევს.",
+      ];
+      const N = 7;
+      const picked = new Array(N).fill(-1);
+      let submitted = false;
+
+      function pick(q, opt) {
+        if (submitted) return;
+        const b = document.getElementById("q" + q);
+        b.querySelectorAll(".opt").forEach((o) =>
+          o.classList.remove("sel-ok", "sel-bad"),
+        );
+        picked[q] = opt;
+        b.querySelectorAll(".opt")[opt].classList.add(
+          opt === ANS[q] ? "sel-ok" : "sel-bad",
+        );
+        const done = picked.filter((x) => x >= 0).length;
+        document.getElementById("pbar").style.width = (done / N) * 80 + 5 + "%";
+      }
+
+      function submitQuiz() {
+        if (submitted) return;
+        submitted = true;
+        document.getElementById("submitBtn").disabled = true;
+        let score = 0;
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          const opts = b.querySelectorAll(".opt");
+          const fb = document.getElementById("fb" + q);
+          if (picked[q] === ANS[q]) {
+            score++;
+            b.classList.add("correct");
+            fb.textContent = "✓ " + EXP[q];
+            fb.className = "q-fb show ok";
+          } else {
+            b.classList.add("wrong");
+            opts[ANS[q]].classList.add("reveal");
+            fb.textContent = "✗ " + WRONG[q];
+            fb.className = "q-fb show bad";
+          }
+          opts.forEach((o) => o.classList.add("locked"));
+        }
+        const msgs = [
+          "კიდევ სცადე 💪",
+          "გამოსადეგია კიდევ ერთი გამეორება.",
+          "ცუდი არ არის!",
+          "კარგი შედეგი!",
+          "ძალიან კარგი!",
+          "თითქმის სრული!",
+          "სრულყოფილი! 🎉",
+          "სრული ქულა! 🏆",
+        ];
+        document.getElementById("scoreNum").textContent = score + "/" + N;
+        document.getElementById("scoreMsg").textContent = msgs[score];
+        const p = document.getElementById("scorePanel");
+        p.classList.add("show");
+        p.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("pbar").style.width = "100%";
+      }
+
+      function retryQuiz() {
+        submitted = false;
+        picked.fill(-1);
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("scorePanel").classList.remove("show");
+        document.getElementById("pbar").style.width = "5%";
+        for (let q = 0; q < N; q++) {
+          const b = document.getElementById("q" + q);
+          b.classList.remove("correct", "wrong");
+          b.querySelectorAll(".opt").forEach((o) =>
+            o.classList.remove("sel-ok", "sel-bad", "reveal", "locked"),
+          );
+          const fb = document.getElementById("fb" + q);
+          fb.className = "q-fb";
+          fb.textContent = "";
+        }
+      }
+
+      function goTo(id) {
+        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+      }
+
+      window.addEventListener("scroll", () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        if (!submitted && h > 0)
+          document.getElementById("pbar").style.width =
+            Math.min((window.scrollY / h) * 90 + 2, 90) + "%";
+      });
+    </script>
+  </body>
+</html>
